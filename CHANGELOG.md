@@ -1,6 +1,16 @@
 CHANGELOG
 =========
 
+1.1.0 (2016-02-26)
+------------------
+
+* Renamed a heap of other classes and methods for consistence with the API in regards to capitalisation:
+  Au => AU, Us => US, Uk => UK, Cor => COR, Id => ID, etc.
+* Add missing response class DomainTransferUKResponse (Thanks to [Paul Ferrett](http://paulferrett.com/) for the PR)
+* Missing or invalid use statement fixes. (PR by [Paul Ferrett](http://paulferrett.com/))
+* Rename Country specific Domain Registration/Release command class names as Soap operations are case-sensitive.
+  (PR by [Paul Ferrett](http://paulferrett.com/))
+
 1.0.3 (2015-05-23)
 ------------------
 
