@@ -2,7 +2,7 @@
 
 use SynergyWholesale\Types\UkDomain;
 
-class DomainTransferUkCommandTest extends \PHPUnit_Framework_TestCase
+class DomainTransferUKCommandTest extends \PHPUnit_Framework_TestCase
 {
 	public function testCommand()
 	{

@@ -2,7 +2,7 @@
 
 use stdClass;
 
-class DomainRegisterAuResponseTest extends \PHPUnit_Framework_TestCase
+class DomainRegisterAUResponseTest extends \PHPUnit_Framework_TestCase
 {
 	public function testMissingCostPrice()
 	{

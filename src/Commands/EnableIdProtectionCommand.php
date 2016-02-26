@@ -2,7 +2,7 @@
 
 use SynergyWholesale\Types\Domain;
 
-class EnableIdProtectionCommand implements Command
+class EnableIDProtectionCommand implements Command
 {
 	/** @var \SynergyWholesale\Types\Domain */
 	protected $domain;

@@ -2,11 +2,11 @@
 
 use SynergyWholesale\Types\Domain;
 
-class DisableIdProtectionCommandTest extends \PHPUnit_Framework_TestCase
+class DisableIDProtectionCommandTest extends \PHPUnit_Framework_TestCase
 {
 	public function testCommand()
 	{
-		$command = new DisableIdProtectionCommand(new Domain('example.com'));
+		$command = new DisableIDProtectionCommand(new Domain('example.com'));
 		$build = $command->getRequestData();
 
 		$this->assertTrue(is_array($build));

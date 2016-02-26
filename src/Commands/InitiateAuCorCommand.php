@@ -2,7 +2,7 @@
 
 use SynergyWholesale\Types\AuDomain;
 
-class InitiateAuCorCommand implements Command
+class InitiateAUCORCommand implements Command
 {
 	/** @var \SynergyWholesale\Types\AuDomain */
 	protected $domain;

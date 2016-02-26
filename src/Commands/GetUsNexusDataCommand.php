@@ -2,7 +2,7 @@
 
 use SynergyWholesale\Types\UsDomain;
 
-class GetUsNexusDataCommand implements Command
+class GetUSNexusDataCommand implements Command
 {
 	/** @var \SynergyWholesale\Types\UsDomain */
 	protected $domain;

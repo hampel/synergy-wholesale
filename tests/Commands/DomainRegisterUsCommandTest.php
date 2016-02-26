@@ -10,7 +10,7 @@ use SynergyWholesale\Types\UsAppPurpose;
 use SynergyWholesale\Types\UsNexusCategory;
 use SynergyWholesale\Types\RegistrationYears;
 
-class DomainRegisterUsCommandTest extends \PHPUnit_Framework_TestCase
+class DomainRegisterUSCommandTest extends \PHPUnit_Framework_TestCase
 {
 	public function setUp()
 	{

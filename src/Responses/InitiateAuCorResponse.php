@@ -2,7 +2,7 @@
 
 use SynergyWholesale\Exception\BadDataException;
 
-class InitiateAuCorResponse extends Response
+class InitiateAUCORResponse extends Response
 {
 	protected $expectedFields = array('costPrice');
 

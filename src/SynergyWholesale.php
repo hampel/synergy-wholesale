@@ -219,7 +219,7 @@ class SynergyWholesale
 	 * @param Commands\DisableIdProtectionCommand $command
 	 * @return Responses\DisableIdProtectionResponse
 	 */
-	public function disableIdProtection(Commands\DisableIdProtectionCommand $command) { return $this->execute($command); }
+	public function disableIDProtection(Commands\DisableIDProtectionCommand $command) { return $this->execute($command); }
 
 	/**
 	 * @param Commands\DomainInfoCommand $command
@@ -231,7 +231,7 @@ class SynergyWholesale
 	 * @param Commands\DomainRegisterAUCommand $command
 	 * @return Responses\DomainRegisterAUResponse
 	 */
-	public function domainRegisterAu(Commands\DomainRegisterAUCommand $command) { return $this->execute($command); }
+	public function domainRegisterAU(Commands\DomainRegisterAUCommand $command) { return $this->execute($command); }
 
 	/**
 	 * @param Commands\DomainRegisterCommand $command
@@ -243,26 +243,26 @@ class SynergyWholesale
 	 * @param Commands\DomainRegisterUKCommand $command
 	 * @return Responses\DomainRegisterUKResponse
 	 */
-	public function domainRegisterUk(Commands\DomainRegisterUKCommand $command) { return $this->execute($command); }
+	public function domainRegisterUK(Commands\DomainRegisterUKCommand $command) { return $this->execute($command); }
 
 	/**
 	 * @param Commands\DomainRegisterUSCommand $command
 	 * @return Responses\DomainRegisterUSResponse
 	 */
-	public function domainRegisterUs(Commands\DomainRegisterUSCommand $command) { return $this->execute($command); }
+	public function domainRegisterUS(Commands\DomainRegisterUSCommand $command) { return $this->execute($command); }
 
 	/**
 	 * @param Commands\DomainReleaseUKCommand $command
 	 *
 	 * @return Responses\DomainReleaseUKResponse
 	 */
-	public function domainReleaseUk(Commands\DomainReleaseUKCommand $command) { return $this->execute($command); }
+	public function domainReleaseUK(Commands\DomainReleaseUKCommand $command) { return $this->execute($command); }
 
 	/**
 	 * @param Commands\DomainTransferUKCommand $command
 	 * @return Responses\DomainTransferUKResponse
 	 */
-	public function domainTransferUk(Commands\DomainTransferUKCommand $command) { return $this->execute($command); }
+	public function domainTransferUK(Commands\DomainTransferUKCommand $command) { return $this->execute($command); }
 
 	/**
 	 * @param Commands\EnableAutoRenewalCommand $command
@@ -274,7 +274,7 @@ class SynergyWholesale
 	 * @param Commands\EnableIdProtectionCommand $command
 	 * @return Responses\EnableIdProtectionResponse
 	 */
-	public function enableIdProtection(Commands\EnableIdProtectionCommand $command) { return $this->execute($command); }
+	public function enableIDProtection(Commands\EnableIDProtectionCommand $command) { return $this->execute($command); }
 
 	/**
 	 * @param Commands\GetDomainExtensionOptionsCommand $command
@@ -292,13 +292,13 @@ class SynergyWholesale
 	 * @param Commands\GetUsNexusDataCommand $command
 	 * @return Responses\GetUsNexusDataResponse
 	 */
-	public function getUsNexusData(Commands\GetUsNexusDataCommand $command) { return $this->execute($command); }
+	public function getUSNexusData(Commands\GetUSNexusDataCommand $command) { return $this->execute($command); }
 
 	/**
 	 * @param Commands\InitiateAuCorCommand $command
 	 * @return Responses\InitiateAuCorResponse
 	 */
-	public function initiateAuCor(Commands\InitiateAuCorCommand $command) { return $this->execute($command); }
+	public function initiateAUCOR(Commands\InitiateAUCORCommand $command) { return $this->execute($command); }
 
 	/**
 	 * @param Commands\ListContactsCommand $command

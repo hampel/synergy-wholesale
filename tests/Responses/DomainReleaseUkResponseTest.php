@@ -2,7 +2,7 @@
 
 use stdClass;
 
-class DomainReleaseUkResponseTest extends \PHPUnit_Framework_TestCase
+class DomainReleaseUKResponseTest extends \PHPUnit_Framework_TestCase
 {
 	public function testResponse()
 	{
