@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+1.2.0 (2016-08-05)
+------------------
+
+* Renamed Bool to Boolean for compatibility with PHP7 where Bool is now a reserved word
+
 1.1.0 (2016-02-26)
 ------------------
 
