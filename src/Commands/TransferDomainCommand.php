@@ -1,6 +1,6 @@
 <?php  namespace SynergyWholesale\Commands;
 
-use SynergyWholesale\Types\Bool;
+use SynergyWholesale\Types\Boolean;
 use SynergyWholesale\Types\Domain;
 use SynergyWholesale\Types\Contact;
 use SynergyWholesale\Exception\InvalidArgumentException;
@@ -16,18 +16,18 @@ class TransferDomainCommand implements Command
 	/** @var \SynergyWholesale\Types\Contact */
 	protected $contact;
 
-	/** @var \SynergyWholesale\Types\Bool */
+	/** @var \SynergyWholesale\Types\Boolean */
 	protected $idProtect;
 
-	/** @var \SynergyWholesale\Types\Bool */
+	/** @var \SynergyWholesale\Types\Boolean */
 	protected $doRenewal;
 
 	function __construct(
-		Domain $domainName,
-		$authInfo,
-		Contact $contact,
-		Bool $idProtect = null,
-		Bool $doRenewal = null
+	Domain $domainName,
+	$authInfo,
+	Contact $contact,
+	Boolean $idProtect = null,
+	Boolean $doRenewal = null
 	)
 	{
 		if (empty($authInfo) OR !is_string($authInfo))

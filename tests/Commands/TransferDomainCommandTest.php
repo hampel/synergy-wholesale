@@ -1,6 +1,6 @@
 <?php  namespace SynergyWholesale\Commands;
 
-use SynergyWholesale\Types\Bool;
+use SynergyWholesale\Types\Boolean;
 use SynergyWholesale\Types\Email;
 use SynergyWholesale\Types\Phone;
 use SynergyWholesale\Types\Domain;
@@ -54,11 +54,11 @@ class TransferDomainCommandTest extends \PHPUnit_Framework_TestCase
 	public function testCommand()
 	{
 		$command = new TransferDomainCommand(
-			$this->domain,
-			"foo",
-			$this->contact,
-			Bool::true(),
-			Bool::false()
+		$this->domain,
+		"foo",
+		$this->contact,
+		Boolean::true(),
+		Boolean::false()
 		);
 		$build = $command->getRequestData();
 

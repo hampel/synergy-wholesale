@@ -1,6 +1,6 @@
 <?php  namespace SynergyWholesale\Responses; 
 
-use SynergyWholesale\Types\Bool;
+use SynergyWholesale\Types\Boolean;
 
 class GetDomainExtensionOptionsResponse extends Response
 {
@@ -13,7 +13,7 @@ class GetDomainExtensionOptionsResponse extends Response
 
 	public function canRenew()
 	{
-		return Bool::convert($this->response->canRenew);
+		return Boolean::convert($this->response->canRenew);
 	}
 
 	public function canRenewWithin()
@@ -28,27 +28,27 @@ class GetDomainExtensionOptionsResponse extends Response
 
 	public function isIpV4Capable()
 	{
-		return Bool::convert($this->response->isIPV4Capable);
+		return Boolean::convert($this->response->isIPV4Capable);
 	}
 
 	public function isIpv6Capable()
 	{
-		return Bool::convert($this->response->isIPV6Capable);
+		return Boolean::convert($this->response->isIPV6Capable);
 	}
 
 	public function isIdProtectCapable()
 	{
-		return Bool::convert($this->response->isIDProtectCapable);
+		return Boolean::convert($this->response->isIDProtectCapable);
 	}
 
 	public function transferLock()
 	{
-		return Bool::convert($this->response->transferLock);
+		return Boolean::convert($this->response->transferLock);
 	}
 
 	public function isHostsCapable()
 	{
-		return Bool::convert($this->response->isHostsCapable);
+		return Boolean::convert($this->response->isHostsCapable);
 	}
 
 	public function getMinYears()

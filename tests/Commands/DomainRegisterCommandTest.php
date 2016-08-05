@@ -1,6 +1,6 @@
 <?php  namespace SynergyWholesale\Commands;
 
-use SynergyWholesale\Types\Bool;
+use SynergyWholesale\Types\Boolean;
 use SynergyWholesale\Types\Email;
 use SynergyWholesale\Types\Phone;
 use SynergyWholesale\Types\Domain;
@@ -29,7 +29,7 @@ class DomainRegisterCommandTest extends \PHPUnit_Framework_TestCase
 			new Email('foo@example.com'),
 			new Phone('+61.111111112')
 		);
-		$this->idProtect = Bool::false();
+		$this->idProtect = Boolean::false();
 		$this->years = new RegistrationYears(1);
 		$this->nameServers = new DomainList(array('ns1.foo.com', 'ns2.foo.com'));
 	}
@@ -37,14 +37,14 @@ class DomainRegisterCommandTest extends \PHPUnit_Framework_TestCase
 	public function testCommand()
 	{
 		$command = new DomainRegisterCommand(
-			$this->domain,
-			$this->years,
-			$this->nameServers,
-			Bool::true(),
-			$this->contact,
-			$this->contact,
-			$this->contact,
-			$this->contact
+		$this->domain,
+		$this->years,
+		$this->nameServers,
+		Boolean::true(),
+		$this->contact,
+		$this->contact,
+		$this->contact,
+		$this->contact
 		);
 		$build = $command->getRequestData();
 

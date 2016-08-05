@@ -1,6 +1,6 @@
 <?php  namespace SynergyWholesale\Types;
 
-class Bool
+class Boolean
 {
 	private $bool;
 
@@ -75,7 +75,7 @@ class Bool
 		return new static(false);
 	}
 
-	public function equals(Bool $other)
+	public function equals(Boolean $other)
 	{
 		return $this->bool === $other->bool;
 	}

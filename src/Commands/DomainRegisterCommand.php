@@ -1,6 +1,6 @@
 <?php  namespace SynergyWholesale\Commands; 
 
-use SynergyWholesale\Types\Bool;
+use SynergyWholesale\Types\Boolean;
 use SynergyWholesale\Types\Domain;
 use SynergyWholesale\Types\Contact;
 use SynergyWholesale\Types\DomainList;
@@ -17,7 +17,7 @@ class DomainRegisterCommand implements Command
 	/** @var \SynergyWholesale\Types\DomainList */
 	protected $nameServers;
 
-	/** @var \SynergyWholesale\Types\Bool */
+	/** @var \SynergyWholesale\Types\Boolean */
 	protected $idProtect;
 
 	/** @var \SynergyWholesale\Types\Contact */
@@ -33,14 +33,14 @@ class DomainRegisterCommand implements Command
 	protected $technical_contact;
 
 	function __construct(
-		Domain $domainName,
-		RegistrationYears $years,
-		DomainList $nameServers,
-		Bool $idProtect,
-		Contact $registrant_contact,
-		Contact $billing_contact,
-		Contact $admin_contact,
-		Contact $technical_contact
+	Domain $domainName,
+	RegistrationYears $years,
+	DomainList $nameServers,
+	Boolean $idProtect,
+	Contact $registrant_contact,
+	Contact $billing_contact,
+	Contact $admin_contact,
+	Contact $technical_contact
 	)
 	{
 		$this->domainName = $domainName;

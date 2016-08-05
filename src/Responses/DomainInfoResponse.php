@@ -1,6 +1,6 @@
 <?php  namespace SynergyWholesale\Responses;
 
-use SynergyWholesale\Types\Bool;
+use SynergyWholesale\Types\Boolean;
 use SynergyWholesale\Types\Domain;
 use SynergyWholesale\Types\DomainList;
 use SynergyWholesale\Types\DnsConfiguration;
@@ -140,17 +140,17 @@ class DomainInfoResponse extends Response
 
 	public function isBulkInProgress()
 	{
-		return Bool::convert($this->response->bulkInProgress);
+		return Boolean::convert($this->response->bulkInProgress);
 	}
 
 	public function isIdProtected()
 	{
-		return Bool::convert($this->response->idProtect);
+		return Boolean::convert($this->response->idProtect);
 	}
 
 	public function isAutoRenewEnabled()
 	{
-		return Bool::convert($this->response->autoRenew);
+		return Boolean::convert($this->response->autoRenew);
 	}
 
 	public function getAuRegistrantIdType()
