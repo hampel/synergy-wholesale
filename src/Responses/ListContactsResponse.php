@@ -34,8 +34,6 @@ class ListContactsResponse extends Response
 
 	protected function validateData()
 	{
-		//var_dump($this->response->registrant);
-
 		foreach ($this->contactTypes as $type)
 		{
 			if (!isset($this->response->{$type})) continue; // skip contact types that aren't present in data
@@ -63,7 +61,7 @@ class ListContactsResponse extends Response
 			$this->response->registrant->postcode,
 			new Phone($this->response->registrant->phone),
 			new Email($this->response->registrant->email),
-			isset($this->response->registrant->fax) ? new Phone($this->response->registrant->fax) : null
+			!empty($this->response->registrant->fax) ? new Phone($this->response->registrant->fax) : null
 		);
 
 		$this->tech = new Contact(
@@ -79,7 +77,7 @@ class ListContactsResponse extends Response
 			$this->response->tech->postcode,
 			new Phone($this->response->tech->phone),
 			new Email($this->response->tech->email),
-			isset($this->response->tech->fax) ? new Phone($this->response->tech->fax) : null
+			!empty($this->response->tech->fax) ? new Phone($this->response->tech->fax) : null
 		);
 
 		if (isset($this->response->admin))
@@ -97,7 +95,7 @@ class ListContactsResponse extends Response
 				$this->response->admin->postcode,
 				new Phone($this->response->admin->phone),
 				new Email($this->response->admin->email),
-				isset($this->response->admin->fax) ? new Phone($this->response->admin->fax) : null
+				!empty($this->response->admin->fax) ? new Phone($this->response->admin->fax) : null
 			);
 		}
 
@@ -116,7 +114,7 @@ class ListContactsResponse extends Response
 				$this->response->billing->postcode,
 				new Phone($this->response->billing->phone),
 				new Email($this->response->billing->email),
-				isset($this->response->billing->fax) ? new Phone($this->response->billing->fax) : null
+				!empty($this->response->billing->fax) ? new Phone($this->response->billing->fax) : null
 			);
 		}
 	}
