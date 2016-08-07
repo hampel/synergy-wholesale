@@ -51,7 +51,7 @@ class ListContactsResponse extends Response
 		$this->registrant = new Contact(
 			$this->response->registrant->firstname,
 			$this->response->registrant->lastname,
-			isset($this->response->registrant->company) ? $this->response->registrant->company : "",
+			isset($this->response->registrant->organisation) ? $this->response->registrant->organisation : "",
 			$this->response->registrant->address1,
 			isset($this->response->registrant->address2) ? $this->response->registrant->address2 : "",
 			isset($this->response->registrant->address3) ? $this->response->registrant->address3 : "",
@@ -67,7 +67,7 @@ class ListContactsResponse extends Response
 		$this->tech = new Contact(
 			$this->response->tech->firstname,
 			$this->response->tech->lastname,
-			isset($this->response->tech->company) ? $this->response->tech->company : "",
+			isset($this->response->tech->organisation) ? $this->response->tech->organisation : "",
 			$this->response->tech->address1,
 			isset($this->response->tech->address2) ? $this->response->tech->address2 : "",
 			isset($this->response->tech->address3) ? $this->response->tech->address3 : "",
@@ -85,7 +85,7 @@ class ListContactsResponse extends Response
 			$this->admin = new Contact(
 				$this->response->admin->firstname,
 				$this->response->admin->lastname,
-				isset($this->response->admin->company) ? $this->response->admin->company : "",
+				isset($this->response->admin->organisation) ? $this->response->admin->organisation : "",
 				$this->response->admin->address1,
 				isset($this->response->admin->address2) ? $this->response->admin->address2 : "",
 				isset($this->response->admin->address3) ? $this->response->admin->address3 : "",
@@ -104,7 +104,7 @@ class ListContactsResponse extends Response
 			$this->billing = new Contact(
 				$this->response->billing->firstname,
 				$this->response->billing->lastname,
-				isset($this->response->billing->company) ? $this->response->billing->company : "",
+				isset($this->response->billing->organisation) ? $this->response->billing->organisation : "",
 				$this->response->billing->address1,
 				isset($this->response->billing->address2) ? $this->response->billing->address2 : "",
 				isset($this->response->billing->address3) ? $this->response->billing->address3 : "",
