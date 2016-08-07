@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+1.2.2 (2016-08-07)
+------------------
+
+* listContacts returns a field called "organisation", not "company" 
+
 1.2.1 (2016-08-07)
 ------------------
 
