@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+1.2.1 (2016-08-07)
+------------------
+
+* handle case where returned fax in contacts is set but empty
+
 1.2.0 (2016-08-05)
 ------------------
 
