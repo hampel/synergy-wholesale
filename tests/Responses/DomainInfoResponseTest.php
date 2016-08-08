@@ -251,7 +251,7 @@ class DomainInfoResponseTest extends \PHPUnit_Framework_TestCase
 		$data->icannStatus = '';
 		$data->icannVerificationDateEnd = '';
 
-		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Expected property auRegistrantID missing from response data');
+		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Expected property auRegistrantID or auEligibilityID missing from response data');
 
 		new DomainInfoResponse($data, 'DomainInfoCommand');
 	}
@@ -274,7 +274,7 @@ class DomainInfoResponseTest extends \PHPUnit_Framework_TestCase
 		$data->icannVerificationDateEnd = '';
 		$data->auRegistrantID = '';
 
-		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Expected property auRegistrantIDType missing from response data');
+		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Expected property auRegistrantIDType or auEligibilityIDType missing from response data');
 
 		new DomainInfoResponse($data, 'DomainInfoCommand');
 	}
@@ -324,6 +324,13 @@ class DomainInfoResponseTest extends \PHPUnit_Framework_TestCase
 		$data->icannVerificationDateEnd = 'icannVerificationDateEnd';
 		$data->auRegistrantID = 'auRegistrantID';
 		$data->auRegistrantIDType = 'auRegistrantIDType';
+		$data->auRegistrantID = 'auRegistrantID';
+		$data->auEligibilityName = 'auEligibilityName';
+		$data->auEligibilityID = 'auEligibilityID';
+		$data->auEligibilityType = 'auEligibilityType';
+		$data->auEligibilityIDType = 'auEligibilityIDType';
+		$data->auPolicyID = 'auPolicyID';
+		$data->auPolicyIDDesc = 'auPolicyIDDesc';
 
 		$response = new DomainInfoResponse($data, 'DomainInfoCommand');
 
@@ -343,6 +350,12 @@ class DomainInfoResponseTest extends \PHPUnit_Framework_TestCase
 		$this->assertTrue($response->isAutoRenewEnabled());
 		$this->assertEquals('auRegistrantIDType', $response->getAuRegistrantIdType());
 		$this->assertEquals('auRegistrantID', $response->getAuRegistrantId());
+		$this->assertEquals('auEligibilityName', $response->getAuEligibilityName());
+		$this->assertEquals('auEligibilityID', $response->getAuEligibilityID());
+		$this->assertEquals('auEligibilityType', $response->getAuEligibilityType());
+		$this->assertEquals('auEligibilityIDType', $response->getAuEligibilityIDType());
+		$this->assertEquals('auPolicyID', $response->getAuPolicyID());
+		$this->assertEquals('auPolicyIDDesc', $response->getAuPolicyIDDesc());
 		$this->assertEquals('icannStatus', $response->getIcannStatus());
 		$this->assertEquals('icannVerificationDateEnd', $response->getIcannVerificationDateEnd());
 	}

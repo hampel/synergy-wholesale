@@ -169,6 +169,54 @@ class DomainInfoResponse extends Response
 		}
 	}
 
+	public function getAuEligibilityName()
+	{
+		if (isset($this->response->auEligibilityName))
+		{
+			return $this->response->auEligibilityName;
+		}
+	}
+
+	public function getAuEligibilityID()
+	{
+		if (isset($this->response->auEligibilityID))
+		{
+			return $this->response->auEligibilityID;
+		}
+	}
+
+	public function getAuEligibilityType()
+	{
+		if (isset($this->response->auEligibilityType))
+		{
+			return $this->response->auEligibilityType;
+		}
+	}
+
+	public function getAuEligibilityIDType()
+	{
+		if (isset($this->response->auEligibilityIDType))
+		{
+			return $this->response->auEligibilityIDType;
+		}
+	}
+
+	public function getAuPolicyID()
+	{
+		if (isset($this->response->auPolicyID))
+		{
+			return $this->response->auPolicyID;
+		}
+	}
+
+	public function getAuPolicyIDDesc()
+	{
+		if (isset($this->response->auPolicyIDDesc))
+		{
+			return $this->response->auPolicyIDDesc;
+		}
+	}
+
 	public function getIcannStatus()
 	{
 		return $this->response->icannStatus;
