@@ -46,15 +46,15 @@ class DomainInfoResponse extends Response
 
 		if ($this->domain->getTopLevelDomain() == 'au')
 		{
-			if (!isset($this->response->auRegistrantID))
+			if (!isset($this->response->auRegistrantID) AND !isset($this->response->auEligibilityID))
 			{
-				$message = "Expected property auRegistrantID missing from response data";
+				$message = "Expected property auRegistrantID or auEligibilityID missing from response data";
 				throw new BadDataException($message, $this->command, $this->response);
 			}
 
-			if (!isset($this->response->auRegistrantIDType))
+			if (!isset($this->response->auRegistrantIDType) AND !isset($this->response->auEligibilityIDType))
 			{
-				$message = "Expected property auRegistrantIDType missing from response data";
+				$message = "Expected property auRegistrantIDType or auEligibilityIDType missing from response data";
 				throw new BadDataException($message, $this->command, $this->response);
 			}
 		}
