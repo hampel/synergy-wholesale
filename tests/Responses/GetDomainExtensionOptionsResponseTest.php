@@ -32,10 +32,10 @@ class GetDomainExtensionOptionsResponseTest extends \PHPUnit_Framework_TestCase
 		$this->assertFalse($response->isIdProtectCapable());
 		$this->assertFalse($response->transferLock());
 		$this->assertTrue($response->isHostsCapable());
-		$this->assertEquals(2, $response->getMinYears());
-		$this->assertEquals(2, $response->getMaxYears());
-		$this->assertTrue($response->getDnssecAvailable());
-		$this->assertEquals(['registrant', 'tech'], $response->getAvailableContacts());
-		$this->assertFalse($response->getWhoisVerification());
+		$this->assertEquals(2, $response->minYears());
+		$this->assertEquals(2, $response->maxYears());
+		$this->assertTrue($response->dnssecAvailable());
+		$this->assertEquals(['registrant', 'tech'], $response->availableContacts());
+		$this->assertFalse($response->whoisVerification());
 	}
 }

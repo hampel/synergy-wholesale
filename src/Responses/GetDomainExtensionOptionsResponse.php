@@ -51,27 +51,27 @@ class GetDomainExtensionOptionsResponse extends Response
 		return Boolean::convert($this->response->isHostsCapable);
 	}
 
-	public function getMinYears()
+	public function minYears()
 	{
 		return intval($this->response->minYears);
 	}
 
-	public function getMaxYears()
+	public function maxYears()
 	{
 		return intval($this->response->maxYears);
 	}
 
-	public function getDnssecAvailable()
+	public function dnssecAvailable()
 	{
 		return $this->response->DNSSECAvailable;
 	}
 
-	public function getAvailableContacts()
+	public function availableContacts()
 	{
 		return $this->response->availableContacts;
 	}
 
-	public function getWhoisVerification()
+	public function whoisVerification()
 	{
 		return $this->response->whoisVerification;
 	}
