@@ -18,6 +18,9 @@ class GetDomainExtensionOptionsResponseTest extends \PHPUnit_Framework_TestCase
 		$data->isHostsCapable = 'yes';
 		$data->minYears = 2;
 		$data->maxYears = 2;
+		$data->DNSSECAvailable = true;
+		$data->availableContacts = ['registrant', 'tech'];
+		$data->whoisVerification = false;
 
 		$response = new GetDomainExtensionOptionsResponse($data, 'GetDomainExtensionOptionsCommand');
 
@@ -31,5 +34,8 @@ class GetDomainExtensionOptionsResponseTest extends \PHPUnit_Framework_TestCase
 		$this->assertTrue($response->isHostsCapable());
 		$this->assertEquals(2, $response->getMinYears());
 		$this->assertEquals(2, $response->getMaxYears());
+		$this->assertTrue($response->getDnssecAvailable());
+		$this->assertEquals(['registrant', 'tech'], $response->getAvailableContacts());
+		$this->assertFalse($response->getWhoisVerification());
 	}
 }

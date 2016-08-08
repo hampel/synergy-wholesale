@@ -60,4 +60,19 @@ class GetDomainExtensionOptionsResponse extends Response
 	{
 		return intval($this->response->maxYears);
 	}
+
+	public function getDnssecAvailable()
+	{
+		return $this->response->DNSSECAvailable;
+	}
+
+	public function getAvailableContacts()
+	{
+		return $this->response->availableContacts;
+	}
+
+	public function getWhoisVerification()
+	{
+		return $this->response->whoisVerification;
+	}
 }
