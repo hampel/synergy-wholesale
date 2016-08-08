@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+1.2.3 (2016-08-08)
+------------------
+
+* some domains don't have auRegistrantID but have auEligibilityID instead
+* some domains don't have auRegistrantIDType but have auEligibilityIDType instead
+
 1.2.2 (2016-08-07)
 ------------------
 
