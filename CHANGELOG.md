@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+1.2.5 (2016-08-08)
+------------------
+
+* added auRegistrantName field to domainInfo response
+
 1.2.4 (2016-08-08)
 ------------------
 
