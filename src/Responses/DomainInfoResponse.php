@@ -13,8 +13,8 @@ class DomainInfoResponse extends Response
 	protected $expectedFields = array(
 		'domainName', 'domain_status', 'domain_expiry',
 		'nameServers', 'dnsConfig', 'dnsConfigName',
-		'domainPassword', 'bulkInProgress', 'idProtect',
-		'autoRenew', 'icannStatus', 'icannVerificationDateEnd'
+		'bulkInProgress', 'idProtect', 'autoRenew',
+		'icannStatus', 'icannVerificationDateEnd'
 	);
 
 	/** @var Domain */
@@ -48,19 +48,28 @@ class DomainInfoResponse extends Response
 		{
 			if (!isset($this->response->auRegistrantName))
 			{
-				$message = "Expected property auRegistrantName missing from response data";
+				$message = "Expected property [auRegistrantName] missing from response data";
 				throw new BadDataException($message, $this->command, $this->response);
 			}
 
 			if (!isset($this->response->auRegistrantID) AND !isset($this->response->auEligibilityID))
 			{
-				$message = "Expected property auRegistrantID or auEligibilityID missing from response data";
+				$message = "Expected property [auRegistrantID] or [auEligibilityID] missing from response data";
 				throw new BadDataException($message, $this->command, $this->response);
 			}
 
 			if (!isset($this->response->auRegistrantIDType) AND !isset($this->response->auEligibilityIDType))
 			{
-				$message = "Expected property auRegistrantIDType or auEligibilityIDType missing from response data";
+				$message = "Expected property [auRegistrantIDType] or [auEligibilityIDType] missing from response data";
+				throw new BadDataException($message, $this->command, $this->response);
+			}
+		}
+
+		if ($this->domain->getTopLevelDomain() != 'uk')
+		{
+			if (!isset($this->response->domainPassword))
+			{
+				$message = "Expected property [domainPassword] missing from response data";
 				throw new BadDataException($message, $this->command, $this->response);
 			}
 		}

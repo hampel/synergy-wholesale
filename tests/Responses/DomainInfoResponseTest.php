@@ -1,6 +1,7 @@
 <?php  namespace SynergyWholesale\Responses; 
 
 use stdClass;
+use SynergyWholesale\Types\DnsConfiguration;
 
 class DomainInfoResponseTest extends \PHPUnit_Framework_TestCase
 {
@@ -83,14 +84,38 @@ class DomainInfoResponseTest extends \PHPUnit_Framework_TestCase
 	{
 		$data = new stdClass();
 		$data->status = "OK";
-		$data->domainName = '';
+		$data->domainName = 'example.com';
 		$data->domain_status = '';
 		$data->domain_expiry = '';
-		$data->nameServers = '';
+		$data->nameServers = ['ns1.example.com', 'ns2.example.com'];
 		$data->dnsConfig = '';
 		$data->dnsConfigName = '';
+		$data->bulkInProgress = '';
+		$data->idProtect = '';
+		$data->autoRenew = '';
+		$data->icannStatus = '';
+		$data->icannVerificationDateEnd = '';
 
 		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Expected property [domainPassword] missing from response data');
+
+		new DomainInfoResponse($data, 'DomainInfoCommand');
+	}
+
+	public function testMissingDomainPasswordUk()
+	{
+		$data = new stdClass();
+		$data->status = "OK";
+		$data->domainName = 'example.co.uk';
+		$data->domain_status = '';
+		$data->domain_expiry = '';
+		$data->nameServers = ['ns1.example.com', 'ns2.example.com'];
+		$data->dnsConfig = DnsConfiguration::PARKED;
+		$data->dnsConfigName = '';
+		$data->bulkInProgress = '';
+		$data->idProtect = '';
+		$data->autoRenew = '';
+		$data->icannStatus = '';
+		$data->icannVerificationDateEnd = '';
 
 		new DomainInfoResponse($data, 'DomainInfoCommand');
 	}
@@ -251,7 +276,7 @@ class DomainInfoResponseTest extends \PHPUnit_Framework_TestCase
 		$data->icannStatus = '';
 		$data->icannVerificationDateEnd = '';
 
-		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Expected property auRegistrantName missing from response data');
+		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Expected property [auRegistrantName] missing from response data');
 
 		new DomainInfoResponse($data, 'DomainInfoCommand');
 	}
@@ -274,7 +299,7 @@ class DomainInfoResponseTest extends \PHPUnit_Framework_TestCase
 		$data->icannVerificationDateEnd = '';
 		$data->auRegistrantName = '';
 
-		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Expected property auRegistrantID or auEligibilityID missing from response data');
+		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Expected property [auRegistrantID] or [auEligibilityID] missing from response data');
 
 		new DomainInfoResponse($data, 'DomainInfoCommand');
 	}
@@ -298,7 +323,7 @@ class DomainInfoResponseTest extends \PHPUnit_Framework_TestCase
 		$data->auRegistrantName = '';
 		$data->auRegistrantID = '';
 
-		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Expected property auRegistrantIDType or auEligibilityIDType missing from response data');
+		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Expected property [auRegistrantIDType] or [auEligibilityIDType] missing from response data');
 
 		new DomainInfoResponse($data, 'DomainInfoCommand');
 	}
