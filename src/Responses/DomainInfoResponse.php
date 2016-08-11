@@ -158,9 +158,9 @@ class DomainInfoResponse extends Response
 		return Boolean::convert($this->response->bulkInProgress);
 	}
 
-	public function isIdProtected()
+	public function getIdProtected()
 	{
-		return Boolean::convert($this->response->idProtect);
+		return $this->response->idProtect;
 	}
 
 	public function isAutoRenewEnabled()

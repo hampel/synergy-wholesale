@@ -396,7 +396,7 @@ class DomainInfoResponseTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('dnsConfigName', $response->getDnsConfigName());
 		$this->assertEquals('domainPassword', $response->getDomainPassword());
 		$this->assertTrue($response->isBulkInProgress());
-		$this->assertTrue($response->isIdProtected());
+		$this->assertEquals('Enabled', $response->getIdProtected());
 		$this->assertTrue($response->isAutoRenewEnabled());
 		$this->assertEquals('auRegistrantIDType', $response->getAuRegistrantIdType());
 		$this->assertEquals('auRegistrantID', $response->getAuRegistrantId());
