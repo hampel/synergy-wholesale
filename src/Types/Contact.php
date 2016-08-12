@@ -52,6 +52,25 @@ class Contact
 		$this->fax = $fax;
 	}
 
+	public static function newFromArray(array $contact)
+	{
+		return new self(
+			$contact['firstname'],
+			$contact['lastname'],
+			$contact['organisation'],
+			$contact['address1'],
+			$contact['address2'],
+			$contact['address3'],
+			$contact['suburb'],
+			$contact['state'],
+			new Country($contact['country']),
+			$contact['postcode'],
+			new Phone($contact['phone']),
+			new Email($contact['email']),
+			new Phone($contact['fax'])
+		);
+	}
+
 	public function getFirstname()
 	{
 		return $this->firstname;
