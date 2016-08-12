@@ -138,4 +138,21 @@ class Contact
 			return $this->fax->getPhone();
 		}
 	}
+
+	public function equals(Contact $other)
+	{
+		return $this->firstname === $other->firstname &&
+			$this->lastname === $other->lastname &&
+			$this->organisation === $other->organisation &&
+			$this->address1 === $other->address1 &&
+			$this->address2 === $other->address2 &&
+			$this->address3 === $other->address3 &&
+			$this->suburb === $other->suburb &&
+			$this->state === $other->state &&
+			$this->country->equals($other->country) &&
+			$this->postcode === $other->postcode &&
+			$this->phone->equals($other->phone) &&
+			$this->email->equals($other->email) &&
+			$this->fax->equals($other->fax);
+	}
 }

@@ -73,4 +73,78 @@ class ContactTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('SynergyWholesale\Types\Phone', $contact->getFax());
 		$this->assertEquals('+61.222222222', $contact->getFax()->getPhone());
 	}
+
+	public function testEquals()
+	{
+		$contact1 = new Contact(
+			'firstname',
+			'lastname',
+			'organisation',
+			'address1',
+			'address2',
+			'address3',
+			'suburb',
+			'state',
+			new Country('AU'),
+			'postcode',
+			new Phone('+61.111111111'),
+			new Email('foo@example.com'),
+			new Phone('+61.222222222')
+		);
+
+		$contact2 = new Contact(
+			'firstname',
+			'lastname',
+			'organisation',
+			'address1',
+			'address2',
+			'address3',
+			'suburb',
+			'state',
+			new Country('AU'),
+			'postcode',
+			new Phone('+61.111111111'),
+			new Email('foo@example.com'),
+			new Phone('+61.222222222')
+		);
+
+		$this->assertTrue($contact1->equals($contact2));
+	}
+
+	public function testNotEquals()
+	{
+		$contact1 = new Contact(
+			'firstname',
+			'lastname',
+			'organisation',
+			'address1',
+			'address2',
+			'address3',
+			'suburb',
+			'state',
+			new Country('AU'),
+			'postcode',
+			new Phone('+61.111111111'),
+			new Email('foo@example.com'),
+			new Phone('+61.222222222')
+		);
+
+		$contact2 = new Contact(
+			'othername',
+			'lastname',
+			'organisation',
+			'address1',
+			'address2',
+			'address3',
+			'suburb',
+			'state',
+			new Country('AU'),
+			'postcode',
+			new Phone('+61.111111111'),
+			new Email('foo@example.com'),
+			new Phone('+61.222222222')
+		);
+
+		$this->assertFalse($contact1->equals($contact2));
+	}
 }
