@@ -67,7 +67,7 @@ class Contact
 			$contact['postcode'],
 			new Phone($contact['phone']),
 			new Email($contact['email']),
-			new Phone($contact['fax'])
+			is_null($contact['fax']) ? null : new Phone($contact['fax'])
 		);
 	}
 
@@ -160,6 +160,8 @@ class Contact
 
 	public function equals(Contact $other)
 	{
+		if (is_null($this->fax) xor is_null($other->fax)) return false;
+
 		return $this->firstname === $other->firstname &&
 			$this->lastname === $other->lastname &&
 			$this->organisation === $other->organisation &&
@@ -172,6 +174,6 @@ class Contact
 			$this->postcode === $other->postcode &&
 			$this->phone->equals($other->phone) &&
 			$this->email->equals($other->email) &&
-			$this->fax->equals($other->fax);
+			((is_null($this->fax) && is_null($other->fax) && $this->fax === $other->fax) || $this->fax->equals($other->fax));
 	}
 }
