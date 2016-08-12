@@ -176,4 +176,23 @@ class Contact
 			$this->email->equals($other->email) &&
 			((is_null($this->fax) && is_null($other->fax) && $this->fax === $other->fax) || $this->fax->equals($other->fax));
 	}
+
+	public function toArray()
+	{
+		return [
+			'firstname' => $this->firstname,
+			'lastname' => $this->lastname,
+			'organisation' => $this->organisation,
+			'address1' => $this->address1,
+			'address2' => $this->address2,
+			'address3' => $this->address3,
+			'suburb' => $this->suburb,
+			'state' => $this->state,
+			'country' => $this->country->getCountryCode(),
+			'postcode' => $this->postcode,
+			'phone' => $this->phone->getPhone(),
+			'email' => $this->email->getEmail(),
+			'fax' => $this->fax ? $this->fax->getPhone() : null,
+		];
+	}
 }

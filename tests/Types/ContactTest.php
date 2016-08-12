@@ -186,4 +186,25 @@ class ContactTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertTrue($contact1->equals($contact2));
 	}
+
+	public function testToArray()
+	{
+		$contact1 = new Contact(
+			'firstname',
+			'lastname',
+			'organisation',
+			'address1',
+			'address2',
+			'address3',
+			'suburb',
+			'state',
+			new Country('AU'),
+			'postcode',
+			new Phone('+61.111111111'),
+			new Email('foo@example.com'),
+			new Phone('+61.222222222')
+		);
+
+		$this->assertTrue($contact1->equals(Contact::newFromArray($contact1->toArray())));
+	}
 }
