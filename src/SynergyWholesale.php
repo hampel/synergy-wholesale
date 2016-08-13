@@ -283,6 +283,12 @@ class SynergyWholesale
 	public function getDomainExtensionOptions(Commands\GetDomainExtensionOptionsCommand $command) { return $this->execute($command); }
 
 	/**
+	 * @param Commands\GetDomainPricingCommand $command
+	 * @return Responses\GetDomainPricingResponse
+	 */
+	public function getDomainPricing(Commands\GetDomainPricingCommand $command) { return $this->execute($command); }
+
+	/**
 	 * @param Commands\GetTransferredAwayDomainsCommand $command
 	 * @return Responses\GetTransferredAwayDomainsResponse
 	 */
