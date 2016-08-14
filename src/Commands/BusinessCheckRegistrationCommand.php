@@ -18,7 +18,7 @@ class BusinessCheckRegistrationCommand implements Command
 
 	public function getKey()
 	{
-		return $this->registrationNumber . $this->registrationState->getState();
+		return $this->registrationNumber . ($this->registrationState ? $this->registrationState->getState() : '');
 	}
 
 	public function getRequestData()
