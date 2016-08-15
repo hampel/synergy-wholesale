@@ -11,7 +11,7 @@ class Phone
 		// strip all spaces
 		$phone = str_replace(' ', '', $phone);
 
-		if (!preg_match('/^\+[0-9]{1,2}\.[0-9]{6,9}$/', $phone))
+		if (!preg_match('/^\+[0-9]{1,2}\.[0-9]{6,10}$/', $phone))
 		{
 			throw new InvalidArgumentException("Invalid phone number [{$phone}] - must be in the format +99.999999999");
 		}

@@ -34,5 +34,8 @@ class PhoneTest extends \PHPUnit_Framework_TestCase {
 		// test space stripping
 		$phone = new Phone('+00.0 0000 0000');
 		$this->assertEquals('+00.000000000', $phone->getPhone());
+
+		$phone = new Phone('+00.0000000000');
+		$this->assertEquals('+00.0000000000', $phone->getPhone());
 	}
 }
