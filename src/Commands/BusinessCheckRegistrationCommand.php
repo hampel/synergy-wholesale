@@ -12,7 +12,7 @@ class BusinessCheckRegistrationCommand implements Command
 
 	public function __construct($registrationNumber, AuState $registrationState = null)
 	{
-		$this->resgistrationNumber = $registrationNumber;
+		$this->registrationNumber = $registrationNumber;
 		$this->registrationState = $registrationState;
 	}
 
@@ -23,7 +23,7 @@ class BusinessCheckRegistrationCommand implements Command
 
 	public function getRequestData()
 	{
-		$data = array('registrationNumber' => $this->resgistrationNumber);
+		$data = array('registrationNumber' => $this->registrationNumber);
 
 		if (isset($this->registrationState))
 		{
