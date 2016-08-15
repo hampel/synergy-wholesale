@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+1.3.2 (2016-08-15)
+------------------
+
+* changed Country to have isocodes in the main file rather than via include so serialisation (caching) works correctly
+
 1.3.1 (2016-08-15)
 ------------------
 

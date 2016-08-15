@@ -253,7 +253,7 @@ class Country
 
 	private $countryCode;
 
-	public function __construct($countryCode) 
+	public function __construct($countryCode)
 	{
 		$countryCode = strtoupper($countryCode);
 
