@@ -7,24 +7,29 @@ use SynergyWholesale\Types\RegistrationYears;
 class RenewDomainCommand implements Command
 {
 	/** @var \SynergyWholesale\Types\Domain */
-	protected $domainName;
+	protected $domain;
 
 	/** @var \SynergyWholesale\Types\RegistrationYears */
 	protected $years;
 
 	function __construct(
-		Domain $domainName,
+		Domain $domain,
 		RegistrationYears $years
 	)
 	{
-		$this->domainName = $domainName;
+		$this->domain = $domain;
 		$this->years = $years;
+	}
+
+	public function getKey()
+	{
+		return $this->domain->getName();
 	}
 
 	public function getRequestData()
 	{
 		return array(
-			'domainName' => $this->domainName->getName(),
+			'domainName' => $this->domain->getName(),
 			'years' => $this->years->getYears(),
 		);
 	}

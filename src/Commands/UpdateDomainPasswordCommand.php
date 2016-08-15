@@ -17,6 +17,11 @@ class UpdateDomainPasswordCommand implements Command
 		$this->newPassword = $newPassword;
 	}
 
+	public function getKey()
+	{
+		return $this->domain->getName();
+	}
+
 	public function getRequestData()
 	{
 		return array(

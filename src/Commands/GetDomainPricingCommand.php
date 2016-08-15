@@ -6,4 +6,6 @@ class GetDomainPricingCommand implements Command
 	{
 		return array();
 	}
+
+	public function getKey(){}
 }

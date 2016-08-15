@@ -18,6 +18,8 @@ class SendSMSCommand implements Command
 		$this->message = $message;
 	}
 
+	public function getKey(){}
+
 	public function getRequestData()
 	{
 		return array(

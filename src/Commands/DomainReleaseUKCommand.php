@@ -16,6 +16,11 @@ class DomainReleaseUKCommand implements Command
 		$this->tagName = $tagName;
 	}
 
+	public function getKey()
+	{
+		return $this->domain->getName();
+	}
+
 	public function getRequestData()
 	{
 		return array(

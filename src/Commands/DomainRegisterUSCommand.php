@@ -10,7 +10,7 @@ use SynergyWholesale\Types\RegistrationYears;
 class DomainRegisterUSCommand implements Command
 {
 	/** @var \SynergyWholesale\Types\UsDomain */
-	protected $domainName;
+	protected $domain;
 
 	/** @var \SynergyWholesale\Types\RegistrationYears */
 	protected $years;
@@ -28,7 +28,7 @@ class DomainRegisterUSCommand implements Command
 	protected $nexusCategory;
 
 	function __construct(
-		UsDomain $domainName,
+		UsDomain $domain,
 		RegistrationYears $years,
 		DomainList $nameServers,
 		Contact $contact,
@@ -36,7 +36,7 @@ class DomainRegisterUSCommand implements Command
 		UsNexusCategory $nexusCategory
 	)
 	{
-		$this->domainName = $domainName;
+		$this->domain = $domain;
 		$this->years = $years;
 		$this->nameServers = $nameServers;
 		$this->contact = $contact;
@@ -44,31 +44,36 @@ class DomainRegisterUSCommand implements Command
 		$this->nexusCategory = $nexusCategory;
 	}
 
+	public function getKey()
+	{
+		return $this->domain->getName();
+	}
+
 	public function getRequestData()
 	{
 		return array(
-			'domainName' => $this->domainName->getName(),
-			'years' => $this->years->getYears(),
-			'nameServers' => $this->nameServers->getDomainNames(),
+		'domainName' => $this->domain->getName(),
+		'years' => $this->years->getYears(),
+		'nameServers' => $this->nameServers->getDomainNames(),
 
-			'contact_firstname' => $this->contact->getFirstname(),
-			'contact_lastname' => $this->contact->getLastname(),
-			'contact_organisation' => $this->contact->getOrganisation(),
-			'contact_address' => array(
+		'contact_firstname' => $this->contact->getFirstname(),
+		'contact_lastname' => $this->contact->getLastname(),
+		'contact_organisation' => $this->contact->getOrganisation(),
+		'contact_address' => array(
 				$this->contact->getAddress1(),
 				$this->contact->getAddress2(),
 				$this->contact->getAddress3()
 			),
-			'contact_suburb' => $this->contact->getSuburb(),
-			'contact_state' => $this->contact->getState(),
-			'contact_country' => $this->contact->getCountryCode(),
-			'contact_postcode' => $this->contact->getPostcode(),
-			'contact_phone' => $this->contact->getPhoneNumber(),
-			'contact_fax' => $this->contact->getFaxNumber(),
-			'contact_email' => $this->contact->getEmailAddress(),
+		'contact_suburb' => $this->contact->getSuburb(),
+		'contact_state' => $this->contact->getState(),
+		'contact_country' => $this->contact->getCountryCode(),
+		'contact_postcode' => $this->contact->getPostcode(),
+		'contact_phone' => $this->contact->getPhoneNumber(),
+		'contact_fax' => $this->contact->getFaxNumber(),
+		'contact_email' => $this->contact->getEmailAddress(),
 
-			'appPurpose' => $this->appPurpose->getAppPurpose(),
-			'nexusCategory' => $this->nexusCategory->getNexusCategory()
+		'appPurpose' => $this->appPurpose->getAppPurpose(),
+		'nexusCategory' => $this->nexusCategory->getNexusCategory()
 		);
 	}
 }

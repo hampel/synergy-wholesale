@@ -12,6 +12,11 @@ class DomainInfoCommand implements Command
 		$this->domain = $domain;
 	}
 
+	public function getKey()
+	{
+		return $this->domain->getName();
+	}
+
 	public function getRequestData()
 	{
 		return array('domainName' => $this->domain->getName());

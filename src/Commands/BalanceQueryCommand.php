@@ -6,4 +6,6 @@ class BalanceQueryCommand implements Command
 	{
 		return array();
 	}
+
+	public function getKey(){}
 }

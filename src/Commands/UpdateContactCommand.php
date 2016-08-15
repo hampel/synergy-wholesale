@@ -6,7 +6,7 @@ use SynergyWholesale\Types\Contact;
 class UpdateContactCommand implements Command
 {
 	/** @var \SynergyWholesale\Types\Domain */
-	protected $domainName;
+	protected $domain;
 
 	/** @var \SynergyWholesale\Types\Contact */
 	protected $registrant_contact;
@@ -21,33 +21,38 @@ class UpdateContactCommand implements Command
 	protected $technical_contact;
 
 	function __construct(
-		Domain $domainName,
+		Domain $domain,
 		Contact $registrant_contact,
 		Contact $billing_contact,
 		Contact $admin_contact,
 		Contact $technical_contact
 	)
 	{
-		$this->domainName = $domainName;
+		$this->domain = $domain;
 		$this->registrant_contact = $registrant_contact;
 		$this->billing_contact = $billing_contact;
 		$this->admin_contact = $admin_contact;
 		$this->technical_contact = $technical_contact;
 	}
 
+	public function getKey()
+	{
+		return $this->domain->getName();
+	}
+
 	public function getRequestData()
 	{
 		return array(
-			'domainName' => $this->domainName->getName(),
+			'domainName' => $this->domain->getName(),
 
 			'registrant_firstname' => $this->registrant_contact->getFirstname(),
 			'registrant_lastname' => $this->registrant_contact->getLastname(),
 			'registrant_organisation' => $this->registrant_contact->getOrganisation(),
 			'registrant_address' => array(
-				$this->registrant_contact->getAddress1(),
-				$this->registrant_contact->getAddress2(),
-				$this->registrant_contact->getAddress3()
-			),
+					$this->registrant_contact->getAddress1(),
+					$this->registrant_contact->getAddress2(),
+					$this->registrant_contact->getAddress3()
+				),
 			'registrant_suburb' => $this->registrant_contact->getSuburb(),
 			'registrant_state' => $this->registrant_contact->getState(),
 			'registrant_country' => $this->registrant_contact->getCountryCode(),
@@ -60,10 +65,10 @@ class UpdateContactCommand implements Command
 			'billing_lastname' => $this->billing_contact->getLastname(),
 			'billing_organisation' => $this->billing_contact->getOrganisation(),
 			'billing_address' => array(
-				$this->billing_contact->getAddress1(),
-				$this->billing_contact->getAddress2(),
-				$this->billing_contact->getAddress3()
-			),
+					$this->billing_contact->getAddress1(),
+					$this->billing_contact->getAddress2(),
+					$this->billing_contact->getAddress3()
+				),
 			'billing_suburb' => $this->billing_contact->getSuburb(),
 			'billing_state' => $this->billing_contact->getState(),
 			'billing_country' => $this->billing_contact->getCountryCode(),
@@ -76,10 +81,10 @@ class UpdateContactCommand implements Command
 			'admin_lastname' => $this->admin_contact->getLastname(),
 			'admin_organisation' => $this->admin_contact->getOrganisation(),
 			'admin_address' => array(
-				$this->admin_contact->getAddress1(),
-				$this->admin_contact->getAddress2(),
-				$this->admin_contact->getAddress3()
-			),
+					$this->admin_contact->getAddress1(),
+					$this->admin_contact->getAddress2(),
+					$this->admin_contact->getAddress3()
+				),
 			'admin_suburb' => $this->admin_contact->getSuburb(),
 			'admin_state' => $this->admin_contact->getState(),
 			'admin_country' => $this->admin_contact->getCountryCode(),
@@ -92,10 +97,10 @@ class UpdateContactCommand implements Command
 			'technical_lastname' => $this->technical_contact->getLastname(),
 			'technical_organisation' => $this->technical_contact->getOrganisation(),
 			'technical_address' => array(
-				$this->technical_contact->getAddress1(),
-				$this->technical_contact->getAddress2(),
-				$this->technical_contact->getAddress3()
-			),
+					$this->technical_contact->getAddress1(),
+					$this->technical_contact->getAddress2(),
+					$this->technical_contact->getAddress3()
+				),
 			'technical_suburb' => $this->technical_contact->getSuburb(),
 			'technical_state' => $this->technical_contact->getState(),
 			'technical_country' => $this->technical_contact->getCountryCode(),

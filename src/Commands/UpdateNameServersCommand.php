@@ -7,7 +7,7 @@ use SynergyWholesale\Types\DnsConfiguration;
 class UpdateNameServersCommand implements Command
 {
 	/** @var \SynergyWholesale\Types\Domain */
-	protected $domainName;
+	protected $domain;
 
 	/** @var \SynergyWholesale\Types\DomainList */
 	protected $nameServers;
@@ -16,22 +16,27 @@ class UpdateNameServersCommand implements Command
 	protected $dnsConfigType;
 
 	function __construct(
-		Domain $domainName,
+		Domain $domain,
 		DomainList $nameServers,
 		DnsConfiguration $dnsConfigType = null
 	)
 	{
-		$this->domainName = $domainName;
+		$this->domain = $domain;
 		$this->nameServers = $nameServers;
 		$this->dnsConfigType = $dnsConfigType;
+	}
+
+	public function getKey()
+	{
+		return $this->domain->getName();
 	}
 
 	public function getRequestData()
 	{
 		return array(
-			'domainName' => $this->domainName->getName(),
-			'nameServers' => $this->nameServers->getDomainNames(),
-			'dnsConfigType' => $this->dnsConfigType->getConfig()
+		'domainName' => $this->domain->getName(),
+		'nameServers' => $this->nameServers->getDomainNames(),
+		'dnsConfigType' => $this->dnsConfigType->getConfig()
 		);
 	}
 }

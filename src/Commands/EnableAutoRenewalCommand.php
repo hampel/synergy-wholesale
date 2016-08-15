@@ -12,6 +12,11 @@ class EnableAutoRenewalCommand implements Command
 		$this->domain = $domain;
 	}
 
+	public function getKey()
+	{
+		return $this->domain->getName();
+	}
+
 	public function getRequestData()
 	{
 		return array('domainName' => strval($this->domain));

@@ -17,6 +17,8 @@ class BulkCheckDomainCommand implements Command
 		return $this->domainList;
 	}
 
+	public function getKey(){}
+
 	public function getRequestData()
 	{
 		return array('domainList' => $this->domainList->getDomainNames());

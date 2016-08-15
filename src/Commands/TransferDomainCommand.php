@@ -8,7 +8,7 @@ use SynergyWholesale\Exception\InvalidArgumentException;
 class TransferDomainCommand implements Command
 {
 	/** @var \SynergyWholesale\Types\Domain */
-	protected $domainName;
+	protected $domain;
 
 	/** @var string */
 	protected $authInfo;
@@ -23,11 +23,11 @@ class TransferDomainCommand implements Command
 	protected $doRenewal;
 
 	function __construct(
-	Domain $domainName,
-	$authInfo,
-	Contact $contact,
-	Boolean $idProtect = null,
-	Boolean $doRenewal = null
+		Domain $domain,
+		$authInfo,
+		Contact $contact,
+		Boolean $idProtect = null,
+		Boolean $doRenewal = null
 	)
 	{
 		if (empty($authInfo) OR !is_string($authInfo))
@@ -35,27 +35,32 @@ class TransferDomainCommand implements Command
 			throw new InvalidArgumentException("authInfo parameter is required");
 		}
 
-		$this->domainName = $domainName;
+		$this->domain = $domain;
 		$this->authInfo = $authInfo;
 		$this->contact = $contact;
 		$this->idProtect = $idProtect;
 		$this->doRenewal = $doRenewal;
 	}
 
+	public function getKey()
+	{
+		return $this->domain->getName();
+	}
+
 	public function getRequestData()
 	{
 		return array(
-			'domainName' => $this->domainName->getName(),
+			'domainName' => $this->domain->getName(),
 			'authInfo' => $this->authInfo,
 
 			'firstname' => $this->contact->getFirstname(),
 			'lastname' => $this->contact->getLastname(),
 			'organisation' => $this->contact->getOrganisation(),
 			'address' => array(
-				$this->contact->getAddress1(),
-				$this->contact->getAddress2(),
-				$this->contact->getAddress3()
-			),
+					$this->contact->getAddress1(),
+					$this->contact->getAddress2(),
+					$this->contact->getAddress3()
+				),
 			'suburb' => $this->contact->getSuburb(),
 			'state' => $this->contact->getState(),
 			'country' => $this->contact->getCountryCode(),

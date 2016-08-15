@@ -13,6 +13,11 @@ class GetDomainExtensionOptionsCommand implements Command
 		$this->tld = $tld;
 	}
 
+	public function getKey()
+	{
+		return $this->tld->getTld();
+	}
+
 	public function getRequestData()
 	{
 		return array('tld' => strval($this->tld));
