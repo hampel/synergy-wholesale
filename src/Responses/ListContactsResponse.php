@@ -20,17 +20,17 @@ class ListContactsResponse extends Response
 	/** @var Contact */
 	protected $billing;
 
-	protected $expectedFields = array(
-		'registrant', 'tech'
-	);
+	protected $expectedFields = [
+		'registrant'
+	];
 
-	protected $expectedContactFields = array(
+	protected $expectedContactFields = [
 		'firstname', 'lastname', 'address1', 'suburb', 'state', 'country', 'postcode', 'phone', 'email'
-	);
+	];
 
-	protected $contactTypes = array(
+	protected $contactTypes = [
 		'registrant', 'tech', 'admin', 'billing'
-	);
+	];
 
 	protected function validateData()
 	{
@@ -64,21 +64,24 @@ class ListContactsResponse extends Response
 			!empty($this->response->registrant->fax) ? new Phone($this->response->registrant->fax) : null
 		);
 
-		$this->tech = new Contact(
-			$this->response->tech->firstname,
-			$this->response->tech->lastname,
-			isset($this->response->tech->organisation) ? $this->response->tech->organisation : "",
-			$this->response->tech->address1,
-			isset($this->response->tech->address2) ? $this->response->tech->address2 : "",
-			isset($this->response->tech->address3) ? $this->response->tech->address3 : "",
-			$this->response->tech->suburb,
-			$this->response->tech->state,
-			new Country($this->response->tech->country),
-			$this->response->tech->postcode,
-			new Phone($this->response->tech->phone),
-			new Email($this->response->tech->email),
-			!empty($this->response->tech->fax) ? new Phone($this->response->tech->fax) : null
-		);
+		if (isset($this->response->tech))
+		{
+			$this->tech = new Contact(
+				$this->response->tech->firstname,
+				$this->response->tech->lastname,
+				isset($this->response->tech->organisation) ? $this->response->tech->organisation : "",
+				$this->response->tech->address1,
+				isset($this->response->tech->address2) ? $this->response->tech->address2 : "",
+				isset($this->response->tech->address3) ? $this->response->tech->address3 : "",
+				$this->response->tech->suburb,
+				$this->response->tech->state,
+				new Country($this->response->tech->country),
+				$this->response->tech->postcode,
+				new Phone($this->response->tech->phone),
+				new Email($this->response->tech->email),
+				!empty($this->response->tech->fax) ? new Phone($this->response->tech->fax) : null
+			);
+		}
 
 		if (isset($this->response->admin))
 		{

@@ -3,7 +3,7 @@
 class PhoneTest extends \PHPUnit_Framework_TestCase {
 
 	public function testBadPhone1()
-	{ 
+	{
 		$this->setExpectedException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid phone number [] - must be in the format +99.999999999');
 
 		$phone = new Phone('');
