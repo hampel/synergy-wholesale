@@ -1,6 +1,24 @@
 CHANGELOG
 =========
 
+1.3.0 (2016-08-15)
+------------------
+
+* new fields for GetDomainExtensionsOptionsResponse
+* updated GetDomainExtensionOptionsResponse to be more consistent in function names
+* domainPassword is optional in domainInfo response for .uk domains
+* changed DomainInfoResponse::isIdProtected to getIdProtected because it's not actually boolean - NA is a possible 
+value, now returns string: Enabled, Disabled or NA
+* added equality test for Types/Contact
+* added static helper function Contact::newFromArray
+* handle null fax numbers with xor
+* added Contact::toArray function
+* new function getDomainPricing
+* added BulkCheckDomainCommand::getDomainList for use with caching
+* added new function BusinessCheckRegistrationCommand::getKey for caching purposes
+* check that registration state is not null
+* added getkey function to commands to help with caching
+
 1.2.5 (2016-08-08)
 ------------------
 
