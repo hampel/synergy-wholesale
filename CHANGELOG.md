@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+1.3.1 (2016-08-15)
+------------------
+
+* update minimum requirements to PHP 5.4
+* expand phone definition to allow 10 digit numbers in international format for 1300/1800 numbers (eg +61.1800111222)
+
 1.3.0 (2016-08-15)
 ------------------
 
