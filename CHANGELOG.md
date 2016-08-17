@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+1.3.5 (2016-08-17)
+------------------
+
+* added AuContact::newFromArray function to generate an AU specific contact
+
 1.3.4 (2016-08-17)
 ------------------
 
