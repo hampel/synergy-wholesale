@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+1.3.4 (2016-08-17)
+------------------
+
+* can now specify null for name servers when registering domains to park them 
+* can now specify null when updating name servers to park the domain
+
 1.3.3 (2016-08-15)
 ------------------
 
