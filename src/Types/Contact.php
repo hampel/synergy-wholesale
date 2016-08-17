@@ -174,7 +174,7 @@ class Contact
 			$this->postcode === $other->postcode &&
 			$this->phone->equals($other->phone) &&
 			$this->email->equals($other->email) &&
-			((is_null($this->fax) && is_null($other->fax) && $this->fax === $other->fax) || $this->fax->equals($other->fax));
+			$this->fax->equals($other->fax);
 	}
 
 	public function toArray()

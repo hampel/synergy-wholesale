@@ -62,4 +62,62 @@ class AuContactTest extends \PHPUnit_Framework_TestCase
 		$this->assertInstanceOf('SynergyWholesale\Types\Phone', $contact->getFax());
 		$this->assertEquals('+61.222222222', $contact->getFax()->getPhone());
 	}
+
+	public function testNewFromArray()
+	{
+		$contact1 = new AuContact(
+			'firstname',
+			'lastname',
+			'organisation',
+			'address1',
+			'address2',
+			'address3',
+			'suburb',
+			new AuState('nsw'),
+			new AuPostCode('1111'),
+			new Phone('+61.111111111'),
+			new Email('foo@example.com'),
+			new Phone('+61.222222222')
+		);
+
+		$contact = [
+			'firstname' => 'firstname',
+			'lastname' => 'lastname',
+			'organisation' => 'organisation',
+			'address1' => 'address1',
+			'address2' => 'address2',
+			'address3' => 'address3',
+			'suburb' => 'suburb',
+			'state' => 'nsw',
+			'country' => 'AU',
+			'postcode' => '1111',
+			'phone' => '+61.111111111',
+			'email' => 'foo@example.com',
+			'fax' => '+61.222222222',
+		];
+
+		$contact2 = AuContact::newFromArray($contact);
+
+		$this->assertTrue($contact1->equals($contact2));
+	}
+
+	public function testToArray()
+	{
+		$contact1 = new AuContact(
+			'firstname',
+			'lastname',
+			'organisation',
+			'address1',
+			'address2',
+			'address3',
+			'suburb',
+			new AuState('nsw'),
+			new AuPostCode('1111'),
+			new Phone('+61.111111111'),
+			new Email('foo@example.com'),
+			new Phone('+61.222222222')
+		);
+
+		$this->assertTrue($contact1->equals(AuContact::newFromArray($contact1->toArray())));
+	}
 }
