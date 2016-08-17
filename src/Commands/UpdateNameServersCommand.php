@@ -17,7 +17,7 @@ class UpdateNameServersCommand implements Command
 
 	function __construct(
 		Domain $domain,
-		DomainList $nameServers,
+		DomainList $nameServers = null,
 		DnsConfiguration $dnsConfigType = null
 	)
 	{
@@ -34,9 +34,9 @@ class UpdateNameServersCommand implements Command
 	public function getRequestData()
 	{
 		return array(
-		'domainName' => $this->domain->getName(),
-		'nameServers' => $this->nameServers->getDomainNames(),
-		'dnsConfigType' => $this->dnsConfigType->getConfig()
+			'domainName' => $this->domain->getName(),
+			'nameServers' => isset($this->nameServers) ? $this->nameServers->getDomainNames() : null,
+			'dnsConfigType' => $this->dnsConfigType->getConfig()
 		);
 	}
 }

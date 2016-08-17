@@ -26,4 +26,17 @@ class UpdateNameServersCommandTest extends \PHPUnit_Framework_TestCase
 		$this->assertArrayHasKey('dnsConfigType', $build);
 		$this->assertEquals(DnsConfiguration::CUSTOM_NAME_SERVERS, $build['dnsConfigType']);
 	}
+
+	public function testNullNameserver()
+	{
+		$command = new UpdateNameServersCommand(
+			new Domain('example.com'),
+			null,
+			DnsConfiguration::PARKED()
+		);
+		$build = $command->getRequestData();
+
+		$this->assertTrue(is_array($build));
+		$this->assertArrayHasKey('nameServers', $build);
+	}
 }
