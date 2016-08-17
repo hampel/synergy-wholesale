@@ -23,7 +23,7 @@ class DomainRegisterUKCommand implements Command
 	function __construct(
 		UkDomain $domain,
 		RegistrationYears $years,
-		DomainList $nameServers,
+		DomainList $nameServers = null,
 		Contact $contact
 	)
 	{
@@ -41,25 +41,25 @@ class DomainRegisterUKCommand implements Command
 	public function getRequestData()
 	{
 		return array(
-		'domainName' => $this->domain->getName(),
-		'years' => $this->years->getYears(),
-		'nameServers' => $this->nameServers->getDomainNames(),
+			'domainName' => $this->domain->getName(),
+			'years' => $this->years->getYears(),
+			'nameServers' => isset($this->nameServers) ? $this->nameServers->getDomainNames() : null,
 
-		'contact_firstname' => $this->contact->getFirstname(),
-		'contact_lastname' => $this->contact->getLastname(),
-		'contact_organisation' => $this->contact->getOrganisation(),
-		'contact_address' => array(
-				$this->contact->getAddress1(),
-				$this->contact->getAddress2(),
-				$this->contact->getAddress3()
-			),
-		'contact_suburb' => $this->contact->getSuburb(),
-		'contact_state' => $this->contact->getState(),
-		'contact_country' => $this->contact->getCountryCode(),
-		'contact_postcode' => $this->contact->getPostcode(),
-		'contact_phone' => $this->contact->getPhoneNumber(),
-		'contact_fax' => $this->contact->getFaxNumber(),
-		'contact_email' => $this->contact->getEmailAddress(),
+			'contact_firstname' => $this->contact->getFirstname(),
+			'contact_lastname' => $this->contact->getLastname(),
+			'contact_organisation' => $this->contact->getOrganisation(),
+			'contact_address' => array(
+					$this->contact->getAddress1(),
+					$this->contact->getAddress2(),
+					$this->contact->getAddress3()
+				),
+			'contact_suburb' => $this->contact->getSuburb(),
+			'contact_state' => $this->contact->getState(),
+			'contact_country' => $this->contact->getCountryCode(),
+			'contact_postcode' => $this->contact->getPostcode(),
+			'contact_phone' => $this->contact->getPhoneNumber(),
+			'contact_fax' => $this->contact->getFaxNumber(),
+			'contact_email' => $this->contact->getEmailAddress(),
 		);
 	}
 }

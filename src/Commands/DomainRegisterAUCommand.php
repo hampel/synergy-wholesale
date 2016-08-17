@@ -29,7 +29,7 @@ class DomainRegisterAUCommand implements Command
 	function __construct(
 		AuDomain $domain,
 		RegistrationYears $years,
-		DomainList $nameServers,
+		DomainList $nameServers = null,
 		AuContact $registrant_contact,
 		AuContact $technical_contact,
 		AuRegistrant $registrant
@@ -53,7 +53,7 @@ class DomainRegisterAUCommand implements Command
 		return array(
 		'domainName' => $this->domain->getName(),
 		'years' => $this->years->getYears(),
-		'nameServers' => $this->nameServers->getDomainNames(),
+		'nameServers' => isset($this->nameServers) ? $this->nameServers->getDomainNames() : null,
 
 		'registrant_firstname' => $this->registrant_contact->getFirstname(),
 		'registrant_lastname' => $this->registrant_contact->getLastname(),

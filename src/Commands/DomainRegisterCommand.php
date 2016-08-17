@@ -35,7 +35,7 @@ class DomainRegisterCommand implements Command
 	function __construct(
 	Domain $domain,
 	RegistrationYears $years,
-	DomainList $nameServers,
+	DomainList $nameServers = null,
 	Boolean $idProtect,
 	Contact $registrant_contact,
 	Contact $billing_contact,
@@ -63,7 +63,7 @@ class DomainRegisterCommand implements Command
 		return array(
 		'domainName' => $this->domain->getName(),
 		'years' => $this->years->getYears(),
-		'nameServers' => $this->nameServers->getDomainNames(),
+		'nameServers' => isset($this->nameServers) ? $this->nameServers->getDomainNames() : null,
 		'idProtect' => $this->idProtect->isTrue() ? 'Y' : '',
 
 		'registrant_firstname' => $this->registrant_contact->getFirstname(),

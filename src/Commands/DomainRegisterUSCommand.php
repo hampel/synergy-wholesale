@@ -30,7 +30,7 @@ class DomainRegisterUSCommand implements Command
 	function __construct(
 		UsDomain $domain,
 		RegistrationYears $years,
-		DomainList $nameServers,
+		DomainList $nameServers = null,
 		Contact $contact,
 		UsAppPurpose $appPurpose,
 		UsNexusCategory $nexusCategory
@@ -54,7 +54,7 @@ class DomainRegisterUSCommand implements Command
 		return array(
 		'domainName' => $this->domain->getName(),
 		'years' => $this->years->getYears(),
-		'nameServers' => $this->nameServers->getDomainNames(),
+		'nameServers' => isset($this->nameServers) ? $this->nameServers->getDomainNames() : null,
 
 		'contact_firstname' => $this->contact->getFirstname(),
 		'contact_lastname' => $this->contact->getLastname(),

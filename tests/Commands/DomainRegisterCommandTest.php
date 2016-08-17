@@ -37,14 +37,14 @@ class DomainRegisterCommandTest extends \PHPUnit_Framework_TestCase
 	public function testCommand()
 	{
 		$command = new DomainRegisterCommand(
-		$this->domain,
-		$this->years,
-		$this->nameServers,
-		Boolean::true(),
-		$this->contact,
-		$this->contact,
-		$this->contact,
-		$this->contact
+			$this->domain,
+			$this->years,
+			$this->nameServers,
+			Boolean::true(),
+			$this->contact,
+			$this->contact,
+			$this->contact,
+			$this->contact
 		);
 		$build = $command->getRequestData();
 
@@ -177,5 +177,23 @@ class DomainRegisterCommandTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('+61.111111112', $build['technical_fax']);
 		$this->assertArrayHasKey('technical_email', $build);
 		$this->assertEquals('foo@example.com', $build['technical_email']);
+	}
+
+	public function testNullNameservers()
+	{
+		$command = new DomainRegisterCommand(
+			$this->domain,
+			$this->years,
+			null,
+			Boolean::true(),
+			$this->contact,
+			$this->contact,
+			$this->contact,
+			$this->contact
+		);
+		$build = $command->getRequestData();
+
+		$this->assertArrayHasKey('nameServers', $build);
+		$this->assertFalse(is_array($build['nameServers']));
 	}
 }
