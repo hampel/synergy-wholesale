@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+1.3.6 (2016-08-24)
+------------------
+
+* fax can be null in a contact, so allow equality to pass if both values are null
+
 1.3.5 (2016-08-17)
 ------------------
 
