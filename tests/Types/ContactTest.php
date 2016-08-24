@@ -111,6 +111,43 @@ class ContactTest extends \PHPUnit_Framework_TestCase
 		$this->assertTrue($contact1->equals($contact2));
 	}
 
+	public function testEqualsWithNullFax()
+	{
+		$contact1 = new Contact(
+			'firstname',
+			'lastname',
+			'organisation',
+			'address1',
+			'address2',
+			'address3',
+			'suburb',
+			'state',
+			new Country('AU'),
+			'postcode',
+			new Phone('+61.111111111'),
+			new Email('foo@example.com'),
+			null
+		);
+
+		$contact2 = new Contact(
+			'firstname',
+			'lastname',
+			'organisation',
+			'address1',
+			'address2',
+			'address3',
+			'suburb',
+			'state',
+			new Country('AU'),
+			'postcode',
+			new Phone('+61.111111111'),
+			new Email('foo@example.com'),
+			null
+		);
+
+		$this->assertTrue($contact1->equals($contact2));
+	}
+
 	public function testNotEquals()
 	{
 		$contact1 = new Contact(
@@ -131,6 +168,43 @@ class ContactTest extends \PHPUnit_Framework_TestCase
 
 		$contact2 = new Contact(
 			'othername',
+			'lastname',
+			'organisation',
+			'address1',
+			'address2',
+			'address3',
+			'suburb',
+			'state',
+			new Country('AU'),
+			'postcode',
+			new Phone('+61.111111111'),
+			new Email('foo@example.com'),
+			new Phone('+61.222222222')
+		);
+
+		$this->assertFalse($contact1->equals($contact2));
+	}
+
+	public function testNotEqualsWithNullFax()
+	{
+		$contact1 = new Contact(
+			'firstname',
+			'lastname',
+			'organisation',
+			'address1',
+			'address2',
+			'address3',
+			'suburb',
+			'state',
+			new Country('AU'),
+			'postcode',
+			new Phone('+61.111111111'),
+			new Email('foo@example.com'),
+			null
+		);
+
+		$contact2 = new Contact(
+			'firstname',
 			'lastname',
 			'organisation',
 			'address1',
