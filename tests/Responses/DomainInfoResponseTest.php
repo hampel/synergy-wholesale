@@ -328,6 +328,29 @@ class DomainInfoResponseTest extends \PHPUnit_Framework_TestCase
 		new DomainInfoResponse($data, 'DomainInfoCommand');
 	}
 
+	public function testMissingAuEligibilityType()
+	{
+		$data = new stdClass();
+		$data->status = "OK";
+		$data->domainName = 'foo.id.au';
+		$data->domain_status = '';
+		$data->domain_expiry = '';
+		$data->nameServers = array();
+		$data->dnsConfig = '';
+		$data->dnsConfigName = '';
+		$data->domainPassword = '';
+		$data->bulkInProgress = '';
+		$data->idProtect = '';
+		$data->autoRenew = '';
+		$data->icannStatus = '';
+		$data->icannVerificationDateEnd = '';
+		$data->auRegistrantName = '';
+
+		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Expected property [auEligibilityType] missing from response data');
+
+		new DomainInfoResponse($data, 'DomainInfoCommand');
+	}
+
 	public function testBadDnsConfig()
 	{
 		$data = new stdClass();
@@ -351,6 +374,35 @@ class DomainInfoResponseTest extends \PHPUnit_Framework_TestCase
 		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Unknown DNS Configuration [foo]');
 
 		new DomainInfoResponse($data, 'DomainInfoCommand');
+	}
+
+	public function testIdAuResponse()
+	{
+		$data = new stdClass();
+		$data->status = "OK";
+		$data->domainName = 'foo.id.au';
+		$data->domain_status = 'domain_status';
+		$data->domain_expiry = 'domain_expiry';
+		$data->nameServers = array(
+			'ns1.foo.com',
+			'ns2.foo.com'
+		);
+		$data->dnsConfig = '1';
+		$data->dnsConfigName = 'dnsConfigName';
+		$data->domainPassword = 'domainPassword';
+		$data->bulkInProgress = '1';
+		$data->idProtect = 'Enabled';
+		$data->autoRenew = 'on';
+		$data->icannStatus = 'icannStatus';
+		$data->icannVerificationDateEnd = 'icannVerificationDateEnd';
+		$data->auRegistrantName = 'auRegistrantName';
+		$data->auEligibilityType = 'auEligibilityType';
+		$data->auPolicyID = 'auPolicyID';
+		$data->auPolicyIDDesc = 'auPolicyIDDesc';
+
+		$response = new DomainInfoResponse($data, 'DomainInfoCommand');
+
+		$this->assertEquals('foo.id.au', $response->getDomainName());
 	}
 
 	public function testResponse()
@@ -410,4 +462,6 @@ class DomainInfoResponseTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals('icannStatus', $response->getIcannStatus());
 		$this->assertEquals('icannVerificationDateEnd', $response->getIcannVerificationDateEnd());
 	}
+
+
 }
