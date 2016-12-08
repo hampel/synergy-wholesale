@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+1.3.7 (2016-12-08)
+------------------
+
+* add checking for .id.au specific domain info response fields - fixes issue 
+[#1](https://bitbucket.org/hampel/synergy-wholesale/issues/1)
+
 1.3.6 (2016-08-24)
 ------------------
 
