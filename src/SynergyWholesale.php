@@ -216,10 +216,11 @@ class SynergyWholesale
 	public function disableAutoRenewal(Commands\DisableAutoRenewalCommand $command) { return $this->execute($command); }
 
 	/**
-	 * @param Commands\DisableIdProtectionCommand $command
-	 * @return Responses\DisableIdProtectionResponse
+	 * @param Commands\_DisableIDProtectionCommand $command
+	 *
+*@return Responses\_DisableIDProtectionResponse
 	 */
-	public function disableIDProtection(Commands\DisableIDProtectionCommand $command) { return $this->execute($command); }
+	public function disableIDProtection(Commands\_DisableIDProtectionCommand $command) { return $this->execute($command); }
 
 	/**
 	 * @param Commands\DomainInfoCommand $command
@@ -271,10 +272,11 @@ class SynergyWholesale
 	public function enableAutoRenewal(Commands\EnableAutoRenewalCommand $command) { return $this->execute($command); }
 
 	/**
-	 * @param Commands\EnableIdProtectionCommand $command
-	 * @return Responses\EnableIdProtectionResponse
+	 * @param Commands\_EnableIDProtectionCommand $command
+	 *
+*@return Responses\_EnableIDProtectionResponse
 	 */
-	public function enableIDProtection(Commands\EnableIDProtectionCommand $command) { return $this->execute($command); }
+	public function enableIDProtection(Commands\_EnableIDProtectionCommand $command) { return $this->execute($command); }
 
 	/**
 	 * @param Commands\GetDomainExtensionOptionsCommand $command
@@ -295,16 +297,18 @@ class SynergyWholesale
 	public function getTransferredAwayDomains(Commands\GetTransferredAwayDomainsCommand $command) { return $this->execute($command); }
 
 	/**
-	 * @param Commands\GetUsNexusDataCommand $command
-	 * @return Responses\GetUsNexusDataResponse
+	 * @param Commands\_GetUSNexusDataCommand $command
+	 *
+*@return Responses\_GetUSNexusDataResponse
 	 */
-	public function getUSNexusData(Commands\GetUSNexusDataCommand $command) { return $this->execute($command); }
+	public function getUSNexusData(Commands\_GetUSNexusDataCommand $command) { return $this->execute($command); }
 
 	/**
-	 * @param Commands\InitiateAuCorCommand $command
-	 * @return Responses\InitiateAuCorResponse
+	 * @param Commands\_InitiateAUCORCommand $command
+	 *
+*@return Responses\_InitiateAUCORResponse
 	 */
-	public function initiateAUCOR(Commands\InitiateAUCORCommand $command) { return $this->execute($command); }
+	public function initiateAUCOR(Commands\_InitiateAUCORCommand $command) { return $this->execute($command); }
 
 	/**
 	 * @param Commands\ListContactsCommand $command

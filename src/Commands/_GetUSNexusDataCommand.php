@@ -1,13 +1,13 @@
-<?php  namespace SynergyWholesale\Commands;
+<?php  namespace SynergyWholesale\Commands; 
 
-use SynergyWholesale\Types\Domain;
+use SynergyWholesale\Types\UsDomain;
 
-class EnableIDProtectionCommand implements Command
+class _GetUSNexusDataCommand implements Command
 {
-	/** @var \SynergyWholesale\Types\Domain */
+	/** @var \SynergyWholesale\Types\UsDomain */
 	protected $domain;
 
-	public function __construct(Domain $domain)
+	public function __construct(UsDomain $domain)
 	{
 		$this->domain = $domain;
 	}

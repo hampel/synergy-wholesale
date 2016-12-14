@@ -12,7 +12,7 @@ use SynergyWholesale\Types\AuRegistrant;
 use SynergyWholesale\Types\AuOrganisationType;
 use SynergyWholesale\Types\RegistrationYears;
 
-class DomainRegisterAUCommandTest extends \PHPUnit_Framework_TestCase
+class _DomainRegisterAUCommandTest extends \PHPUnit_Framework_TestCase
 {
 	public function setUp()
 	{

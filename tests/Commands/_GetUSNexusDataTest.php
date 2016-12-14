@@ -2,11 +2,11 @@
 
 use SynergyWholesale\Types\UsDomain;
 
-class GetUSNexusDataTest extends \PHPUnit_Framework_TestCase
+class _GetUSNexusDataTest extends \PHPUnit_Framework_TestCase
 {
 	public function testCommand()
 	{
-		$command = new GetUSNexusDataCommand(new UsDomain('example.us'));
+		$command = new _GetUSNexusDataCommand(new UsDomain('example.us'));
 		$build = $command->getRequestData();
 
 		$this->assertTrue(is_array($build));
