@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+1.3.8 (2016-12-09)
+------------------
+
+* renamed files to fix case sensitive issue with git on Windows - fixes issue 
+[#3](https://bitbucket.org/hampel/synergy-wholesale/issues/3)
+
 1.3.7 (2016-12-08)
 ------------------
 
