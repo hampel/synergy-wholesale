@@ -2,7 +2,7 @@
 
 use stdClass;
 
-class _DomainRegisterUSResponseTest extends \PHPUnit_Framework_TestCase
+class DomainRegisterAUResponseTest extends \PHPUnit_Framework_TestCase
 {
 	public function testMissingCostPrice()
 	{
@@ -11,7 +11,7 @@ class _DomainRegisterUSResponseTest extends \PHPUnit_Framework_TestCase
 
 		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Expected property [costPrice] missing from response data');
 
-		new DomainRegisterUSResponse($data, 'DomainRegisterUSCommand');
+		new DomainRegisterAUResponse($data, 'DomainRegisterAUCommand');
 	}
 
 	public function testBadCostPrice()
@@ -22,7 +22,7 @@ class _DomainRegisterUSResponseTest extends \PHPUnit_Framework_TestCase
 
 		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Expected a numeric cost price');
 
-		new DomainRegisterUSResponse($data, 'DomainRegisterUSCommand');
+		new DomainRegisterAUResponse($data, 'DomainRegisterAUCommand');
 	}
 
 	public function testResponse()
@@ -31,7 +31,7 @@ class _DomainRegisterUSResponseTest extends \PHPUnit_Framework_TestCase
 		$data->status = "OK";
 		$data->costPrice = "10.00";
 
-		$response = new DomainRegisterUSResponse($data, 'DomainRegisterUSCommand');
+		$response = new DomainRegisterAUResponse($data, 'DomainRegisterAUCommand');
 		$this->assertEquals('10.00', $response->getCostPrice());
 	}
 }

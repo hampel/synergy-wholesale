@@ -8,7 +8,7 @@ use SynergyWholesale\Types\UkDomain;
 use SynergyWholesale\Types\DomainList;
 use SynergyWholesale\Types\RegistrationYears;
 
-class _DomainRegisterUKCommandTest extends \PHPUnit_Framework_TestCase
+class DomainRegisterUKCommandTest extends \PHPUnit_Framework_TestCase
 {
 	public function setUp()
 	{

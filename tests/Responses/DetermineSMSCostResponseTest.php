@@ -2,7 +2,7 @@
 
 use stdClass;
 
-class _DetermineSMSCostResponseTest extends \PHPUnit_Framework_TestCase
+class DetermineSMSCostResponseTest extends \PHPUnit_Framework_TestCase
 {
 	public function testResponse()
 	{

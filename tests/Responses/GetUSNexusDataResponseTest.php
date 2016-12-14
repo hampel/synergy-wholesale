@@ -4,7 +4,7 @@ use stdClass;
 use SynergyWholesale\Types\UsAppPurpose;
 use SynergyWholesale\Types\UsNexusCategory;
 
-class _GetUSNexusDataResponseTest extends \PHPUnit_Framework_TestCase
+class GetUSNexusDataResponseTest extends \PHPUnit_Framework_TestCase
 {
 	public function testResponse()
 	{
@@ -13,7 +13,7 @@ class _GetUSNexusDataResponseTest extends \PHPUnit_Framework_TestCase
 		$data->nexusCategory = "C21";
 		$data->nexusApplication = "P3";
 
-		$response = new _GetUSNexusDataResponse($data, 'GetUsNexusDataCommand');
+		$response = new GetUSNexusDataResponse($data, 'GetUsNexusDataCommand');
 
 		$this->assertInstanceOf('SynergyWholesale\Types\UsNexusCategory', $response->getNexusCategory());
 		$this->assertTrue($response->getNexusCategory()->equals(UsNexusCategory::US_ORGANISATION()));

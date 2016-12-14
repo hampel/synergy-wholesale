@@ -1,6 +1,6 @@
 <?php  namespace SynergyWholesale\Responses; 
 
-class _EnableIDProtectionResponse extends Response
+class EnableIDProtectionResponse extends Response
 {
 	public function enableSuccessful()
 	{

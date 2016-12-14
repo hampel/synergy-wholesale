@@ -3,7 +3,7 @@
 use SynergyWholesale\Types\UsAppPurpose;
 use SynergyWholesale\Types\UsNexusCategory;
 
-class _GetUSNexusDataResponse extends Response
+class GetUSNexusDataResponse extends Response
 {
 	protected $expectedFields = array(
 		'nexusCategory', 'nexusApplication',

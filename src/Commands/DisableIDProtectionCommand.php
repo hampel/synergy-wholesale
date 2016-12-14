@@ -1,13 +1,13 @@
 <?php  namespace SynergyWholesale\Commands;
 
-use SynergyWholesale\Types\AuDomain;
+use SynergyWholesale\Types\Domain;
 
-class _InitiateAUCORCommand implements Command
+class DisableIDProtectionCommand implements Command
 {
-	/** @var \SynergyWholesale\Types\AuDomain */
+	/** @var \SynergyWholesale\Types\Domain  */
 	protected $domain;
 
-	public function __construct(AuDomain $domain)
+	public function __construct(Domain $domain)
 	{
 		$this->domain = $domain;
 	}
