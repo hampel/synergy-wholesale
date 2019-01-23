@@ -6,6 +6,9 @@ class Tld
 {
 	private $tld;
 
+	// exceptions where there are publicly registerable subdomains which are not ccTLDs, eg: gb.net; eu.com
+	private $ccTldExceptions = ['net', 'com', 'org'];
+
 	public function __construct($tld)
 	{
 		$tld = ltrim(strtolower($tld), '.');
@@ -16,7 +19,7 @@ class Tld
 			throw new InvalidArgumentException("Invalid Top Level Domain [{$tld}] - should have no more than 2 parts");
 		}
 
-		if (count($parts) == 2 AND strlen($parts[1]) > 2)
+		if (count($parts) == 2 AND strlen($parts[1]) > 2 AND !in_array($parts[1], $this->ccTldExceptions))
 		{
 			throw new InvalidArgumentException("Invalid Top Level Domain [{$tld}] - Country Codes have a maximum of 2 characters");
 		}

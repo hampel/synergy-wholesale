@@ -11,9 +11,9 @@ class TldTest extends \PHPUnit_Framework_TestCase {
 
 	public function testBadTldCountryCode()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid Top Level Domain [com.com] - Country Codes have a maximum of 2 characters');
+		$this->setExpectedException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid Top Level Domain [com.abc] - Country Codes have a maximum of 2 characters');
 
-		new Tld('com.com');
+		new Tld('com.abc');
 	}
 
 	public function testBadTldInvalid()
@@ -40,5 +40,14 @@ class TldTest extends \PHPUnit_Framework_TestCase {
 		$this->assertTrue($tld->isCcTld());
 		$this->assertEquals('au', $tld->getCcTld());
 		$this->assertTrue($tld->equals(new Tld('com.au')));
+
+		// publicly registerable subdomain acting like a ccTLD
+		$tld = new Tld('eu.com');
+
+		$this->assertEquals('eu.com', $tld->getTld());
+		$this->assertEquals('eu.com', strval($tld));
+		$this->assertFalse($tld->isCcTld());
+		$this->assertNull($tld->getCcTld());
+		$this->assertTrue($tld->equals(new Tld('eu.com')));
 	}
 }
