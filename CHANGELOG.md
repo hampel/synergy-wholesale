@@ -1,6 +1,11 @@
 CHANGELOG
 =========
 
+1.3.9 (2019-01-23)
+------------------
+
+* handle case of publicly registerable subdomain acting like a ccTLD
+
 1.3.8 (2016-12-09)
 ------------------
 
