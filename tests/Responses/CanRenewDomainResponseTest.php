@@ -1,8 +1,9 @@
 <?php  namespace SynergyWholesale\Responses;
 
 use stdClass;
+use PHPUnit\Framework\TestCase;
 
-class CanRenewDomainResponseTest extends \PHPUnit_Framework_TestCase
+class CanRenewDomainResponseTest extends TestCase
 {
 	public function testEmptyYears()
 	{

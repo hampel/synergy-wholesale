@@ -1,10 +1,11 @@
 <?php  namespace SynergyWholesale\Responses; 
 
 use stdClass;
+use PHPUnit\Framework\TestCase;
 use SynergyWholesale\Types\UsAppPurpose;
 use SynergyWholesale\Types\UsNexusCategory;
 
-class GetUSNexusDataResponseTest extends \PHPUnit_Framework_TestCase
+class GetUSNexusDataResponseTest extends TestCase
 {
 	public function testResponse()
 	{

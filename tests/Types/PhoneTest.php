@@ -1,24 +1,40 @@
 <?php  namespace SynergyWholesale\Types;
 
-class PhoneTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
 
-	public function testBadPhone1()
+class PhoneTest extends TestCase {
+
+	public function testBadPhoneEmpty()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid phone number [] - must be in the format +99.999999999');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid phone number [] - must be in the format +99.999999999');
 
 		$phone = new Phone('');
 	}
 
-	public function testBadPhone2()
+	public function testBadPhoneWord()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid phone number [+0.0] - must be in the format +99.999999999');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid phone number [] - must be in the format +99.999999999');
+
+		$phone = new Phone('foo');
+	}
+
+	public function testBadPhoneTooShort()
+	{
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid phone number [+0.0] - must be in the format +99.999999999');
 
 		$phone = new Phone('+0.0');
 	}
 
-	public function testBadPhone3()
+	public function testBadPhoneTooLong()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid phone number [+AA.AAAAAAAAA] - must be in the format +99.999999999');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid phone number [+AA.AAAAAAAAA] - must be in the format +99.999999999');
+
+		$phone = new Phone('+00.000000000000');
+	}
+
+	public function testBadPhoneNonNumeric()
+	{
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid phone number [+AA.AAAAAAAAA] - must be in the format +99.999999999');
 
 		$phone = new Phone('+AA.AAAAAAAAA');
 	}
@@ -29,13 +45,13 @@ class PhoneTest extends \PHPUnit_Framework_TestCase {
 		$this->assertEquals('+00.000000000', $phone->getPhone());
 
 		$phone = new Phone('+0.000000');
-		$this->assertEquals('+00.000000000', $phone->getPhone());
+		$this->assertEquals('+0.000000', $phone->getPhone());
 
 		// test space stripping
 		$phone = new Phone('+00.0 0000 0000');
 		$this->assertEquals('+00.000000000', $phone->getPhone());
 
-		$phone = new Phone('+00.0000000000');
-		$this->assertEquals('+00.0000000000', $phone->getPhone());
+		$phone = new Phone('+00.00000000000');
+		$this->assertEquals('+00.00000000000', $phone->getPhone());
 	}
 }

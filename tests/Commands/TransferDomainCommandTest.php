@@ -1,13 +1,14 @@
 <?php  namespace SynergyWholesale\Commands;
 
-use SynergyWholesale\Types\Boolean;
+use PHPUnit\Framework\TestCase;
 use SynergyWholesale\Types\Email;
 use SynergyWholesale\Types\Phone;
 use SynergyWholesale\Types\Domain;
 use SynergyWholesale\Types\Contact;
+use SynergyWholesale\Types\Boolean;
 use SynergyWholesale\Types\Country;
 
-class TransferDomainCommandTest extends \PHPUnit_Framework_TestCase
+class TransferDomainCommandTest extends TestCase
 {
 	public function setUp()
 	{
@@ -31,7 +32,7 @@ class TransferDomainCommandTest extends \PHPUnit_Framework_TestCase
 
 	public function testBadAuthInfo()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\InvalidArgumentException', 'authInfo parameter is required');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'authInfo parameter is required');
 
 		new TransferDomainCommand(
 			$this->domain,
@@ -42,7 +43,7 @@ class TransferDomainCommandTest extends \PHPUnit_Framework_TestCase
 
 	public function testBadAuthInfo2()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\InvalidArgumentException', 'authInfo parameter is required');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'authInfo parameter is required');
 
 		$command = new TransferDomainCommand(
 			$this->domain,

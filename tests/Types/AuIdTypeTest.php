@@ -1,10 +1,12 @@
 <?php  namespace SynergyWholesale\Types;
 
-class AuIdTypeTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class AuIdTypeTest extends TestCase
 {
 	public function testBadType()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\UnknownIdTypeException', 'Unknown id type [foo]');
+		$this->expectException('SynergyWholesale\Exception\UnknownIdTypeException', 'Unknown id type [foo]');
 
 		new AuIdType('foo');
 	}

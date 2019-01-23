@@ -1,5 +1,6 @@
 <?php  namespace SynergyWholesale\Commands;
 
+use PHPUnit\Framework\TestCase;
 use SynergyWholesale\Types\Email;
 use SynergyWholesale\Types\Phone;
 use SynergyWholesale\Types\Contact;
@@ -10,7 +11,7 @@ use SynergyWholesale\Types\UsAppPurpose;
 use SynergyWholesale\Types\UsNexusCategory;
 use SynergyWholesale\Types\RegistrationYears;
 
-class DomainRegisterUSCommandTest extends \PHPUnit_Framework_TestCase
+class DomainRegisterUSCommandTest extends TestCase
 {
 	public function setUp()
 	{

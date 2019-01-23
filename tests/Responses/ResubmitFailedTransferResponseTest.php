@@ -1,15 +1,16 @@
 <?php  namespace SynergyWholesale\Responses;
 
 use stdClass;
+use PHPUnit\Framework\TestCase;
 
-class ResubmitFailedTransferResponseTest extends \PHPUnit_Framework_TestCase
+class ResubmitFailedTransferResponseTest extends TestCase
 {
 	public function testMissingEmail()
 	{
 		$data = new stdClass();
 		$data->status = "OK";
 
-		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Expected property [newEmail] missing from response data');
+		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected property [newEmail] missing from response data');
 
 		new ResubmitFailedTransferResponse($data, 'ResubmitFailedTransferCommand');
 	}
@@ -20,7 +21,7 @@ class ResubmitFailedTransferResponseTest extends \PHPUnit_Framework_TestCase
 		$data->status = "OK";
 		$data->newEmail = 'foo@example.com';
 
-		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Expected property [costPrice] missing from response data');
+		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected property [costPrice] missing from response data');
 
 		new ResubmitFailedTransferResponse($data, 'ResubmitFailedTransferCommand');
 	}
@@ -32,7 +33,7 @@ class ResubmitFailedTransferResponseTest extends \PHPUnit_Framework_TestCase
 		$data->newEmail = 'foo';
 		$data->costPrice = '';
 
-		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Response parameter newEmail should contain an email address');
+		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Response parameter newEmail should contain an email address');
 
 		new ResubmitFailedTransferResponse($data, 'ResubmitFailedTransferCommand');
 	}

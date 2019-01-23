@@ -1,8 +1,9 @@
 <?php  namespace SynergyWholesale\Responses;
 
 use stdClass;
+use PHPUnit\Framework\TestCase;
 
-class DetermineSMSCostResponseTest extends \PHPUnit_Framework_TestCase
+class DetermineSMSCostResponseTest extends TestCase
 {
 	public function testResponse()
 	{

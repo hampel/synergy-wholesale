@@ -1,8 +1,9 @@
 <?php  namespace SynergyWholesale\Responses;
 
 use stdClass;
+use PHPUnit\Framework\TestCase;
 
-class DisableAutoRenewalResponseTest extends \PHPUnit_Framework_TestCase
+class DisableAutoRenewalResponseTest extends TestCase
 {
 	public function testResponse()
 	{

@@ -1,6 +1,8 @@
 <?php  namespace SynergyWholesale\Commands;
 
-class SendSMSCommandTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class SendSMSCommandTest extends TestCase
 {
 	public function testCommand()
 	{

@@ -1,15 +1,16 @@
 <?php  namespace SynergyWholesale\Responses;
 
 use stdClass;
+use PHPUnit\Framework\TestCase;
 
-class ResendTransferEmailResponseTest extends \PHPUnit_Framework_TestCase
+class ResendTransferEmailResponseTest extends TestCase
 {
 	public function testMissingEmail()
 	{
 		$data = new stdClass();
 		$data->status = "OK";
 
-		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Expected property [newEmail] missing from response data');
+		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected property [newEmail] missing from response data');
 
 		new ResendTransferEmailResponse($data, 'ResendTransferEmailCommand');
 	}
@@ -20,7 +21,7 @@ class ResendTransferEmailResponseTest extends \PHPUnit_Framework_TestCase
 		$data->status = "OK";
 		$data->newEmail = 'foo';
 
-		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Response parameter newEmail should contain an email address');
+		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Response parameter newEmail should contain an email address');
 
 		new ResendTransferEmailResponse($data, 'ResendTransferEmailCommand');
 	}

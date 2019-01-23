@@ -1,15 +1,16 @@
 <?php  namespace SynergyWholesale\Responses;
 
 use stdClass;
+use PHPUnit\Framework\TestCase;
 
-class InitiateAUCORResponseTest extends \PHPUnit_Framework_TestCase
+class InitiateAUCORResponseTest extends TestCase
 {
 	public function testMissingCostPrice()
 	{
 		$data = new stdClass();
 		$data->status = "OK";
 
-		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Expected property [costPrice] missing from response data');
+		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected property [costPrice] missing from response data');
 
 		new InitiateAUCORResponse($data, 'InitiateAuCorCommand');
 	}
@@ -20,7 +21,7 @@ class InitiateAUCORResponseTest extends \PHPUnit_Framework_TestCase
 		$data->status = "OK";
 		$data->costPrice = "foo";
 
-		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Expected a numeric cost price');
+		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected a numeric cost price');
 
 		new InitiateAUCORResponse($data, 'InitiateAuCorCommand');
 	}

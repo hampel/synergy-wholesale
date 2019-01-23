@@ -1,12 +1,13 @@
 <?php  namespace SynergyWholesale\Commands;
 
+use PHPUnit\Framework\TestCase;
 use SynergyWholesale\Types\Tld;
 
-class GetDomainExtensionOptionsCommandTest extends \PHPUnit_Framework_TestCase
+class GetDomainExtensionOptionsCommandTest extends TestCase
 {
 	public function testBadTld()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid Top Level Domain [example1]');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid Top Level Domain [example1]');
 
 		new GetDomainExtensionOptionsCommand(new Tld('example1'));
 	}

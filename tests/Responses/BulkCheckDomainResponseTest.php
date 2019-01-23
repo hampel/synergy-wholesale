@@ -1,15 +1,16 @@
 <?php  namespace SynergyWholesale\Responses;
 
 use stdClass;
+use PHPUnit\Framework\TestCase;
 
-class BulkCheckDomainResponseTest extends \PHPUnit_Framework_TestCase
+class BulkCheckDomainResponseTest extends TestCase
 {
 	public function testMissingDomainList()
 	{
 		$data = new stdClass();
 		$data->status = "OK";
 
-		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Expected property [domainList] missing from response data');
+		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected property [domainList] missing from response data');
 
 		new BulkCheckDomainResponse($data, 'BulkCheckDomainCommand');
 	}
@@ -20,7 +21,7 @@ class BulkCheckDomainResponseTest extends \PHPUnit_Framework_TestCase
 		$data->status = "OK";
 		$data->domainList = "";
 
-		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Empty or invalid domainList found in response');
+		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Empty or invalid domainList found in response');
 
 		new BulkCheckDomainResponse($data, 'BulkCheckDomainCommand');
 	}
@@ -31,7 +32,7 @@ class BulkCheckDomainResponseTest extends \PHPUnit_Framework_TestCase
 		$data->status = "OK";
 		$data->domainList = array();
 
-		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Empty or invalid domainList found in response');
+		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Empty or invalid domainList found in response');
 
 		new BulkCheckDomainResponse($data, 'BulkCheckDomainCommand');
 	}

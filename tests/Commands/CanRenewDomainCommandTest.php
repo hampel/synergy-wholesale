@@ -1,8 +1,9 @@
 <?php  namespace SynergyWholesale\Commands;
 
+use PHPUnit\Framework\TestCase;
 use SynergyWholesale\Types\Domain;
 
-class CanRenewDomainCommandTest extends \PHPUnit_Framework_TestCase
+class CanRenewDomainCommandTest extends TestCase
 {
 	public function testCommand()
 	{

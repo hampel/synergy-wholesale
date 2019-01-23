@@ -1,8 +1,9 @@
 <?php  namespace SynergyWholesale\Responses;
 
 use stdClass;
+use PHPUnit\Framework\TestCase;
 
-class ListContactsResponseTest extends \PHPUnit_Framework_TestCase
+class ListContactsResponseTest extends TestCase
 {
 	public function setUp()
 	{

@@ -1,5 +1,6 @@
 <?php  namespace SynergyWholesale\Commands;
 
+use PHPUnit\Framework\TestCase;
 use SynergyWholesale\Types\Email;
 use SynergyWholesale\Types\Phone;
 use SynergyWholesale\Types\Contact;
@@ -8,7 +9,7 @@ use SynergyWholesale\Types\UkDomain;
 use SynergyWholesale\Types\DomainList;
 use SynergyWholesale\Types\RegistrationYears;
 
-class DomainRegisterUKCommandTest extends \PHPUnit_Framework_TestCase
+class DomainRegisterUKCommandTest extends TestCase
 {
 	public function setUp()
 	{

@@ -1,10 +1,12 @@
 <?php  namespace SynergyWholesale\Types;
 
-class DnsConfigurationTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class DnsConfigurationTest extends TestCase
 {
 	public function testUnknownConfig()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\UnknownDnsConfigurationException', 'Unknown DNS Configuration [foo]');
+		$this->expectException('SynergyWholesale\Exception\UnknownDnsConfigurationException', 'Unknown DNS Configuration [foo]');
 
 		new DnsConfiguration('foo');
 	}

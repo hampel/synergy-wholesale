@@ -1,8 +1,9 @@
 <?php  namespace SynergyWholesale\Commands;
 
+use PHPUnit\Framework\TestCase;
 use SynergyWholesale\Types\Domain;
 
-class DomainInfoCommandTest extends \PHPUnit_Framework_TestCase
+class DomainInfoCommandTest extends TestCase
 {
 	public function testCommand()
 	{

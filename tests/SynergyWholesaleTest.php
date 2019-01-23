@@ -2,9 +2,12 @@
 
 use Mockery;
 use stdClass;
+use PHPUnit\Framework\TestCase;
 
-class SynergyWholesaleTest extends \PHPUnit_Framework_TestCase
+class SynergyWholesaleTest extends TestCase
 {
+	use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
+
 	public function setUp()
 	{
 		$this->client = Mockery::mock('SoapClient');
@@ -21,7 +24,7 @@ class SynergyWholesaleTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->client->shouldReceive('foo')->andThrow('SoapFault', '1');
 
-		$this->setExpectedException('SynergyWholesale\Exception\SoapException');
+		$this->expectException('SynergyWholesale\Exception\SoapException');
 
 		$sw = new SynergyWholesale($this->client, $this->responseGenerator, null, "reseller_id", "api_key");
 		$sw->execute($this->command);
@@ -31,7 +34,7 @@ class SynergyWholesaleTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->client->shouldReceive('foo')->andReturn(null);
 
-		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Empty response received');
+		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Empty response received');
 
 		$sw = new SynergyWholesale($this->client, $this->responseGenerator, null, "reseller_id", "api_key");
 		$sw->execute($this->command);
@@ -41,7 +44,7 @@ class SynergyWholesaleTest extends \PHPUnit_Framework_TestCase
 	{
 		$this->client->shouldReceive('foo')->andReturn("");
 
-		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Empty response received');
+		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Empty response received');
 
 		$sw = new SynergyWholesale($this->client, $this->responseGenerator, null, "reseller_id", "api_key");
 		$sw->execute($this->command);
@@ -53,7 +56,7 @@ class SynergyWholesaleTest extends \PHPUnit_Framework_TestCase
 
 		$this->client->shouldReceive('foo')->andReturn($otherobject);
 
-		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Expected a stdClass response from Soap command [foo]');
+		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected a stdClass response from Soap command [foo]');
 
 		$sw = new SynergyWholesale($this->client, $this->responseGenerator, null, "reseller_id", "api_key");
 		$sw->execute($this->command);
@@ -72,10 +75,5 @@ class SynergyWholesaleTest extends \PHPUnit_Framework_TestCase
 
 		$this->assertInstanceOf('SynergyWholesale\Responses\Response', $response);
 	}
-
-    public function tearDown()
-    {
-        Mockery::close();
-    }
 }
 

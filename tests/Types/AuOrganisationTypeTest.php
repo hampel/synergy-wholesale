@@ -1,10 +1,12 @@
 <?php  namespace SynergyWholesale\Types;
 
-class AuOrganisationTypeTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class AuOrganisationTypeTest extends TestCase
 {
 	public function testBadOrganisation()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\UnknownOrganisationTypeException', 'Unknown organisation type [foo]');
+		$this->expectException('SynergyWholesale\Exception\UnknownOrganisationTypeException', 'Unknown organisation type [foo]');
 
 		new AuOrganisationType('foo');
 	}

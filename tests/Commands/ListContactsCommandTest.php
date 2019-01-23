@@ -1,8 +1,9 @@
 <?php  namespace SynergyWholesale\Commands;
 
+use PHPUnit\Framework\TestCase;
 use SynergyWholesale\Types\Domain;
 
-class ListContactsCommandTest extends \PHPUnit_Framework_TestCase
+class ListContactsCommandTest extends TestCase
 {
 	public function testCommand()
 	{

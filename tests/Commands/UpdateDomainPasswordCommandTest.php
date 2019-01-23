@@ -1,9 +1,10 @@
 <?php  namespace SynergyWholesale\Commands;
 
+use PHPUnit\Framework\TestCase;
 use SynergyWholesale\Types\Domain;
 use SynergyWholesale\Types\DomainPassword;
 
-class UpdateDomainPasswordCommandTest extends \PHPUnit_Framework_TestCase
+class UpdateDomainPasswordCommandTest extends TestCase
 {
 	public function testCommand()
 	{

@@ -1,8 +1,9 @@
 <?php  namespace SynergyWholesale\Responses;
 
 use stdClass;
+use PHPUnit\Framework\TestCase;
 
-class DisableIDProtectionResponseTest extends \PHPUnit_Framework_TestCase
+class DisableIDProtectionResponseTest extends TestCase
 {
 	public function testResponse()
 	{

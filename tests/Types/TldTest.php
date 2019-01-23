@@ -1,24 +1,26 @@
 <?php  namespace SynergyWholesale\Types;
 
-class TldTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class TldTest extends TestCase {
 
 	public function testBadTldTooManyParts()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid Top Level Domain [example.com.au] - should have no more than 2 parts');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid Top Level Domain [example.com.au] - should have no more than 2 parts');
 
 		new Tld('example.com.au');
 	}
 
 	public function testBadTldCountryCode()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid Top Level Domain [com.abc] - Country Codes have a maximum of 2 characters');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid Top Level Domain [com.abc] - Country Codes have a maximum of 2 characters');
 
 		new Tld('com.abc');
 	}
 
 	public function testBadTldInvalid()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid Top Level Domain [com-x.au]');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid Top Level Domain [com-x.au]');
 
 		new Tld('com-x.au');
 	}

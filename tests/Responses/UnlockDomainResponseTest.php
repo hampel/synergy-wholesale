@@ -1,8 +1,9 @@
 <?php  namespace SynergyWholesale\Responses;
 
 use stdClass;
+use PHPUnit\Framework\TestCase;
 
-class UnlockDomainResponseTest extends \PHPUnit_Framework_TestCase
+class UnlockDomainResponseTest extends TestCase
 {
 	public function testResponse()
 	{

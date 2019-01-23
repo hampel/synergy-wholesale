@@ -1,8 +1,9 @@
 <?php  namespace SynergyWholesale\Responses;
 
 use stdClass;
+use PHPUnit\Framework\TestCase;
 
-class CheckDomainResponseTest extends \PHPUnit_Framework_TestCase
+class CheckDomainResponseTest extends TestCase
 {
 	public function testResponse()
 	{

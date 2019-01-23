@@ -1,10 +1,12 @@
 <?php  namespace SynergyWholesale\Types;
 
-class AuDomainTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class AuDomainTest extends TestCase {
 
 	public function testBadDomain()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid domain name [example.com] - must be a .au domain');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid domain name [example.com] - must be a .au domain');
 
 		new AuDomain('example.com');
 	}

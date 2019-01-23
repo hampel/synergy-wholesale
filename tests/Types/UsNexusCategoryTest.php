@@ -1,10 +1,12 @@
 <?php  namespace SynergyWholesale\Types; 
 
-class UsNexusCategoryTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class UsNexusCategoryTest extends TestCase
 {
 	public function testBadNexusCategory()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\UnknownNexusCategoryException', 'Unknown nexus category [foo]');
+		$this->expectException('SynergyWholesale\Exception\UnknownNexusCategoryException', 'Unknown nexus category [foo]');
 
 		new UsNexusCategory('foo');
 	}

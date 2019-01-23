@@ -1,8 +1,9 @@
 <?php  namespace SynergyWholesale\Commands;
 
+use PHPUnit\Framework\TestCase;
 use SynergyWholesale\Types\AuDomain;
 
-class InitiateAUCORCommandTest extends \PHPUnit_Framework_TestCase
+class InitiateAUCORCommandTest extends TestCase
 {
 	public function testCommand()
 	{

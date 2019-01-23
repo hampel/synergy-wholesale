@@ -1,5 +1,6 @@
 <?php  namespace SynergyWholesale\Commands;
 
+use PHPUnit\Framework\TestCase;
 use SynergyWholesale\Types\Email;
 use SynergyWholesale\Types\Phone;
 use SynergyWholesale\Types\AuState;
@@ -9,10 +10,10 @@ use SynergyWholesale\Types\AuContact;
 use SynergyWholesale\Types\AuPostCode;
 use SynergyWholesale\Types\DomainList;
 use SynergyWholesale\Types\AuRegistrant;
-use SynergyWholesale\Types\AuOrganisationType;
 use SynergyWholesale\Types\RegistrationYears;
+use SynergyWholesale\Types\AuOrganisationType;
 
-class DomainRegisterAUCommandTest extends \PHPUnit_Framework_TestCase
+class DomainRegisterAUCommandTest extends TestCase
 {
 	public function setUp()
 	{

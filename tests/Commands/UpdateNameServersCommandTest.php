@@ -1,10 +1,11 @@
 <?php  namespace SynergyWholesale\Commands;
 
-use SynergyWholesale\Types\DnsConfiguration;
+use PHPUnit\Framework\TestCase;
 use SynergyWholesale\Types\Domain;
 use SynergyWholesale\Types\DomainList;
+use SynergyWholesale\Types\DnsConfiguration;
 
-class UpdateNameServersCommandTest extends \PHPUnit_Framework_TestCase
+class UpdateNameServersCommandTest extends TestCase
 {
 	public function testCommand()
 	{

@@ -1,8 +1,9 @@
 <?php  namespace SynergyWholesale\Commands;
 
+use PHPUnit\Framework\TestCase;
 use SynergyWholesale\Types\Domain;
 
-class ResendTransferEmailCommandTest extends \PHPUnit_Framework_TestCase
+class ResendTransferEmailCommandTest extends TestCase
 {
 	public function testCommand()
 	{

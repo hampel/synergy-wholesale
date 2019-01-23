@@ -1,8 +1,9 @@
 <?php  namespace SynergyWholesale\Commands;
 
+use PHPUnit\Framework\TestCase;
 use SynergyWholesale\Types\AuState;
 
-class BusinessCheckRegistrationCommandTest extends \PHPUnit_Framework_TestCase
+class BusinessCheckRegistrationCommandTest extends TestCase
 {
 	public function testNoState()
 	{

@@ -1,15 +1,17 @@
 <?php
 namespace SynergyWholesale
 {
-	use stdClass;
 
-	class ResponseGeneratorTest extends \PHPUnit_Framework_TestCase
+	use stdClass;
+	use PHPUnit\Framework\TestCase;
+
+	class ResponseGeneratorTest extends TestCase
 	{
 		public function testSoapException()
 		{
 			$commandName = 'SynergyWholesale\Commands\FooCommand';
 
-			$this->setExpectedException('SynergyWholesale\Exception\ClassNotRegisteredException', 'Response class [SynergyWholesale\Responses\FooResponse] does not exist');
+			$this->expectException('SynergyWholesale\Exception\ClassNotRegisteredException', 'Response class [SynergyWholesale\Responses\FooResponse] does not exist');
 
 			$rg = new BasicResponseGenerator();
 			$rg->buildResponse($commandName, new StdClass(), 'foo');

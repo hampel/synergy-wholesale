@@ -1,6 +1,8 @@
 <?php  namespace SynergyWholesale\Commands;
 
-class DetermineSMSCostCommandTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class DetermineSMSCostCommandTest extends TestCase
 {
 	public function testCommand()
 	{

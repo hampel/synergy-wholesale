@@ -1,8 +1,9 @@
 <?php  namespace SynergyWholesale\Commands;
 
+use PHPUnit\Framework\TestCase;
 use SynergyWholesale\Types\UkDomain;
 
-class DomainTransferUKCommandTest extends \PHPUnit_Framework_TestCase
+class DomainTransferUKCommandTest extends TestCase
 {
 	public function testCommand()
 	{

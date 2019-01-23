@@ -1,15 +1,16 @@
 <?php  namespace SynergyWholesale\Commands;
 
-use SynergyWholesale\Types\Boolean;
+use PHPUnit\Framework\TestCase;
 use SynergyWholesale\Types\Email;
 use SynergyWholesale\Types\Phone;
 use SynergyWholesale\Types\Domain;
+use SynergyWholesale\Types\Boolean;
 use SynergyWholesale\Types\Contact;
 use SynergyWholesale\Types\Country;
 use SynergyWholesale\Types\DomainList;
 use SynergyWholesale\Types\RegistrationYears;
 
-class DomainRegisterCommandTest extends \PHPUnit_Framework_TestCase
+class DomainRegisterCommandTest extends TestCase
 {
 	public function setUp()
 	{

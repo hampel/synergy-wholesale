@@ -1,10 +1,12 @@
 <?php  namespace SynergyWholesale\Types;
 
-class AuStateTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class AuStateTest extends TestCase
 {
 	public function testBadState()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\UnknownStateException', 'Unknown state [FOO]');
+		$this->expectException('SynergyWholesale\Exception\UnknownStateException', 'Unknown state [FOO]');
 
 		$state = new AuState('foo');
 	}

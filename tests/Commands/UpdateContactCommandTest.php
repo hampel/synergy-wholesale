@@ -1,12 +1,13 @@
 <?php  namespace SynergyWholesale\Commands;
 
+use PHPUnit\Framework\TestCase;
 use SynergyWholesale\Types\Email;
 use SynergyWholesale\Types\Phone;
 use SynergyWholesale\Types\Domain;
 use SynergyWholesale\Types\Contact;
 use SynergyWholesale\Types\Country;
 
-class UpdateContactCommandTest extends \PHPUnit_Framework_TestCase
+class UpdateContactCommandTest extends TestCase
 {
 	public function setUp()
 	{

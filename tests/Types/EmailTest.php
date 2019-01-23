@@ -1,17 +1,19 @@
 <?php  namespace SynergyWholesale\Types; 
 
-class EmailTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class EmailTest extends TestCase {
 
 	public function testBadEmail1()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid email address []');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid email address []');
 
 		$phone = new Email('');
 	}
 
 	public function testBadEmail2()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid email address [foo@example]');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid email address [foo@example]');
 
 		$phone = new Email('foo@example');
 	}

@@ -1,15 +1,16 @@
 <?php  namespace SynergyWholesale\Responses;
 
 use stdClass;
+use PHPUnit\Framework\TestCase;
 
-class BusinessCheckRegistrationResponseTest extends \PHPUnit_Framework_TestCase
+class BusinessCheckRegistrationResponseTest extends TestCase
 {
 	public function testMissingEntityStatus()
 	{
 		$data = new stdClass();
 		$data->status = "OK";
 
-		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Expected property [entityStatus] missing from response data');
+		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected property [entityStatus] missing from response data');
 
 		new BusinessCheckRegistrationResponse($data, 'BusinessCheckRegistrationCommand');
 	}
@@ -20,7 +21,7 @@ class BusinessCheckRegistrationResponseTest extends \PHPUnit_Framework_TestCase
 		$data->status = "OK";
 		$data->entityStatus = "foo";
 
-		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Expected property [entityName] missing from response data');
+		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected property [entityName] missing from response data');
 
 		new BusinessCheckRegistrationResponse($data, 'BusinessCheckRegistrationCommand');
 	}

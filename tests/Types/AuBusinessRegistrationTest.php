@@ -1,6 +1,8 @@
 <?php  namespace SynergyWholesale\Types;
 
-class AuBusinessRegistrationTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit\Framework\TestCase;
+
+class AuBusinessRegistrationTest extends TestCase {
 
 	public function testAuBusinessRegistration()
 	{

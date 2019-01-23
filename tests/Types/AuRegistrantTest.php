@@ -1,24 +1,26 @@
 <?php  namespace SynergyWholesale\Types;
 
-class AuRegistrantTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class AuRegistrantTest extends TestCase
 {
 	public function testMissingRegistrantName()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\InvalidArgumentException', 'Missing argument: registrantName');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Missing argument: registrantName');
 
 		$reg = new AuRegistrant("", "", new AuOrganisationType('Company'));
 	}
 
 	public function testMissingRegistrantId()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\InvalidArgumentException', 'Missing argument for Company registrant: registrantId');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Missing argument for Company registrant: registrantId');
 
 		$reg = new AuRegistrant("foo", "", new AuOrganisationType('Company'));
 	}
 
 	public function testNewMissingRegistrantName()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\InvalidArgumentException', 'registrantName parameter is required for a Registered Business');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'registrantName parameter is required for a Registered Business');
 
 		$br = new AuBusinessRegistration(
 			"B111",

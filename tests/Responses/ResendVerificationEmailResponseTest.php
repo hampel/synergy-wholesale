@@ -1,8 +1,9 @@
 <?php  namespace SynergyWholesale\Responses;
 
 use stdClass;
+use PHPUnit\Framework\TestCase;
 
-class ResendVerificationEmailResponseTest extends \PHPUnit_Framework_TestCase
+class ResendVerificationEmailResponseTest extends TestCase
 {
 	public function testResponse()
 	{

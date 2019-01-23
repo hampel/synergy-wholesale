@@ -1,8 +1,9 @@
 <?php  namespace SynergyWholesale\Responses;
 
 use stdClass;
+use PHPUnit\Framework\TestCase;
 
-class GetTransferredAwayDomainsResponseTest extends \PHPUnit_Framework_TestCase
+class GetTransferredAwayDomainsResponseTest extends TestCase
 {
 	public function testResponse()
 	{

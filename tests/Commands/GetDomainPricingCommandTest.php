@@ -1,6 +1,8 @@
 <?php namespace SynergyWholesale\Commands;
 
-class GetDomainPricingCommandTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class GetDomainPricingCommandTest extends TestCase
 {
 	public function testGetRequestData()
 	{

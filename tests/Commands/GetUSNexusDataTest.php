@@ -1,8 +1,9 @@
 <?php  namespace SynergyWholesale\Commands; 
 
+use PHPUnit\Framework\TestCase;
 use SynergyWholesale\Types\UsDomain;
 
-class GetUSNexusDataTest extends \PHPUnit_Framework_TestCase
+class GetUSNexusDataTest extends TestCase
 {
 	public function testCommand()
 	{

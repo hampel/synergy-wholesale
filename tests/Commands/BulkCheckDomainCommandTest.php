@@ -1,9 +1,10 @@
 <?php namespace SynergyWholesale\Commands;
 
+use PHPUnit\Framework\TestCase;
 use SynergyWholesale\Types\Domain;
 use SynergyWholesale\Types\DomainList;
 
-class BulkCheckDomainCommandTest extends \PHPUnit_Framework_TestCase
+class BulkCheckDomainCommandTest extends TestCase
 {
 	public function testGetRequestData()
 	{

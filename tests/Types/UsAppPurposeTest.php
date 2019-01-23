@@ -1,10 +1,12 @@
 <?php  namespace SynergyWholesale\Types;
 
-class UsAppPurposeTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class UsAppPurposeTest extends TestCase
 {
 	public function testBadAppPurpose()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\UnknownAppPurposeException', 'Unknown app purpose [foo]');
+		$this->expectException('SynergyWholesale\Exception\UnknownAppPurposeException', 'Unknown app purpose [foo]');
 
 		new UsAppPurpose('foo');
 	}

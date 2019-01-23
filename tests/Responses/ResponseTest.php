@@ -2,14 +2,15 @@
 
 use Mockery;
 use stdClass;
+use PHPUnit\Framework\TestCase;
 
-class ResponseTest extends \PHPUnit_Framework_TestCase {
+class ResponseTest extends TestCase {
 
 	public function testEmptyObjectException()
 	{
 		$data = new stdClass();
 
-		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'No status found in response to Soap command [foo]');
+		$this->expectException('SynergyWholesale\Exception\BadDataException', 'No status found in response to Soap command [foo]');
 
 		new FooBarResponse($data, 'foo');
 	}
@@ -20,7 +21,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
 		$data->status = "OK";
 		$data->foo = "bar";
 
-		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Expected property [bar] missing from response data');
+		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected property [bar] missing from response data');
 
 		new FooBarResponse($data, 'foo');
 	}
@@ -31,7 +32,7 @@ class ResponseTest extends \PHPUnit_Framework_TestCase {
 		$data->status = "NOT_OK";
 		$data->errorMessage = "FooBar";
 
-		$this->setExpectedException('SynergyWholesale\Exception\ResponseErrorException', 'FooBar');
+		$this->expectException('SynergyWholesale\Exception\ResponseErrorException', 'FooBar');
 
 		new FooBarResponse($data, 'foo');
 	}

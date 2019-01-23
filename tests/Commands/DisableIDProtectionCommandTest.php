@@ -1,8 +1,9 @@
 <?php  namespace SynergyWholesale\Commands;
 
+use PHPUnit\Framework\TestCase;
 use SynergyWholesale\Types\Domain;
 
-class DisableIDProtectionCommandTest extends \PHPUnit_Framework_TestCase
+class DisableIDProtectionCommandTest extends TestCase
 {
 	public function testCommand()
 	{

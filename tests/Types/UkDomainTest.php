@@ -1,10 +1,12 @@
 <?php  namespace SynergyWholesale\Types;
 
-class UkDomainTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class UkDomainTest extends TestCase
 {
 	public function testBadDomain()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid domain name [example.com] - must be a .uk domain');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid domain name [example.com] - must be a .uk domain');
 
 		new UkDomain('example.com');
 	}

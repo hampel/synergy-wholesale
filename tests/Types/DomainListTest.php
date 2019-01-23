@@ -1,10 +1,12 @@
 <?php  namespace SynergyWholesale\Types;
 
-class DomainListTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class DomainListTest extends TestCase
 {
 	public function testNoDomainArray()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\InvalidArgumentException', 'Expected an array of domain names');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Expected an array of domain names');
 
 		$list = array();
 		new DomainList($list);
@@ -12,7 +14,7 @@ class DomainListTest extends \PHPUnit_Framework_TestCase
 
 	public function testBadDomainArray()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid domain name [foo]');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid domain name [foo]');
 
 		$list = array('foo', 'bar');
 		new DomainList($list);

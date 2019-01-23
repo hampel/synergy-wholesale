@@ -1,6 +1,8 @@
 <?php  namespace SynergyWholesale\Types; 
 
-class BoolTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class BoolTest extends TestCase
 {
 	public function testBool()
 	{

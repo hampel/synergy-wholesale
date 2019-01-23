@@ -1,6 +1,8 @@
 <?php  namespace SynergyWholesale\Commands;
 
-class GetTransferredAwayDomainsCommandTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class GetTransferredAwayDomainsCommandTest extends TestCase
 {
 	public function testGetRequestData()
 	{

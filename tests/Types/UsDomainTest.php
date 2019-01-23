@@ -1,10 +1,12 @@
 <?php  namespace SynergyWholesale\Types;
 
-class UsDomainTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class UsDomainTest extends TestCase
 {
 	public function testBadDomain()
 	{
-		$this->setExpectedException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid domain name [example.com] - must be a .us domain');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid domain name [example.com] - must be a .us domain');
 
 		new UsDomain('example.com');
 	}

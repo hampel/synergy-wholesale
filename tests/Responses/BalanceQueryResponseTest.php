@@ -1,15 +1,16 @@
 <?php  namespace SynergyWholesale\Responses;
 
 use stdClass;
+use PHPUnit\Framework\TestCase;
 
-class BalanceQueryResponseTest extends \PHPUnit_Framework_TestCase
+class BalanceQueryResponseTest extends TestCase
 {
 	public function testMissingBalance()
 	{
 		$data = new stdClass();
 		$data->status = "OK";
 
-		$this->setExpectedException('SynergyWholesale\Exception\BadDataException', 'Expected property [balance] missing from response data');
+		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected property [balance] missing from response data');
 
 		new BalanceQueryResponse($data, 'BalanceQueryCommand');
 	}
