@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+1.4.0 (2019-01-23)
+------------------
+
+* updated to use PHPUnit 7.0 and Mockery 1.0; adjusted unit tests to suit
+* slight adjustment to Phone type to allow for slightly longer phone numbers, as permitted by the registry
+
 1.3.9 (2019-01-23)
 ------------------
 
