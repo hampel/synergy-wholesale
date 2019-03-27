@@ -29,7 +29,7 @@ class PhoneTest extends TestCase {
 	{
 		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid phone number [+AA.AAAAAAAAA] - must be in the format +99.999999999');
 
-		$phone = new Phone('+00.000000000000');
+		$phone = new Phone('+00.0000000000000');
 	}
 
 	public function testBadPhoneNonNumeric()
