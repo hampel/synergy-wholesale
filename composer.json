@@ -5,11 +5,9 @@
 	"authors": [{
 		"name": "Simon Hampel",
 		"email": "simon@hampelgroup.com",
-		"homepage": "http://hampelgroup.com/",
 		"role": "Developer"
 	}],
 	"support": {
-		"email": "support@hampelgroup.com",
 		"issues": "https://bitbucket.org/hampel/synergy-wholesale/issues",
 		"source": "https://bitbucket.org/hampel/synergy-wholesale/src"
 	},
