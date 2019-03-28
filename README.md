@@ -10,6 +10,11 @@ Installation
 
 The recommended way of installing the Synergy Wholesale Wrapper is through [Composer](http://getcomposer.org):
 
+	:::bash
+	composer require "hampel/synergy-wholesale"
+
+Or manually define it in your `composer.json`
+
     :::json
     {
         "require": {
