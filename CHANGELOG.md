@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+1.4.1 (2019-10-14)
+------------------
+
+* tests now use PHPUnit v8
+* updated PhoneTooLong test to use longer phone numbers
+
 1.4.0 (2019-01-23)
 ------------------
 
