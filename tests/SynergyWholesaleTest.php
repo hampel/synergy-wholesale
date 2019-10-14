@@ -1,6 +1,6 @@
 <?php namespace SynergyWholesale;
 
-use Mockery;
+use Mockery as m;
 use stdClass;
 use PHPUnit\Framework\TestCase;
 
@@ -8,16 +8,24 @@ class SynergyWholesaleTest extends TestCase
 {
 	use \Mockery\Adapter\Phpunit\MockeryPHPUnitIntegration;
 
-	public function setUp()
-	{
-		$this->client = Mockery::mock('SoapClient');
+	protected $client;
 
-		$this->command = Mockery::namedMock('FooCommand', 'SynergyWholesale\Commands\Command');
+	protected $command;
+
+	protected $responseGenerator;
+
+	protected $response;
+
+	public function setUp() : void
+	{
+		$this->client = m::mock('SoapClient');
+
+		$this->command = m::namedMock('FooCommand', 'SynergyWholesale\Commands\Command');
 		$this->command->shouldReceive('getRequestData')->andReturn(array());
 
-		$this->responseGenerator = Mockery::mock('SynergyWholesale\ResponseGenerator');
+		$this->responseGenerator = m::mock('SynergyWholesale\ResponseGenerator');
 
-		$this->response = Mockery::mock('SynergyWholesale\Responses\Response');
+		$this->response = m::mock('SynergyWholesale\Responses\Response');
 	}
 
 	public function testSoapException()
@@ -52,7 +60,7 @@ class SynergyWholesaleTest extends TestCase
 
 	public function testWrongObjectResponseException()
 	{
-		$otherobject = Mockery::mock();
+		$otherobject = m::mock();
 
 		$this->client->shouldReceive('foo')->andReturn($otherobject);
 
