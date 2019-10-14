@@ -1,6 +1,5 @@
 <?php  namespace SynergyWholesale\Responses;
 
-use Mockery;
 use stdClass;
 use PHPUnit\Framework\TestCase;
 
@@ -55,11 +54,6 @@ class ResponseTest extends TestCase {
 		$this->assertEquals('OK', $responseData->status);
 		$this->assertTrue(isset($responseData->foo));
 		$this->assertEquals('bar', $responseData->foo);
-	}
-
-	public function tearDown()
-	{
-		Mockery::close();
 	}
 }
 
