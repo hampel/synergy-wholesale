@@ -5,7 +5,7 @@ use PHPUnit\Framework\TestCase;
 
 class ListContactsResponseTest extends TestCase
 {
-	public function setUp()
+	public function setUp() : void
 	{
 		$this->contact = new stdClass();
 		$this->contact->firstname = 'firstname';

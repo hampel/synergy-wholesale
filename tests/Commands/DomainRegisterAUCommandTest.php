@@ -15,7 +15,7 @@ use SynergyWholesale\Types\AuOrganisationType;
 
 class DomainRegisterAUCommandTest extends TestCase
 {
-	public function setUp()
+	public function setUp() : void
 	{
 		$this->domain = new AuDomain('example.com.au');
 		$this->contact1 = new AuContact(

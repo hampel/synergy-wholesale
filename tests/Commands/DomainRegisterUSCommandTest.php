@@ -13,7 +13,7 @@ use SynergyWholesale\Types\RegistrationYears;
 
 class DomainRegisterUSCommandTest extends TestCase
 {
-	public function setUp()
+	public function setUp() : void
 	{
 		$this->domain = new UsDomain('example.us');
 		$this->contact = new Contact(

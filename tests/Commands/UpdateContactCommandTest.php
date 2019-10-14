@@ -9,7 +9,7 @@ use SynergyWholesale\Types\Country;
 
 class UpdateContactCommandTest extends TestCase
 {
-	public function setUp()
+	public function setUp() : void
 	{
 		$this->domain = new Domain('example.com');
 		$this->contact = new Contact(

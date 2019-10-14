@@ -11,7 +11,7 @@ use SynergyWholesale\Types\RegistrationYears;
 
 class DomainRegisterUKCommandTest extends TestCase
 {
-	public function setUp()
+	public function setUp() : void
 	{
 		$this->domain = new UkDomain('example.co.uk');
 		$this->contact = new Contact(
