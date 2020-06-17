@@ -18,7 +18,7 @@ Or manually define it in your `composer.json`
     :::json
     {
         "require": {
-            "hampel/synergy-wholesale": "~1.0"
+            "hampel/synergy-wholesale": "^1.3"
         }
     }
 
