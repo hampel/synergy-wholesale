@@ -299,14 +299,14 @@ class SynergyWholesale
 	/**
 	 * @param Commands\GetUSNexusDataCommand $command
 	 *
-*@return Responses\GetUSNexusDataResponse
+     * @return Responses\GetUSNexusDataResponse
 	 */
 	public function getUSNexusData(Commands\GetUSNexusDataCommand $command) { return $this->execute($command); }
 
 	/**
 	 * @param Commands\InitiateAUCORCommand $command
 	 *
-*@return Responses\InitiateAUCORResponse
+     * @return Responses\InitiateAUCORResponse
 	 */
 	public function initiateAUCOR(Commands\InitiateAUCORCommand $command) { return $this->execute($command); }
 
