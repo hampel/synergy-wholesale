@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+1.5.0 (2022-08-19)
+------------------
+
+* implemented listDomains command
+* tests now use PHPUnit v9
+
 1.4.1 (2019-10-14)
 ------------------
 
