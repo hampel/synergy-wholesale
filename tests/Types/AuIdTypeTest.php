@@ -6,7 +6,8 @@ class AuIdTypeTest extends TestCase
 {
 	public function testBadType()
 	{
-		$this->expectException('SynergyWholesale\Exception\UnknownIdTypeException', 'Unknown id type [foo]');
+		$this->expectException('SynergyWholesale\Exception\UnknownIdTypeException');
+		$this->expectExceptionMessage('Unknown id type [foo]');
 
 		new AuIdType('foo');
 	}

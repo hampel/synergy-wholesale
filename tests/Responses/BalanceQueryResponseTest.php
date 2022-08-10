@@ -10,7 +10,8 @@ class BalanceQueryResponseTest extends TestCase
 		$data = new stdClass();
 		$data->status = "OK";
 
-		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected property [balance] missing from response data');
+		$this->expectException('SynergyWholesale\Exception\BadDataException');
+		$this->expectExceptionMessage('Expected property [balance] missing from response data');
 
 		new BalanceQueryResponse($data, 'BalanceQueryCommand');
 	}

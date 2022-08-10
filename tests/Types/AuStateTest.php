@@ -6,7 +6,8 @@ class AuStateTest extends TestCase
 {
 	public function testBadState()
 	{
-		$this->expectException('SynergyWholesale\Exception\UnknownStateException', 'Unknown state [FOO]');
+		$this->expectException('SynergyWholesale\Exception\UnknownStateException');
+		$this->expectExceptionMessage('Unknown state [FOO]');
 
 		$state = new AuState('foo');
 	}

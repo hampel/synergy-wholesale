@@ -6,35 +6,40 @@ class RegistrationYearsTest extends TestCase
 {
 	public function testBadYears()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Years parameter is required and should be a positive integer value');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('Years parameter is required and should be a positive integer value');
 
 		new RegistrationYears(null);
 	}
 
 	public function testBadYears2()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Years parameter is required and should be a positive integer value');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('Years parameter is required and should be a positive integer value');
 
 		new RegistrationYears(-1);
 	}
 
 	public function testBadYears3()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Years parameter is required and should be a positive integer value');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('Years parameter is required and should be a positive integer value');
 
 		new RegistrationYears(0);
 	}
 
 	public function testBadYears4()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Years parameter is required and should be a positive integer value');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('Years parameter is required and should be a positive integer value');
 
 		new RegistrationYears(1.5);
 	}
 
 	public function testBadYears5()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Years parameter is required and should be a positive integer value');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('Years parameter is required and should be a positive integer value');
 
 		new RegistrationYears(11);
 	}

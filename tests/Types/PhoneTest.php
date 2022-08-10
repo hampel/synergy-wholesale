@@ -6,37 +6,42 @@ class PhoneTest extends TestCase {
 
 	public function testBadPhoneEmpty()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid phone number [] - must be in the format +99.999999999');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('Invalid phone number [] - must be in the format +99.999999999');
 
-		$phone = new Phone('');
+		new Phone('');
 	}
 
 	public function testBadPhoneWord()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid phone number [] - must be in the format +99.999999999');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('Invalid phone number [foo] - must be in the format +99.999999999');
 
-		$phone = new Phone('foo');
+		new Phone('foo');
 	}
 
 	public function testBadPhoneTooShort()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid phone number [+0.0] - must be in the format +99.999999999');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('Invalid phone number [+0.0] - must be in the format +99.999999999');
 
-		$phone = new Phone('+0.0');
+		new Phone('+0.0');
 	}
 
 	public function testBadPhoneTooLong()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid phone number [+AA.AAAAAAAAA] - must be in the format +99.999999999');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('Invalid phone number [+00.0000000000000] - must be in the format +99.999999999');
 
-		$phone = new Phone('+00.0000000000000');
+		new Phone('+00.0000000000000');
 	}
 
 	public function testBadPhoneNonNumeric()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid phone number [+AA.AAAAAAAAA] - must be in the format +99.999999999');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('Invalid phone number [+AA.AAAAAAAAA] - must be in the format +99.999999999');
 
-		$phone = new Phone('+AA.AAAAAAAAA');
+		new Phone('+AA.AAAAAAAAA');
 	}
 
 	public function testPhone()

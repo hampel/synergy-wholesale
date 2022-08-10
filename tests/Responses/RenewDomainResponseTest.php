@@ -10,7 +10,8 @@ class RenewDomainResponseTest extends TestCase
 		$data = new stdClass();
 		$data->status = "OK";
 
-		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected property [costPrice] missing from response data');
+		$this->expectException('SynergyWholesale\Exception\BadDataException');
+		$this->expectExceptionMessage('Expected property [costPrice] missing from response data');
 
 		new RenewDomainResponse($data, 'RenewDomainCommand');
 	}
@@ -21,7 +22,8 @@ class RenewDomainResponseTest extends TestCase
 		$data->status = "OK";
 		$data->costPrice = "foo";
 
-		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected a numeric cost price');
+		$this->expectException('SynergyWholesale\Exception\BadDataException');
+		$this->expectExceptionMessage('Expected a numeric cost price');
 
 		new RenewDomainResponse($data, 'RenewDomainCommand');
 	}

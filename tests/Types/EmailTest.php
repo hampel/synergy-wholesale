@@ -1,4 +1,4 @@
-<?php  namespace SynergyWholesale\Types; 
+<?php  namespace SynergyWholesale\Types;
 
 use PHPUnit\Framework\TestCase;
 
@@ -6,16 +6,18 @@ class EmailTest extends TestCase {
 
 	public function testBadEmail1()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid email address []');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('Invalid email address []');
 
-		$phone = new Email('');
+		new Email('');
 	}
 
 	public function testBadEmail2()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid email address [foo@example]');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('Invalid email address [foo@example]');
 
-		$phone = new Email('foo@example');
+		new Email('foo@example');
 	}
 
 	public function testEmail()

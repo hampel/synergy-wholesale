@@ -10,7 +10,8 @@ class ResubmitFailedTransferResponseTest extends TestCase
 		$data = new stdClass();
 		$data->status = "OK";
 
-		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected property [newEmail] missing from response data');
+		$this->expectException('SynergyWholesale\Exception\BadDataException');
+		$this->expectExceptionMessage('Expected property [newEmail] missing from response data');
 
 		new ResubmitFailedTransferResponse($data, 'ResubmitFailedTransferCommand');
 	}
@@ -21,7 +22,8 @@ class ResubmitFailedTransferResponseTest extends TestCase
 		$data->status = "OK";
 		$data->newEmail = 'foo@example.com';
 
-		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected property [costPrice] missing from response data');
+		$this->expectException('SynergyWholesale\Exception\BadDataException');
+		$this->expectExceptionMessage('Expected property [costPrice] missing from response data');
 
 		new ResubmitFailedTransferResponse($data, 'ResubmitFailedTransferCommand');
 	}
@@ -33,7 +35,8 @@ class ResubmitFailedTransferResponseTest extends TestCase
 		$data->newEmail = 'foo';
 		$data->costPrice = '';
 
-		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Response parameter newEmail should contain an email address');
+		$this->expectException('SynergyWholesale\Exception\BadDataException');
+		$this->expectExceptionMessage('Response parameter newEmail should contain an email address');
 
 		new ResubmitFailedTransferResponse($data, 'ResubmitFailedTransferCommand');
 	}

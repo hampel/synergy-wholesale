@@ -9,7 +9,8 @@ class ResponseTest extends TestCase {
 	{
 		$data = new stdClass();
 
-		$this->expectException('SynergyWholesale\Exception\BadDataException', 'No status found in response to Soap command [foo]');
+		$this->expectException('SynergyWholesale\Exception\BadDataException');
+		$this->expectExceptionMessage('No status found in response to Soap command [foo]');
 
 		new FooBarResponse($data, 'foo');
 	}
@@ -20,7 +21,8 @@ class ResponseTest extends TestCase {
 		$data->status = "OK";
 		$data->foo = "bar";
 
-		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected property [bar] missing from response data');
+		$this->expectException('SynergyWholesale\Exception\BadDataException');
+		$this->expectExceptionMessage('Expected property [bar] missing from response data');
 
 		new FooBarResponse($data, 'foo');
 	}
@@ -31,7 +33,8 @@ class ResponseTest extends TestCase {
 		$data->status = "NOT_OK";
 		$data->errorMessage = "FooBar";
 
-		$this->expectException('SynergyWholesale\Exception\ResponseErrorException', 'FooBar');
+		$this->expectException('SynergyWholesale\Exception\ResponseErrorException');
+		$this->expectExceptionMessage('FooBar');
 
 		new FooBarResponse($data, 'foo');
 	}

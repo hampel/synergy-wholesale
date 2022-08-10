@@ -10,7 +10,8 @@ class BusinessCheckRegistrationResponseTest extends TestCase
 		$data = new stdClass();
 		$data->status = "OK";
 
-		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected property [entityStatus] missing from response data');
+		$this->expectException('SynergyWholesale\Exception\BadDataException');
+		$this->expectExceptionMessage('Expected property [entityStatus] missing from response data');
 
 		new BusinessCheckRegistrationResponse($data, 'BusinessCheckRegistrationCommand');
 	}
@@ -21,7 +22,8 @@ class BusinessCheckRegistrationResponseTest extends TestCase
 		$data->status = "OK";
 		$data->entityStatus = "foo";
 
-		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected property [entityName] missing from response data');
+		$this->expectException('SynergyWholesale\Exception\BadDataException');
+		$this->expectExceptionMessage('Expected property [entityName] missing from response data');
 
 		new BusinessCheckRegistrationResponse($data, 'BusinessCheckRegistrationCommand');
 	}

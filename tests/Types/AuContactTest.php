@@ -1,4 +1,4 @@
-<?php  namespace SynergyWholesale\Types; 
+<?php  namespace SynergyWholesale\Types;
 
 use PHPUnit\Framework\TestCase;
 
@@ -6,26 +6,34 @@ class AuContactTest extends TestCase
 {
 	public function testBadContact1()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'firstname parameter is required');
-		$contact = new AuContact('', '', '', '', '', '', '', new AuState('NSW'), new AuPostCode('1111'), new Phone('+61.111111111'), new Email('foo@example.com'));
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('firstname parameter is required');
+
+		new AuContact('', '', '', '', '', '', '', new AuState('NSW'), new AuPostCode('1111'), new Phone('+61.111111111'), new Email('foo@example.com'));
 	}
 
 	public function testBadContact2()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'lastname parameter is required');
-		$contact = new AuContact('firstname', '', '', '', '', '', '', new AuState('NSW'), new AuPostCode('1111'), new Phone('+61.111111111'), new Email('foo@example.com'));
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('lastname parameter is required');
+
+		new AuContact('firstname', '', '', '', '', '', '', new AuState('NSW'), new AuPostCode('1111'), new Phone('+61.111111111'), new Email('foo@example.com'));
 	}
 
 	public function testBadContact3()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'address1 parameter is required');
-		$contact = new AuContact('firstname', 'lastname', '', '', '', '', '', new AuState('NSW'), new AuPostCode('1111'), new Phone('+61.111111111'), new Email('foo@example.com'));
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('address1 parameter is required');
+
+		new AuContact('firstname', 'lastname', '', '', '', '', '', new AuState('NSW'), new AuPostCode('1111'), new Phone('+61.111111111'), new Email('foo@example.com'));
 	}
 
 	public function testBadContact4()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'suburb parameter is required');
-		$contact = new AuContact('firstname', 'lastname', '', 'address1', '', '', '', new AuState('NSW'), new AuPostCode('1111'), new Phone('+61.111111111'), new Email('foo@example.com'));
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('suburb parameter is required');
+
+		new AuContact('firstname', 'lastname', '', 'address1', '', '', '', new AuState('NSW'), new AuPostCode('1111'), new Phone('+61.111111111'), new Email('foo@example.com'));
 	}
 
 	public function testContact()

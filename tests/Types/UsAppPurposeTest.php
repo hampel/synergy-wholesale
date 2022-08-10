@@ -6,7 +6,8 @@ class UsAppPurposeTest extends TestCase
 {
 	public function testBadAppPurpose()
 	{
-		$this->expectException('SynergyWholesale\Exception\UnknownAppPurposeException', 'Unknown app purpose [foo]');
+		$this->expectException('SynergyWholesale\Exception\UnknownAppPurposeException');
+		$this->expectExceptionMessage('Unknown app purpose [foo]');
 
 		new UsAppPurpose('foo');
 	}

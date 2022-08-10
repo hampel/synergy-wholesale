@@ -10,7 +10,8 @@ class GetDomainPricingResponseTest extends TestCase
 		$data = new stdClass();
 		$data->status = "OK";
 
-		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected property [pricing] missing from response data');
+		$this->expectException('SynergyWholesale\Exception\BadDataException');
+		$this->expectExceptionMessage('Expected property [pricing] missing from response data');
 
 		new GetDomainPricingResponse($data, 'GetDomainPricingCommand');
 	}

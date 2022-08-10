@@ -6,21 +6,24 @@ class AuRegistrantTest extends TestCase
 {
 	public function testMissingRegistrantName()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Missing argument: registrantName');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('Missing argument: registrantName');
 
-		$reg = new AuRegistrant("", "", new AuOrganisationType('Company'));
+		new AuRegistrant("", "", new AuOrganisationType('Company'));
 	}
 
 	public function testMissingRegistrantId()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Missing argument for Company registrant: registrantId');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('Missing argument for Company registrant: registrantId');
 
-		$reg = new AuRegistrant("foo", "", new AuOrganisationType('Company'));
+		new AuRegistrant("foo", "", new AuOrganisationType('Company'));
 	}
 
 	public function testNewMissingRegistrantName()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'registrantName parameter is required for a Registered Business');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('registrantName parameter is required for a Registered Business');
 
 		$br = new AuBusinessRegistration(
 			"B111",
@@ -33,7 +36,7 @@ class AuRegistrantTest extends TestCase
 			new AuState('NSW')
 		);
 
-		$reg = AuRegistrant::newFromAuBusinessRegistration($br);
+		AuRegistrant::newFromAuBusinessRegistration($br);
 	}
 
 	public function testRegistrant()

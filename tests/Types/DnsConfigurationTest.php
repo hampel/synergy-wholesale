@@ -6,7 +6,8 @@ class DnsConfigurationTest extends TestCase
 {
 	public function testUnknownConfig()
 	{
-		$this->expectException('SynergyWholesale\Exception\UnknownDnsConfigurationException', 'Unknown DNS Configuration [foo]');
+		$this->expectException('SynergyWholesale\Exception\UnknownDnsConfigurationException');
+		$this->expectExceptionMessage('Unknown DNS Configuration [foo]');
 
 		new DnsConfiguration('foo');
 	}

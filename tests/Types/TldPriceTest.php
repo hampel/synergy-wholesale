@@ -6,7 +6,8 @@ class TldPriceTest extends TestCase {
 
 	public function testBadTldPriceMinPeriodRequired()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'minPeriod parameter is required');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('minPeriod parameter is required');
 
 		new TldPrice(
 			new Tld('foo'),
@@ -21,7 +22,8 @@ class TldPriceTest extends TestCase {
 
 	public function testBadTldPriceMaxPeriodRequired()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'maxPeriod parameter is required');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('maxPeriod parameter is required');
 
 		new TldPrice(
 			new Tld('foo'),
@@ -36,7 +38,8 @@ class TldPriceTest extends TestCase {
 
 	public function testBadTldPriceMaxPeriodLess()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'maxPeriod should not be less than minPeriod');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('maxPeriod should not be less than minPeriod');
 
 		new TldPrice(
 			new Tld('foo'),
@@ -51,7 +54,8 @@ class TldPriceTest extends TestCase {
 
 	public function testBadTldPriceTransferNumeric()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'transfer should be numeric');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('transfer should be numeric');
 
 		new TldPrice(
 			new Tld('foo'),
@@ -66,7 +70,8 @@ class TldPriceTest extends TestCase {
 
 	public function testBadTldPriceRenewNumeric()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'renew should be numeric');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('renew should be numeric');
 
 		new TldPrice(
 			new Tld('foo'),
@@ -81,7 +86,8 @@ class TldPriceTest extends TestCase {
 
 	public function testBadTldPriceRedemptionNumeric()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'redemption should be numeric');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('redemption should be numeric');
 
 		new TldPrice(
 			new Tld('foo'),
@@ -96,7 +102,8 @@ class TldPriceTest extends TestCase {
 
 	public function testBadTldPriceRegisterIndex()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'register year must not be less than 1');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('register year must not be less than 1');
 
 		new TldPrice(
 			new Tld('foo'),
@@ -111,7 +118,8 @@ class TldPriceTest extends TestCase {
 
 	public function testBadTldPriceRegisterIndexMax()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'register year must not be more than 1');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('register year must not be more than 1');
 
 		new TldPrice(
 			new Tld('foo'),

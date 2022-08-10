@@ -32,7 +32,8 @@ class TransferDomainCommandTest extends TestCase
 
 	public function testBadAuthInfo()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'authInfo parameter is required');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('authInfo parameter is required');
 
 		new TransferDomainCommand(
 			$this->domain,
@@ -43,9 +44,10 @@ class TransferDomainCommandTest extends TestCase
 
 	public function testBadAuthInfo2()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'authInfo parameter is required');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('authInfo parameter is required');
 
-		$command = new TransferDomainCommand(
+		new TransferDomainCommand(
 			$this->domain,
 			"",
 			$this->contact

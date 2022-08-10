@@ -6,7 +6,8 @@ class UkDomainTest extends TestCase
 {
 	public function testBadDomain()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid domain name [example.com] - must be a .uk domain');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('Invalid domain name [example.com] - must be a .uk domain');
 
 		new UkDomain('example.com');
 	}

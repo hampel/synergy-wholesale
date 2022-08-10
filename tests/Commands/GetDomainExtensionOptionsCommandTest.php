@@ -7,7 +7,8 @@ class GetDomainExtensionOptionsCommandTest extends TestCase
 {
 	public function testBadTld()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid Top Level Domain [example1]');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('Invalid Top Level Domain [example1]');
 
 		new GetDomainExtensionOptionsCommand(new Tld('example1'));
 	}

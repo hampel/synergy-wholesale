@@ -11,7 +11,8 @@ namespace SynergyWholesale
 		{
 			$commandName = 'SynergyWholesale\Commands\FooCommand';
 
-			$this->expectException('SynergyWholesale\Exception\ClassNotRegisteredException', 'Response class [SynergyWholesale\Responses\FooResponse] does not exist');
+			$this->expectException('SynergyWholesale\Exception\ClassNotRegisteredException');
+			$this->expectExceptionMessage('Response class [SynergyWholesale\Responses\FooResponse] does not exist');
 
 			$rg = new BasicResponseGenerator();
 			$rg->buildResponse($commandName, new StdClass(), 'foo');

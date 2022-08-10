@@ -6,7 +6,8 @@ class AuDomainTest extends TestCase {
 
 	public function testBadDomain()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid domain name [example.com] - must be a .au domain');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('Invalid domain name [example.com] - must be a .au domain');
 
 		new AuDomain('example.com');
 	}

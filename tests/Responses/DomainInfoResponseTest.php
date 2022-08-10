@@ -1,4 +1,4 @@
-<?php  namespace SynergyWholesale\Responses; 
+<?php  namespace SynergyWholesale\Responses;
 
 use stdClass;
 use PHPUnit\Framework\TestCase;
@@ -11,7 +11,8 @@ class DomainInfoResponseTest extends TestCase
 		$data = new stdClass();
 		$data->status = "OK";
 
-		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected property [domainName] missing from response data');
+		$this->expectException('SynergyWholesale\Exception\BadDataException');
+		$this->expectExceptionMessage('Expected property [domainName] missing from response data');
 
 		new DomainInfoResponse($data, 'DomainInfoCommand');
 	}
@@ -22,7 +23,8 @@ class DomainInfoResponseTest extends TestCase
 		$data->status = "OK";
 		$data->domainName = '';
 
-		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected property [domain_status] missing from response data');
+		$this->expectException('SynergyWholesale\Exception\BadDataException');
+		$this->expectExceptionMessage('Expected property [domain_status] missing from response data');
 
 		new DomainInfoResponse($data, 'DomainInfoCommand');
 	}
@@ -34,7 +36,8 @@ class DomainInfoResponseTest extends TestCase
 		$data->domainName = '';
 		$data->domain_status = '';
 
-		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected property [domain_expiry] missing from response data');
+		$this->expectException('SynergyWholesale\Exception\BadDataException');
+		$this->expectExceptionMessage('Expected property [domain_expiry] missing from response data');
 
 		new DomainInfoResponse($data, 'DomainInfoCommand');
 	}
@@ -47,7 +50,8 @@ class DomainInfoResponseTest extends TestCase
 		$data->domain_status = '';
 		$data->domain_expiry = '';
 
-		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected property [nameServers] missing from response data');
+		$this->expectException('SynergyWholesale\Exception\BadDataException');
+		$this->expectExceptionMessage('Expected property [nameServers] missing from response data');
 
 		new DomainInfoResponse($data, 'DomainInfoCommand');
 	}
@@ -61,7 +65,8 @@ class DomainInfoResponseTest extends TestCase
 		$data->domain_expiry = '';
 		$data->nameServers = '';
 
-		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected property [dnsConfig] missing from response data');
+		$this->expectException('SynergyWholesale\Exception\BadDataException');
+		$this->expectExceptionMessage('Expected property [dnsConfig] missing from response data');
 
 		new DomainInfoResponse($data, 'DomainInfoCommand');
 	}
@@ -76,7 +81,8 @@ class DomainInfoResponseTest extends TestCase
 		$data->nameServers = '';
 		$data->dnsConfig = '';
 
-		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected property [dnsConfigName] missing from response data');
+		$this->expectException('SynergyWholesale\Exception\BadDataException');
+		$this->expectExceptionMessage('Expected property [dnsConfigName] missing from response data');
 
 		new DomainInfoResponse($data, 'DomainInfoCommand');
 	}
@@ -97,7 +103,8 @@ class DomainInfoResponseTest extends TestCase
 		$data->icannStatus = '';
 		$data->icannVerificationDateEnd = '';
 
-		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected property [domainPassword] missing from response data');
+		$this->expectException('SynergyWholesale\Exception\BadDataException');
+		$this->expectExceptionMessage('Expected property [domainPassword] missing from response data');
 
 		new DomainInfoResponse($data, 'DomainInfoCommand');
 	}

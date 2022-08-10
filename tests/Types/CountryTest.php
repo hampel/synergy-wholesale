@@ -1,4 +1,4 @@
-<?php  namespace SynergyWholesale\Types; 
+<?php  namespace SynergyWholesale\Types;
 
 use PHPUnit\Framework\TestCase;
 
@@ -6,23 +6,26 @@ class CountryTest extends TestCase {
 
 	public function testBadCountry1()
 	{
-		$this->expectException('SynergyWholesale\Exception\UnknownCountryException', 'Unknown country []');
+		$this->expectException('SynergyWholesale\Exception\UnknownCountryException');
+		$this->expectExceptionMessage('Unknown country []');
 
-		$country = new Country('');
+		new Country('');
 	}
 
 	public function testBadCountry2()
 	{
-		$this->expectException('SynergyWholesale\Exception\UnknownCountryException', 'Unknown country [AA]');
+		$this->expectException('SynergyWholesale\Exception\UnknownCountryException');
+		$this->expectExceptionMessage('Unknown country [AA]');
 
-		$country = new Country('AA');
+		new Country('AA');
 	}
 
 	public function testBadCountry3()
 	{
-		$this->expectException('SynergyWholesale\Exception\UnknownCountryException', 'Unknown country [AUS]');
+		$this->expectException('SynergyWholesale\Exception\UnknownCountryException');
+		$this->expectExceptionMessage('Unknown country [AUS]');
 
-		$country = new Country('AUS');
+		new Country('AUS');
 	}
 
 	public function testCountry()

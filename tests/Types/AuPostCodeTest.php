@@ -1,4 +1,4 @@
-<?php  namespace SynergyWholesale\Types; 
+<?php  namespace SynergyWholesale\Types;
 
 use PHPUnit\Framework\TestCase;
 
@@ -6,51 +6,58 @@ class AuPostCodeTest extends TestCase
 {
 	public function testBadPostCode1()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid postcode []');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('Invalid postcode []');
 
-		$postcode = new AuPostCode('');
+		new AuPostCode('');
 	}
 
 	public function testBadPostCode2()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid postcode [0]');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('Invalid postcode [0]');
 
-		$postcode = new AuPostCode(0);
+		new AuPostCode(0);
 	}
 
 	public function testBadPostCode3()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid postcode [0]');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('Invalid postcode [0]');
 
-		$postcode = new AuPostCode(0000);
+		new AuPostCode(0000);
 	}
 
 	public function testBadPostCode4()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid postcode [10000]');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('Invalid postcode [10000]');
 
-		$postcode = new AuPostCode(10000);
+		new AuPostCode(10000);
 	}
 
 	public function testBadPostCode5()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid postcode [1.111]');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('Invalid postcode [1.111]');
 
-		$postcode = new AuPostCode(1.111);
+		new AuPostCode(1.111);
 	}
 
 	public function testBadPostCode6()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid postcode [00000]');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('Invalid postcode [00000]');
 
-		$postcode = new AuPostCode("00000");
+		new AuPostCode("00000");
 	}
 
 	public function testBadPostCode7()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid postcode [0.000]');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('Invalid postcode [0.000]');
 
-		$postcode = new AuPostCode("0.000");
+		new AuPostCode("0.000");
 	}
 
 	public function testPostcode()

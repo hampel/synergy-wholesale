@@ -42,7 +42,8 @@ class SynergyWholesaleTest extends TestCase
 	{
 		$this->client->shouldReceive('foo')->andReturn(null);
 
-		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Empty response received');
+		$this->expectException('SynergyWholesale\Exception\BadDataException');
+		$this->expectExceptionMessage('Empty response received');
 
 		$sw = new SynergyWholesale($this->client, $this->responseGenerator, null, "reseller_id", "api_key");
 		$sw->execute($this->command);
@@ -52,7 +53,8 @@ class SynergyWholesaleTest extends TestCase
 	{
 		$this->client->shouldReceive('foo')->andReturn("");
 
-		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Empty response received');
+		$this->expectException('SynergyWholesale\Exception\BadDataException');
+		$this->expectExceptionMessage('Empty response received');
 
 		$sw = new SynergyWholesale($this->client, $this->responseGenerator, null, "reseller_id", "api_key");
 		$sw->execute($this->command);
@@ -64,7 +66,8 @@ class SynergyWholesaleTest extends TestCase
 
 		$this->client->shouldReceive('foo')->andReturn($otherobject);
 
-		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected a stdClass response from Soap command [foo]');
+		$this->expectException('SynergyWholesale\Exception\BadDataException');
+		$this->expectExceptionMessage('Expected a stdClass response from Soap command [foo]');
 
 		$sw = new SynergyWholesale($this->client, $this->responseGenerator, null, "reseller_id", "api_key");
 		$sw->execute($this->command);

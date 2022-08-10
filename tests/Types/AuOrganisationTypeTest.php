@@ -6,7 +6,8 @@ class AuOrganisationTypeTest extends TestCase
 {
 	public function testBadOrganisation()
 	{
-		$this->expectException('SynergyWholesale\Exception\UnknownOrganisationTypeException', 'Unknown organisation type [foo]');
+		$this->expectException('SynergyWholesale\Exception\UnknownOrganisationTypeException');
+		$this->expectExceptionMessage('Unknown organisation type [foo]');
 
 		new AuOrganisationType('foo');
 	}

@@ -6,7 +6,8 @@ class DomainTest extends TestCase {
 
 	public function testBadDomain()
 	{
-		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException', 'Invalid domain name [example]');
+		$this->expectException('SynergyWholesale\Exception\InvalidArgumentException');
+		$this->expectExceptionMessage('Invalid domain name [example]');
 
 		new Domain('example');
 	}

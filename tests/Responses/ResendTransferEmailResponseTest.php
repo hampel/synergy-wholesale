@@ -10,7 +10,8 @@ class ResendTransferEmailResponseTest extends TestCase
 		$data = new stdClass();
 		$data->status = "OK";
 
-		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Expected property [newEmail] missing from response data');
+		$this->expectException('SynergyWholesale\Exception\BadDataException');
+		$this->expectExceptionMessage('Expected property [newEmail] missing from response data');
 
 		new ResendTransferEmailResponse($data, 'ResendTransferEmailCommand');
 	}
@@ -21,7 +22,8 @@ class ResendTransferEmailResponseTest extends TestCase
 		$data->status = "OK";
 		$data->newEmail = 'foo';
 
-		$this->expectException('SynergyWholesale\Exception\BadDataException', 'Response parameter newEmail should contain an email address');
+		$this->expectException('SynergyWholesale\Exception\BadDataException');
+		$this->expectExceptionMessage('Response parameter newEmail should contain an email address');
 
 		new ResendTransferEmailResponse($data, 'ResendTransferEmailCommand');
 	}
