@@ -316,6 +316,12 @@ class SynergyWholesale
 	 */
 	public function listContacts(Commands\ListContactsCommand $command) { return $this->execute($command); }
 
+    /**
+     * @param Commands\ListDomainsCommand $command
+     * @return Responses\ListDomainsResponse
+     */
+    public function listDomains(Commands\ListDomainsCommand $command) { return $this->execute($command); }
+
 	/**
 	 * @param Commands\LockDomainCommand $command
 	 * @return Responses\LockDomainResponse
