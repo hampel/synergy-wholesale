@@ -8,7 +8,7 @@ Synergy Wholesale API Wrapper
 
 A Synergy Wholesale API wrapper using SoapClient
 
-By [Simon Hampel](https://twitter.com/SimonHampel).
+By [Simon Hampel](mailto:simon@hampelgroup.com)
 
 Installation
 ------------
