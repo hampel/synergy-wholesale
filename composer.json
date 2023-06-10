@@ -29,6 +29,9 @@
 		"phpunit/phpunit": "^10.0",
 		"mockery/mockery": "~1.0"
 	},
+    "suggest": {
+        "hampel/synergy-wholesale-laravel": "Laravel service provider wrapper around this package with caching support"
+    },
 	"autoload" : {
 		"psr-4" : {
 			"SynergyWholesale\\" : "src/"
