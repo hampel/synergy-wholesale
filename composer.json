@@ -1,7 +1,7 @@
 {
 	"name" : "hampel/synergy-wholesale",
-	"description" : "Wrapper for Synergy Wholesale API using SoapClient",
 	"homepage" : "https://bitbucket.org/hampel/synergy-wholesale",
+	"description" : "Synergy Wholesale API wrapper using SoapClient",
 	"authors": [{
 		"name": "Simon Hampel",
 		"email": "simon@hampelgroup.com",
