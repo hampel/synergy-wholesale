@@ -13,19 +13,9 @@ By [Simon Hampel](mailto:simon@hampelgroup.com)
 Installation
 ------------
 
-The recommended way of installing the Synergy Wholesale Wrapper is through [Composer](http://getcomposer.org):
+To install using composer, run the following command:
 
-	:::bash
-	composer require "hampel/synergy-wholesale"
-
-Or manually define it in your `composer.json`
-
-    :::json
-    {
-        "require": {
-            "hampel/synergy-wholesale": "^1.3"
-        }
-    }
+`composer require hampel/synergy-wholesale`
 
 Note that if you intend to use this package with Laravel, we recommend installing the
 [hampel/synergy-wholesale-laravel](https://packagist.org/packages/hampel/synergy-wholesale-laravel) package instead,
