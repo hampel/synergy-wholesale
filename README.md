@@ -3,7 +3,7 @@ Synergy Wholesale API Wrapper
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/hampel/synergy-wholesale.svg?style=flat-square)](https://packagist.org/packages/hampel/synergy-wholesale)
 [![Total Downloads](https://img.shields.io/packagist/dt/hampel/synergy-wholesale.svg?style=flat-square)](https://packagist.org/packages/hampel/synergy-wholesale)
-[![Open Issues](https://img.shields.io/bitbucket/issues/hampel/synergy-wholesale.svg?style=flat-square)](https://bitbucket.org/hampel/synergy-wholesale/issues)
+[![Open Issues](https://img.shields.io/github/issues-raw/hampel/synergy-wholesale.svg?style=flat-square)](https://github.com/hampel/synergy-wholesale/issues)
 [![License](https://img.shields.io/packagist/l/hampel/synergy-wholesale.svg?style=flat-square)](https://packagist.org/packages/hampel/synergy-wholesale)
 
 A Synergy Wholesale API wrapper using SoapClient
