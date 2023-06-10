@@ -41,12 +41,7 @@
 		"psr-4" : {
 			"SynergyWholesale\\" : "tests/"
 		}
-	},
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.3.x-dev"
-        }
-    }
+	}
 }
 
 
