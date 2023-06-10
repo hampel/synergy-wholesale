@@ -44,76 +44,74 @@ Exceptions are thrown on errors.
 
 __Long-hand Initialisation Example__
 
-    :::php
-    <?php
-    // start by creating a SoapClient with the location of the WSDL file supplied by Synergy Wholesale
-    $client = new SoapClient(null, array('location' => SynergyWholesale::WSDL_URL, 'uri' => ''));
+```php
+// start by creating a SoapClient with the location of the WSDL file supplied by Synergy Wholesale
+$client = new SoapClient(null, array('location' => SynergyWholesale::WSDL_URL, 'uri' => ''));
 
-    // create a Response generator (the engine which maps command objects to response objects)
-    $responseGenerator = new \SynergyWholesale\BasicResponseGenerator();
+// create a Response generator (the engine which maps command objects to response objects)
+$responseGenerator = new \SynergyWholesale\BasicResponseGenerator();
 
-    // now we can build our command execution engine, pass "null" for the logger if we don't have one
-    $sw = new \SynergyWholesale\SynergyWholesale($client, $responseGenerator, null, "reseller_id", "api_key");
+// now we can build our command execution engine, pass "null" for the logger if we don't have one
+$sw = new \SynergyWholesale\SynergyWholesale($client, $responseGenerator, null, "reseller_id", "api_key");
+```
 
 __Alternative Static Factory Example__
 
-    :::php
-    <?php
-    // does all the heavy lifting for you if you don't need a logger
-    $sw = \SynergyWholesale\SynergyWholesale::make("reseller_id", "api_key");
+```php
+// does all the heavy lifting for you if you don't need a logger
+$sw = \SynergyWholesale\SynergyWholesale::make("reseller_id", "api_key");
+```
 
 __Balance Query Command Example__
 
-    :::php
-    <?php
-    // create a command object for the SynergyWholesale service to execute
-    $command = new BalanceQueryCommand(); // no parameters required for this call!
+```php
+// create a command object for the SynergyWholesale service to execute
+$command = new BalanceQueryCommand(); // no parameters required for this call!
 
-    // execute the command
-    try {
-    	$response = $sw->execute($command);
-    }
-    catch (Exception $e) {
-    	// different exceptions are thrown on different types of errors
-    	// you can be as coarse or as granular as you like with error handling
-    	exit("Error executing command: " . $e->getMessage());
-    }
+// execute the command
+try {
+    $response = $sw->execute($command);
+}
+catch (Exception $e) {
+    // different exceptions are thrown on different types of errors
+    // you can be as coarse or as granular as you like with error handling
+    exit("Error executing command: " . $e->getMessage());
+}
 
-    echo "Account balance: " . $response->getBalance();
+echo "Account balance: " . $response->getBalance();
+```
 
 __Domain Information Command Example__
 
-    :::php
-    <?php
+```php
+// need to create a Domain object first
+try {
+    $domain = new \SynergyWholesale\Types\Domain('example.com');
+}
+catch (\SynergyWholesale\Exception\InvalidArgumentException $e) {
+    exit("Error building domain object: " . $e->getMessage());
+}
 
-    // need to create a Domain object first
-    try {
-    	$domain = new \SynergyWholesale\Types\Domain('example.com');
-    }
-    catch (\SynergyWholesale\Exception\InvalidArgumentException $e) {
-    	exit("Error building domain object: " . $e->getMessage());
-    }
+// pass this as a parameter to the command
+$command = new DomainInfoCommand($domain);
 
-    // pass this as a parameter to the command
-    $command = new DomainInfoCommand($domain);
+// execute the command
+try {
+    $response = $sw->execute($command);
+}
+catch (Exception $e) {
+    exit("Error executing command: " . $e->getMessage());
+}
 
-    // execute the command
-    try {
-    	$response = $sw->execute($command);
-    }
-    catch (Exception $e) {
-    	exit("Error executing command: " . $e->getMessage());
-    }
+echo "
 
-    echo "
+// check availability of a domain for registration
+$command = new CheckDomainCommand('example.com');
+$response = $sw->execute($command);
 
-	// check availability of a domain for registration
-	$command = new CheckDomainCommand('example.com');
-	$response = $sw->execute($command);
+var_dump($response);
 
-	var_dump($response);
-
-	?>
+```
 
 Notes
 -----
