@@ -6,7 +6,7 @@ Synergy Wholesale API Wrapper
 [![Open Issues](https://img.shields.io/github/issues-raw/hampel/synergy-wholesale.svg?style=flat-square)](https://github.com/hampel/synergy-wholesale/issues)
 [![License](https://img.shields.io/packagist/l/hampel/synergy-wholesale.svg?style=flat-square)](https://packagist.org/packages/hampel/synergy-wholesale)
 
-A Synergy Wholesale API wrapper using SoapClient
+Synergy Wholesale API wrapper using SoapClient
 
 By [Simon Hampel](mailto:simon@hampelgroup.com)
 
