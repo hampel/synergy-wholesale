@@ -5,3 +5,5 @@ composer.lock
 .phpunit.cache/
 .idea/
 .local/
+.phpunit.result.cache
+CLAUDE.local.md
