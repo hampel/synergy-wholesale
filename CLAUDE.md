@@ -24,6 +24,9 @@ composer generate                           # regenerate src/Generated from reso
 
 vendor/bin/phpunit tests/Value/DomainTest.php    # one file
 vendor/bin/phpunit --filter it_omits_null        # one test
+
+vendor/bin/rig                              # list the harness exercises
+vendor/bin/rig connect                      # run one -- real API call, read-only
 ```
 
 ## Architecture
@@ -84,12 +87,59 @@ Pint runs at the end of generation, so freshly generated output always passes `p
 Nothing to write by hand: refresh `resources/wsdl.xml` and run `composer generate`. If the new
 operation does not land in a sensible group, extend `group_of()`.
 
+## The harness
+
+`harness/` holds `hampel/rig` exercises: `vendor/bin/rig` to list them, `vendor/bin/rig
+<name>` to run one. They make real calls against a live reseller account, which is the
+point — the suite mocks the transport, so the fixtures encode the same beliefs the code
+does, and only a real call can tell you the API still agrees.
+
+**The harness is read-only by construction.** Every call goes through
+`harness/lib/ReadOnlyTransport.php`, which holds an allowlist of operations verified
+read-only against the v3.16 documentation and refuses everything else. There is no flag
+that turns writes on, because there is no flag — an exercise cannot spend money by getting
+a method name wrong, only fail.
+
+That is a decorator rather than a per-exercise opt-in because of what this API does. An
+opt-in flag protects the exercise that has it and does nothing about the exercise that
+calls the wrong method by mistake, and here a mistake registers a domain, transfers one
+between registrars, pays a redemption fee or emails a registrant.
+
+### Adding to the allowlist is the dangerous edit
+
+The names do not describe the behaviour, and the traps are not the ones you would guess:
+
+| looks safe | actually |
+|---|---|
+| `restoreDomain` | takes `redemptionPrice`, *"the price that you are charged"* — a paid redemption |
+| `resend*Email` (six of them) | sends real mail to a real registrant |
+| `enableTempUrl` | takes `hostingGetServiceRequest`; the type says get, the operation writes |
+| `checkDomainEPPCode` | reads, but sits among transfer writers |
+| `determineSMSCost` | genuinely a quote — and one method away from `sendSMS` on the same object |
+
+Check the published PDF, not the method name. A read-only operation is described with
+"return", "retrieve", "obtain" or "check", and takes no price and no action parameter.
+
+### If a write exercise is ever added
+
+It needs a switch of its own, refused under an agent by `harness_agent_refuses()` in
+`harness/lib/agent.php`. Name it after what it unlocks, document it in `.env.example` as
+something that must never live in `.env`, and read the note in that file first.
+
+### Credentials
+
+`SW_RESELLER_ID` and `SW_API_KEY`, from `.env` beside the package — copy `.env.example`.
+rig does not read that file when `CLAUDECODE` is set, so an agent session fails with a
+message saying so. **That is the guard working.** Do not go looking for the key.
+
+Note the API authorises by IP address as well as by key, so a correct key from an unlisted
+address fails with `ERR_RESELLER_NOT_AUTHORISED`, which reads like a bad key.
+
 ## Conventions
 
-PSR-12 via Pint, PHPStan level 10, PHP 8.3 floor per `/srv/www/version-support.html` (Tier A:
-published package, widest support, CI at the corners). Tests use PHPUnit attributes
-(`#[Test]`, `#[DataProvider]`) and snake_case method names.
+PSR-12 via Pint, PHPStan level 10, PHP 8.3 floor (Tier A: published package, widest
+support, CI at the corners). Tests use PHPUnit attributes (`#[Test]`, `#[DataProvider]`)
+and snake_case method names.
 
-Do not add a `harness/` here. Every exercise worth running would post a real registration,
-transfer or SMS against a live reseller account; `FixtureTransport` covers the wiring, and the
-things it cannot cover are the things that must not be run casually.
+`harness/` is deliberately outside the PHPStan paths and the test suite: exercises are
+driven by hand and assert nothing, so holding them to the runtime's contract buys nothing.

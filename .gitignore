@@ -7,3 +7,10 @@ composer.lock
 .local/
 .phpunit.result.cache
 CLAUDE.local.md
+
+# Harness credentials. Deliberately not anchored with a leading slash: rig resolves
+# --env=<file> relative to the package, so an environment file can legitimately sit in a
+# subdirectory. .env.* covers the variants that option invites; .env.example stays tracked.
+.env
+.env.*
+!.env.example
