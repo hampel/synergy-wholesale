@@ -1,0 +1,22 @@
+parameters:
+    level: 10
+
+    paths:
+        - src
+        - tests
+        - tools
+
+    # Analyse against every PHP version the package claims to support, in one
+    # run. This covers the PHP axis of the support matrix without running it:
+    # PHPStan knows which functions exist in which version and what changed when.
+    # Keep in step with the "php" constraint in composer.json.
+    phpVersion:
+        min: 80300
+        max: 80500
+
+    # The generator is a build script, not library code: it runs once on a
+    # developer's machine against a file it ships with, and holding it to the
+    # same contract as the runtime would mean annotating every WSDL shape twice.
+    excludePaths:
+        analyse:
+            - tools/generate-api.php

@@ -4,88 +4,92 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-`hampel/synergy-wholesale` — a PHP wrapper around the Synergy Wholesale reseller SOAP API
-(`https://api.synergywholesale.com/?wsdl`). It has no runtime dependencies beyond `psr/log`, and it
-deliberately knows nothing about any framework: `hampel/synergy-wholesale-laravel` is a separate
-package that wraps this one with a service provider, facade and response caching.
+`hampel/synergy-wholesale` — a typed PHP client for the Synergy Wholesale reseller SOAP API,
+covering 138 of the 143 published operations. It has no runtime dependencies beyond `psr/log`
+and `ext-soap`, and knows nothing about any framework;
+`hampel/synergy-wholesale-laravel` is a separate package that adds Laravel wiring.
 
-Only the domain name and SMS portions of the API are implemented.
+Most of `src/` is generated. Read the next section before editing anything under
+`src/Generated`.
 
 ## Commands
 
 ```bash
 composer install
-vendor/bin/phpunit                                    # whole suite
-vendor/bin/phpunit tests/Types/DomainTest.php         # one file
-vendor/bin/phpunit --filter testResponse2             # one test
-```
+composer check                              # lint + analyse + test, what CI runs
+composer test                               # phpunit
+composer analyse                            # phpstan, level 10, PHP 8.3-8.5
+composer format                             # pint
+composer generate                           # regenerate src/Generated from resources/wsdl.xml
 
-There is no linter, no static analysis and no CI workflow in the repo.
+vendor/bin/phpunit tests/Value/DomainTest.php    # one file
+vendor/bin/phpunit --filter it_omits_null        # one test
+```
 
 ## Architecture
 
-Three parallel class families, joined by **naming convention rather than by any registry or map**.
-Nothing anywhere lists the API calls; the class names *are* the wiring, so a typo in a class name
-is a runtime failure, not a compile-time one.
+Three layers, and the boundary between them is what matters:
 
 ```
-Commands\CheckDomainCommand  --(strip 'Command', lcfirst)-->  SOAP method  checkDomain
-                             --(Commands→Responses, Command→Response)-->  Responses\CheckDomainResponse
+SynergyWholesale  ->  Generated\Api\*Api  ->  Client  ->  Transport  ->  SoapClient
+   (groups)            (138 methods)       (envelope)     (seam)
 ```
 
-- **`SynergyWholesale`** (`src/SynergyWholesale.php`) is the engine. `execute(Command)` derives the
-  SOAP method name from the command's short class name (`deriveSoapCommand`), merges the auth
-  credentials into the request array (`prepareOptions`), calls the method on `SoapClient` via
-  `call_user_func`, checks a `stdClass` came back, and hands the raw response to the response
-  generator. The long list of one-line methods (`checkDomain()`, `domainInfo()`, …) below it is
-  typed sugar only — each just calls `execute()`, and exists so IDEs and static analysis can see the
-  return type. `resendVerificationEmail()` is the one missing; `execute()` still handles it.
-- **`Commands\*`** implement `Command`: `getRequestData()` returns the key-value array sent over the
-  wire, and `getKey()` returns a cache key for downstream consumers (the Laravel package) or null
-  when the call is uncachable. Commands take **Types** in their constructors, never raw strings, so
-  input validation happens before any network call.
-- **`Responses\*`** extend `Response`, whose constructor runs a fixed three-step pipeline:
-  1. `validateStatus()` — `$response->status` must appear in the subclass's `$successStatus`
-     (default `OK`/`ok`; `CheckDomainResponse` overrides it with `AVAILABLE`/`UNAVAILABLE`).
-     Anything else throws `ResponseErrorException`.
-  2. `validateExpectedFields()` — every name in `$expectedFields` must be set on the raw response.
-  3. `validateData()` — an empty hook subclasses override for structural checks (see
-     `DomainInfoResponse`, which varies its expectations by TLD).
+- **`SynergyWholesale`** is the entry point and does nothing but hand out group objects —
+  `domains()`, `dns()`, `ssl()`, and seven more. `make()` builds a live client; `with()` takes
+  any `Transport`.
+- **`Generated\Api\*Api`** hold one method per operation. Each is a single line: build the
+  parameter array, call `Client::call()`, hydrate the typed response. There is no logic here,
+  by design — anything worth testing would otherwise be copied 138 times.
+- **`Client`** is where the behaviour lives: it injects credentials, drops null parameters,
+  redacts secrets from the log, and applies the envelope rule. **Success is any status not
+  prefixed `ERR_`.** That covers `OK`, `OK_NO_RENEWAL`, `AVAILABLE`, `UNAVAILABLE` and anything
+  the registry invents next. v1 inverted this — whitelisting success values per response class —
+  which is why it threw on statuses that meant success.
+- **`Transport`** is the network seam. `SoapTransport` in production (non-WSDL mode, since the
+  generator has already consumed the WSDL at build time), `FixtureTransport` in tests. A caching
+  or retrying decorator belongs here and nowhere else.
+- **`Wire`** holds the hydration helpers. One method per target type (`string()`, `int()`,
+  `bool()`, `strings()`, `objects()`, `objectLists()`) rather than one method taking a type name:
+  a single method returns a union, and every generated constructor then receives a union where it
+  declared one type. Every helper is total — missing fields are null, never an error.
+- **`Value\`** is the only hand-written domain logic: `Domain` (which extension a name sits under
+  is not derivable from its shape — it needs the second-level-domain list) and `Contact`.
 
-  So a response object is only ever constructed for a call that succeeded and returned usable data.
-  Errors surface as exceptions, never as return values or status flags.
-- **`Types\*`** are validating value objects: validate in the constructor and throw on bad input,
-  expose `getX()`, `__toString()` and `equals()`, and hold no setters. Enumerated types
-  (`AuState`, `Country`, `AuIdType`, `DnsConfiguration`, …) keep their allowed values in a public
-  static array and throw their own specific exception subclass.
-- **`Exception\*`** all implement the empty marker interface `Exception`, so a caller can catch
-  `SynergyWholesale\Exception\Exception` broadly or an individual class narrowly. `SoapException`
-  and `ResponseErrorException` carry the command name and raw response for diagnosis.
+### The generator
 
-`BasicResponseGenerator` is the only `ResponseGenerator` implementation; it is injected rather than
-hardcoded so consumers can substitute a caching or decorating generator (which is exactly what the
-Laravel package does).
+`tools/generate-api.php` reads `resources/wsdl.xml` and writes `src/Generated`. The output is
+committed, so consumers never run it and a diff shows exactly what changed when Synergy Wholesale
+publishes a new WSDL. CI regenerates and fails if the tree is stale.
 
-### Adding an API call
+Four things about the source WSDL that will silently produce wrong code if assumed away:
 
-Five files, and the names must line up exactly or the call fails at runtime:
+1. **Types are not named after their operations, and some are shared.** `listDomains` returns
+   `bulkDomainInfoResponse`; `hostingEnableTempUrl` takes `hostingGetServiceRequest`. Resolution
+   must go `portType -> message -> part type`. Name convention gets nine operations wrong.
+2. **`minOccurs` is not trustworthy.** For `transferDomain` the WSDL marks `organisation`, `fax`,
+   `idProtect` and `doRenewal` required while the published PDF documents the last two as
+   optional and never mentions the first two. `REQUIRED_OVERRIDES` records the discrepancies;
+   entries say whether a field **is required**, and the use site inverts them.
+3. **Some fields exist in both snake and camel form.** `domainInfoResponse` declares
+   `au_valid_eligibility` *and* `auValidEligibility`. Property names are therefore the wire names
+   verbatim — any normalisation collapses those pairs and drops a field.
+4. **A few types are arrays of arrays.** `listClients` returns `clientListArray` of
+   `clientListTypeArray` of the record. `Wire::objectLists()` handles that extra level.
 
-1. `src/Commands/FooCommand.php` implementing `Command`.
-2. `src/Responses/FooResponse.php` extending `Response`.
-3. A `foo(Commands\FooCommand $command)` one-liner in `SynergyWholesale`, with the `@return` docblock.
-4. `tests/Commands/FooCommandTest.php` — assert the `getRequestData()` array and `getKey()`.
-5. `tests/Responses/FooResponseTest.php` — build a `stdClass` by hand as the raw response and assert
-   both the accessors and the exceptions thrown on malformed data.
+Pint runs at the end of generation, so freshly generated output always passes `pint --test`.
 
-`SoapClient` is mocked with Mockery in `SynergyWholesaleTest`; no test touches the network.
+### Adding coverage for a new API operation
+
+Nothing to write by hand: refresh `resources/wsdl.xml` and run `composer generate`. If the new
+operation does not land in a sensible group, extend `group_of()`.
 
 ## Conventions
 
-The code targets an old PHP baseline and the style is consistent throughout — match it rather than
-modernising in passing: tabs, Allman braces, `array()` literals, `namespace` on the same line as
-`<?php`, docblock types instead of scalar type hints or return types, and `OR`/`AND` as the boolean
-operators.
+PSR-12 via Pint, PHPStan level 10, PHP 8.3 floor per `/srv/www/version-support.html` (Tier A:
+published package, widest support, CI at the corners). Tests use PHPUnit attributes
+(`#[Test]`, `#[DataProvider]`) and snake_case method names.
 
-Credentials are redacted before logging (`resellerID`, `apiKey` in `logCommand`, `domainPassword`
-in `logResponse`) — preserve that when touching the logging path. The logger is optional and every
-call goes through `log()`, which no-ops when none was injected.
+Do not add a `harness/` here. Every exercise worth running would post a real registration,
+transfer or SMS against a live reseller account; `FixtureTransport` covers the wiring, and the
+things it cannot cover are the things that must not be run casually.
