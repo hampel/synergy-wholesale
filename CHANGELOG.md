@@ -21,9 +21,9 @@ A complete rewrite. Version 2 shares no API with 1.x — see the upgrade table i
 
 * **Success is now any status not prefixed `ERR_`.** 1.x whitelisted the success values per
   response class and threw on everything else.
-* **Premium domain fields are reachable**: `premium`, `costPrice`, `basePrice`,
-  `requiresMembership`, `requiresApplication` and `preorderAvailable` on `checkDomain`. 1.x
-  exposed only `isAvailable()`.
+* **Premium domain fields are reachable**: `premium`, `costPrice`, `requiresMembership`,
+  `requiresApplication` and `preorderAvailable` on `checkDomain`, returned for an available
+  domain. 1.x exposed only `isAvailable()`.
 * **Single-element lists are normalised.** A response carrying one entry and a response carrying
   several now hydrate to the same shape.
 * **The domain name pattern is anchored.** 1.x accepted `https://example.com/path` and
