@@ -1,0 +1,21 @@
+version: 2
+
+updates:
+  # The actions in tests.yml are pinned to commit SHAs, which never update
+  # themselves. This is what moves them - and the pull requests double as the
+  # repository activity that stops GitHub disabling the scheduled run after 60
+  # days of dormancy.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      actions:
+        patterns:
+          - "*"
+    commit-message:
+      prefix: ci
+
+  # No composer entry on purpose: the lockfile is not committed, so there is
+  # nothing to bump, and the constraints in composer.json are deliberate policy
+  # rather than something to raise automatically.
