@@ -28,7 +28,7 @@
         "psr/log": "^1.0|^2.0|^3.0"
     },
     "require-dev": {
-        "hampel/rig": "^0.2",
+        "hampel/rig": "^1.0",
         "laravel/pint": "^1.30",
         "phpstan/phpstan": "^2.1.22",
         "phpunit/phpunit": "^12.0"
