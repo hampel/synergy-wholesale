@@ -14,47 +14,42 @@ A complete rewrite. Version 2 shares no API with 1.x — see the upgrade table i
 * Requests and responses are typed classes generated from `resources/wsdl.xml` by
   `composer generate`, and committed. CI regenerates on every push and fails if they have drifted.
 * Operations are grouped — `$sw->domains()->checkDomain(…)`, `$sw->ssl()->getCertStatus(…)` — with
-  method names matching the published documentation so it reads as the reference.
-* Response properties use the API's own field names verbatim. The WSDL declares both
-  `au_valid_eligibility` and `auValidEligibility` in the same type, so any snake-to-camel rule
-  would silently collapse a pair of live fields into one.
+  method names matching the published documentation.
+* Response properties use the API's own field names verbatim.
 
 ### Behaviour that was wrong in 1.x
 
 * **Success is now any status not prefixed `ERR_`.** 1.x whitelisted the success values per
-  response class, so every status the registry invented arrived as a thrown exception, and
-  `CheckDomainResponse` had to special-case `AVAILABLE`/`UNAVAILABLE`.
-* **Premium domain fields are reachable.** `checkDomain` has returned `premium`, `costPrice`,
-  `basePrice`, `requiresMembership`, `requiresApplication` and `preorderAvailable` since API
-  v3.4 in 2020; 1.x exposed only `isAvailable()`.
-* **Single-element lists are normalised.** SOAP-ENC cannot distinguish a list of one from a bare
-  value, so an account with exactly one nameserver returned a different shape from one with two.
-* **The domain name pattern is anchored.** 1.x matched a domain anywhere in the string, so
-  `https://example.com/path` and `not a domain example.com` both validated.
-* **Null parameters are omitted rather than sent**, which some operations reject outright.
+  response class and threw on everything else.
+* **Premium domain fields are reachable**: `premium`, `costPrice`, `basePrice`,
+  `requiresMembership`, `requiresApplication` and `preorderAvailable` on `checkDomain`. 1.x
+  exposed only `isAvailable()`.
+* **Single-element lists are normalised.** A response carrying one entry and a response carrying
+  several now hydrate to the same shape.
+* **The domain name pattern is anchored.** 1.x accepted `https://example.com/path` and
+  `not a domain example.com`.
+* **Null parameters are omitted rather than sent.**
 * EPP auth codes (`authInfo`) are redacted from logs alongside credentials and domain passwords.
 
 ### Removed
 
 * The five operations Synergy Wholesale deprecated in API v3.4 (February 2020):
   `domainRegisterAU`, `domainRegisterUK`, `domainRegisterUS`, `domainTransferUK` and
-  `resubmitFailedTransfer`, along with the `.au`/`.uk`/`.us` value objects that existed to serve
-  them. Use `domainRegister` and `transferDomain` with `getDomainEligibilityFields`.
-* Response caching. It required an override per operation, invalidated by hand-wired command
-  pairs, and fabricated a response object to satisfy a constructor. Cache the wire response
-  behind a `Transport` decorator instead.
-* The `Command`/`Response`/`ResponseGenerator` triple, and the `$fresh` parameter that leaked
-  caching into every read method's signature.
+  `resubmitFailedTransfer`, along with the `.au`/`.uk`/`.us` value objects. Use `domainRegister`
+  and `transferDomain` with `getDomainEligibilityFields`.
+* Response caching. Cache the wire response behind a `Transport` decorator instead.
+* The `Command`/`Response`/`ResponseGenerator` triple, and the `$fresh` parameter on every read
+  method.
 
 ### Added
 
 * A `Transport` interface between the client and the network, with `SoapTransport` for production
-  and `FixtureTransport` for tests — so the suite needs neither a socket nor a mock of a concrete
-  `SoapClient`.
+  and `FixtureTransport` for tests.
 * A `Contact` value object collapsing the four eleven-field contact blocks: `domainRegister` goes
   from 57 parameters to 17, `transferDomain` from 24 to 14.
 * PHPStan at level 10 across `src` and `tests`, checked against PHP 8.3 to 8.5.
 * Laravel Pint, an `.editorconfig`, and a `.gitattributes` pinning LF.
+* A read-only `hampel/rig` harness for exercising the live API.
 
 ### Support
 
