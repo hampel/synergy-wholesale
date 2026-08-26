@@ -73,17 +73,25 @@ foreach ($names as $name => $why) {
 $io->line();
 
 // The bulk call takes up to 30 names and returns a row per name. Worth its own look
-// because the per-row status is nested inside domainList rather than being the envelope
-// status - a different place, easy to conflate with the one above.
+// because the rows answer in a different vocabulary from the single check above: there is
+// no per-row status at all, and the name field is "domain", not "domainName". Availability
+// arrives as a bool rather than as an AVAILABLE/UNAVAILABLE status string.
 try {
     $bulk = $sw->domains()->bulkCheckDomain(domainList: array_keys($names));
 
     $io->success(sprintf('✓ bulkCheckDomain returned %d row(s)', count($bulk->domainList ?? [])));
 
     foreach ($bulk->domainList ?? [] as $row) {
-        if (is_object($row)) {
-            $io->line(sprintf('  %-38s %s', $row->domainName ?? '?', $row->status ?? '?'));
-        }
+        $io->line(sprintf(
+            '  %-38s available=%s%s',
+            $row->domain ?? '(no domain field)',
+            match ($row->available) {
+                true => 'true',
+                false => 'false',
+                null => 'null',
+            },
+            $row->premium === true ? '  [premium ' . $row->costPrice . ']' : '',
+        ));
     }
 } catch (SynergyWholesaleException $e) {
     $io->error('✗ bulkCheckDomain: ' . $e->getMessage());
