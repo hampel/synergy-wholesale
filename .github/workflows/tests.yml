@@ -83,6 +83,42 @@ jobs:
 
       - run: vendor/bin/pint --test
 
+  dependencies:
+    name: Declared dependencies
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '8.3'
+          extensions: soap, dom, json
+          coverage: none
+
+      # Analyse src/ with the dev dependencies gone, so anything it calls that is
+      # not in "require" comes back as not-found. Nothing else catches this: the
+      # "analyse" job has phpunit, pint and rig installed and sees nothing wrong,
+      # and the package would fatal for the consumer instead. The surface is small
+      # enough to be worth holding exactly - php, ext-soap and psr/log, nothing more.
+      - run: composer install --no-dev --prefer-dist --no-progress
+
+      # PHPStan is itself a dev dependency, so --no-dev just deleted it. It has to
+      # come from outside the package. composer -d does not create the directory,
+      # so mkdir first or the step dies with "Invalid working directory specified".
+      - run: |
+          mkdir -p /tmp/phpstan
+          composer -d /tmp/phpstan require phpstan/phpstan --no-progress
+
+      # -c is not optional. Without it PHPStan discovers the package's own
+      # phpstan.neon, which analyses tests/ and tools/ and can no longer resolve
+      # PHPUnit - turning the run into a configuration error while you are trying
+      # to read it as a dependency result.
+      - run: >
+          /tmp/phpstan/vendor/bin/phpstan analyse
+          -c .github/phpstan-nodev.neon
+          --autoload-file=vendor/autoload.php --no-progress
+
   generated:
     name: Generated code is current
     runs-on: ubuntu-latest

@@ -1,0 +1,12 @@
+# Used only by the "Declared dependencies" job in tests.yml, which analyses src/ with the
+# dev dependencies uninstalled. Deliberately separate from phpstan.neon: that one analyses
+# tests/ and tools/ too, neither of which can resolve its dependencies once --no-dev has
+# run.
+#
+# Level 0 is enough. Not-found is a basic check, so a higher level buys nothing here and
+# only adds noise from types that legitimately live in dev.
+parameters:
+    level: 0
+
+    paths:
+        - %currentWorkingDirectory%/src
