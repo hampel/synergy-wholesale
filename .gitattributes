@@ -11,10 +11,23 @@
 *.pdf binary
 
 # Keep development-only files out of the distributed archive.
+/.editorconfig  export-ignore
 /.env.example   export-ignore
 /.gitattributes export-ignore
+/.github        export-ignore
 /.gitignore     export-ignore
 /CLAUDE.md      export-ignore
 /harness        export-ignore
+/phpstan.neon   export-ignore
 /phpunit.xml    export-ignore
+/pint.json      export-ignore
 /tests          export-ignore
+
+# The generator and its input are build-time only: nothing under src/ reads
+# either, and SoapTransport runs in non-WSDL mode precisely because the WSDL was
+# already consumed here. Together they are 38% of the archive, so a consumer
+# would be downloading the schema and the tool that ate it to run neither. CI
+# works from a checkout rather than the archive, so the staleness check and the
+# upstream-WSDL diff are unaffected; regenerating means cloning, as intended.
+/resources      export-ignore
+/tools          export-ignore
