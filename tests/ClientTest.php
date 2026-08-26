@@ -11,11 +11,11 @@ use Hampel\SynergyWholesale\Transport\TransportException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\AbstractLogger;
+use Psr\Log\LoggerInterface;
 
 final class ClientTest extends TestCase
 {
-    private function client(FixtureTransport $transport, ?AbstractLogger $logger = null): Client
+    private function client(FixtureTransport $transport, ?LoggerInterface $logger = null): Client
     {
         return new Client($transport, 'reseller-1', 'secret-key', $logger);
     }
@@ -149,18 +149,36 @@ final class ClientTest extends TestCase
     #[Test]
     public function it_keeps_credentials_and_auth_codes_out_of_the_log(): void
     {
-        $logger = new class () extends AbstractLogger {
-            /** @var list<array{string, string, array<string, mixed>}> */
-            public array $lines = [];
+        /**
+         * A stub rather than an anonymous class implementing LoggerInterface, and the
+         * reason is version support: composer.json allows psr/log ^1.0|^2.0|^3.0, whose
+         * LoggerInterface::log() signatures are not mutually compatible. v1 declares no
+         * parameter or return types; v3 declares string|Stringable and : void. Any
+         * concrete signature written here is wrong at one end of that range -- typing
+         * $message narrows a parameter against v1 (a fatal), and omitting : void widens
+         * the return against v3 (also a fatal). A stub is generated against whichever
+         * version is installed, so it is correct at both ends by construction.
+         *
+         * A stub and not a mock because nothing here asserts on the calls -- it only
+         * captures what was logged. PHPUnit emits a notice if you get that backwards.
+         *
+         * Note this is not the thing FixtureTransport exists to avoid: standing in for a
+         * PSR interface is what the interface is for. Faking a concrete SoapClient is not.
+         *
+         * @var list<array{string, string, array<string, mixed>}> $lines
+         */
+        $lines = [];
 
-            /**
-             * @param  array<string, mixed>  $context
-             */
-            public function log($level, \Stringable|string $message, array $context = []): void
-            {
-                $this->lines[] = [is_string($level) ? $level : 'unknown', (string) $message, $context];
+        $logger = $this->createStub(LoggerInterface::class);
+        $logger->method('log')->willReturnCallback(
+            function (mixed $level, mixed $message, array $context = []) use (&$lines): void {
+                $lines[] = [
+                    is_string($level) ? $level : 'unknown',
+                    is_string($message) || $message instanceof \Stringable ? (string) $message : '(unprintable)',
+                    $context,
+                ];
             }
-        };
+        );
 
         $transport = (new FixtureTransport())->on('transferDomain', FixtureTransport::response([
             'status' => 'OK',
@@ -171,7 +189,7 @@ final class ClientTest extends TestCase
             'authInfo' => 'the-epp-code',
         ]);
 
-        $logged = json_encode($logger->lines) ?: '';
+        $logged = json_encode($lines) ?: '';
 
         $this->assertStringNotContainsString('secret-key', $logged);
         $this->assertStringNotContainsString('reseller-1', $logged);
