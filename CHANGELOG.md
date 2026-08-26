@@ -1,7 +1,7 @@
 CHANGELOG
 =========
 
-2.0.0 (unreleased)
+2.0.0 (2026-08-27)
 ------------------
 
 A complete rewrite. Version 2 shares no API with 1.x — see the upgrade table in the README.
