@@ -24,9 +24,16 @@
  * at once, which is why this is an exercise and not a test.
  *
  * It reports the reverse direction too - fields the class declares that never arrive.
- * That one is harmless at runtime, since a missing field is null. It is worth printing
- * because it says what the WSDL over-promises, which is useful when deciding whether a
- * field is worth exposing in a consumer.
+ * That one is harmless at runtime, since a missing field is null, but the two reasons a
+ * field can be absent mean opposite things and the exercise has to keep them apart:
+ *
+ *   conditional     the API sends it only in some responses. checkDomain is documented
+ *                   this way - an unavailable domain returns neither costPrice nor
+ *                   premium, because a name you cannot buy has no price. That is why
+ *                   checkDomain is probed twice below, once each way: the pair is what
+ *                   makes the distinction visible rather than assumed.
+ *   over-promised   the WSDL declares it and the API never sends it at all. This is the
+ *                   one worth knowing before exposing a field in a consumer.
  *
  * Two exclusions, both deliberate rather than oversights:
  *
@@ -57,23 +64,39 @@ $sw = harness_client($io, $recorder);
 /** The envelope, handled by Client and deliberately absent from every response class. */
 const ENVELOPE = ['status', 'errorMessage'];
 
+$nonce = bin2hex(random_bytes(4));
+
+/**
+ * Keyed by label, holding [operation, call]. The two are not the same thing here:
+ * RecordingTransport keys on the operation name, so two probes of one operation would
+ * collide if the label were used to read the recorder back.
+ *
+ * @var array<string, array{string, callable(): object}>
+ */
 $probes = [
-    'balanceQuery' => fn () => $sw->domains()->balanceQuery(),
-    'listAvailableDomainExtensions' => fn () => $sw->domains()->listAvailableDomainExtensions(),
-    'getDomainPricing' => fn () => $sw->domains()->getDomainPricing(),
-    'getSSLPricing' => fn () => $sw->domains()->getSSLPricing(),
-    'checkDomain' => fn () => $sw->domains()->checkDomain(domainName: 'example.com'),
-    'listDomains' => fn () => $sw->domains()->listDomains(limit: 1),
+    'balanceQuery' => ['balanceQuery', fn () => $sw->domains()->balanceQuery()],
+    'listAvailableDomainExtensions' => ['listAvailableDomainExtensions', fn () => $sw->domains()->listAvailableDomainExtensions()],
+    'getDomainPricing' => ['getDomainPricing', fn () => $sw->domains()->getDomainPricing()],
+    'getSSLPricing' => ['getSSLPricing', fn () => $sw->domains()->getSSLPricing()],
+
+    // The pair. example.com is permanently registered, so it answers UNAVAILABLE and the
+    // documentation says the pricing block is withheld. The random name is almost
+    // certainly free, so it answers AVAILABLE and should carry it. Anything still absent
+    // from the second row is over-promised rather than conditional.
+    'checkDomain (unavailable)' => ['checkDomain', fn () => $sw->domains()->checkDomain(domainName: 'example.com')],
+    'checkDomain (available)' => ['checkDomain', fn () => $sw->domains()->checkDomain(domainName: "zzz-no-such-domain-{$nonce}.com")],
+
+    'listDomains' => ['listDomains', fn () => $sw->domains()->listDomains(limit: 1)],
 ];
 
 $undeclared = 0;
 $absent = 0;
 
-foreach ($probes as $operation => $probe) {
+foreach ($probes as $label => [$operation, $probe]) {
     try {
         $hydrated = $probe();
     } catch (SynergyWholesaleException $e) {
-        $io->error(sprintf('✗ %-30s %s', $operation, $e->getMessage()));
+        $io->error(sprintf('✗ %-30s %s', $label, $e->getMessage()));
 
         continue;
     }
@@ -81,7 +104,7 @@ foreach ($probes as $operation => $probe) {
     $raw = $recorder->responses[$operation] ?? null;
 
     if (! is_object($raw)) {
-        $io->warn(sprintf('  %-30s nothing recorded', $operation));
+        $io->warn(sprintf('  %-30s nothing recorded', $label));
 
         continue;
     }
@@ -96,9 +119,9 @@ foreach ($probes as $operation => $probe) {
     $absent += count($unused);
 
     if ($missing === []) {
-        $io->success(sprintf('✓ %-30s %d field(s), all declared', $operation, count($onWire)));
+        $io->success(sprintf('✓ %-30s %d field(s), all declared', $label, count($onWire)));
     } else {
-        $io->error(sprintf('✗ %-30s %d field(s) ON THE WIRE AND DROPPED:', $operation, count($missing)));
+        $io->error(sprintf('✗ %-30s %d field(s) ON THE WIRE AND DROPPED:', $label, count($missing)));
         $io->line('      ' . implode(', ', $missing));
     }
 
@@ -127,9 +150,19 @@ if ($undeclared > 0) {
 
 if ($absent > 0) {
     $io->line();
-    $io->info(sprintf('%d declared field(s) did not arrive. Harmless - a missing field is', $absent));
-    $io->info('null - but it is what the WSDL over-promises, which is worth knowing before');
-    $io->info('building a consumer around one of them.');
+    $io->info(sprintf('%d declared field(s) did not arrive. Harmless at runtime - a missing', $absent));
+    $io->info('field is null - but read the two checkDomain rows against each other before');
+    $io->info('concluding anything, because absence has two causes that mean opposite things:');
+    $io->line();
+    $io->info('  conditional     absent from the unavailable row and present in the available');
+    $io->info('                  one. Documented behaviour: a name you cannot buy has no');
+    $io->info('                  price, so costPrice and premium are withheld.');
+    $io->info('  over-promised   absent from BOTH rows. The WSDL declares it and the API');
+    $io->info('                  never sends it. That is the one not to build a consumer on.');
+    $io->line();
+    $io->info('Note premium is also subject to the "Show premium domains as available"');
+    $io->info('setting on the reseller account: with it off, a premium name answers');
+    $io->info('UNAVAILABLE, and an unavailable answer carries no premium field to read.');
 }
 
 $io->line();
