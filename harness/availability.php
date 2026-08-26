@@ -57,7 +57,18 @@ foreach ($names as $name => $why) {
         continue;
     }
 
-    $status = $recorder->responses['checkDomain']->status ?? '(none)';
+    // The recorder holds the wire object verbatim -- nothing has typed it on the way
+    // through, so this really is mixed. Narrow rather than cast: a status arriving as
+    // something other than a string is a result worth seeing, not one to stringify away.
+    $raw = $recorder->responses['checkDomain'] ?? null;
+    $envelope = is_object($raw) ? $raw->status ?? null : null;
+
+    $status = match (true) {
+        is_string($envelope) => $envelope,
+        $envelope === null => '(none)',
+        default => '(non-string: ' . get_debug_type($envelope) . ')',
+    };
+
     $statuses[$status] = ($statuses[$status] ?? 0) + 1;
 
     $io->line(sprintf(

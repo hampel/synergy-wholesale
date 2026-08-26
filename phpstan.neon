@@ -5,6 +5,7 @@ parameters:
         - src
         - tests
         - tools
+        - harness
 
     # Analyse against every PHP version the package claims to support, in one
     # run. This covers the PHP axis of the support matrix without running it:

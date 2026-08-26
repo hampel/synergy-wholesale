@@ -141,5 +141,13 @@ PSR-12 via Pint, PHPStan level 10, PHP 8.3 floor (Tier A: published package, wid
 support, CI at the corners). Tests use PHPUnit attributes (`#[Test]`, `#[DataProvider]`)
 and snake_case method names.
 
-`harness/` is deliberately outside the PHPStan paths and the test suite: exercises are
-driven by hand and assert nothing, so holding them to the runtime's contract buys nothing.
+`harness/` is outside the test suite — exercises are driven by hand and assert nothing —
+but it **is** in the PHPStan paths, and the distinction is worth keeping straight. Holding
+an exercise to the runtime's contract buys nothing. Checking that it reads the generated
+types correctly buys a great deal, because those types are the thing being exercised.
+
+A typo'd property on a response class does not fail: it prints a placeholder, and the run
+then reports a falsehood about the live API rather than about the exercise. That happened
+here — `bulkCheckDomain` rows were read as `domainName` and `status`, which
+`DomainListArraySingleEntry` has neither of, and a working call rendered as four rows of
+question marks. Level 10 names both properties immediately.
