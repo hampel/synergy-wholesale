@@ -100,7 +100,8 @@ jobs:
       # not in "require" comes back as not-found. Nothing else catches this: the
       # "analyse" job has phpunit, pint and rig installed and sees nothing wrong,
       # and the package would fatal for the consumer instead. The surface is small
-      # enough to be worth holding exactly - php, ext-soap and psr/log, nothing more.
+      # enough to be worth holding exactly - php, ext-json, ext-soap and psr/log,
+      # nothing more.
       - run: composer install --no-dev --prefer-dist --no-progress
 
       # PHPStan is itself a dev dependency, so --no-dev just deleted it. It has to
@@ -118,6 +119,24 @@ jobs:
           /tmp/phpstan/vendor/bin/phpstan analyse
           -c .github/phpstan-nodev.neon
           --autoload-file=vendor/autoload.php --no-progress
+
+      # PHPStan holds the package half of "require" and cannot hold the rest. An
+      # undeclared ext-* is invisible to it - it knows ctype_alpha() and mb_strlen()
+      # from its own stubs, and the runner has whatever setup-php installed. And
+      # --no-dev removes require-dev and nothing else, so every transitive package is
+      # still there and every symbol still resolves. composer-require-checker maps
+      # each symbol back to the package that supplies it, fails on anything outside
+      # "require", and names the extension where it can guess one.
+      - run: |
+          mkdir -p /tmp/crc
+          composer -d /tmp/crc require maglnet/composer-require-checker --no-progress
+
+      # The --no-dev tree is the right one to judge, so this reuses the install above
+      # rather than making its own: the checker wants the required packages present,
+      # not the dev ones. src/Generated is autoloaded and so is scanned like the rest
+      # of src - if the generator ever emits a symbol from outside "require", this is
+      # the job that says so, on a file nobody wrote by hand.
+      - run: /tmp/crc/vendor/bin/composer-require-checker check composer.json
 
   generated:
     name: Generated code is current
