@@ -74,12 +74,14 @@ try {
 
 $io->success(sprintf('✓ %-30s .%s', 'getDomainExtensionOptions', $tld));
 $io->line();
-$io->value('minYears / maxYears', $options->minYears . ' / ' . $options->maxYears);
-$io->value('canRenewWithin', $options->canRenewWithin);
-$io->value('cannotRestoreAfter', $options->cannotRestoreAfter);
-$io->value('idProtect capable', $options->isIDProtectCapable);
-$io->value('DNSSEC available', $options->DNSSECAvailable);
-$io->value('available contacts', $options->availableContacts);
+$io->values([
+    'minYears / maxYears' => $options->minYears . ' / ' . $options->maxYears,
+    'canRenewWithin' => $options->canRenewWithin,
+    'cannotRestoreAfter' => $options->cannotRestoreAfter,
+    'idProtect capable' => $options->isIDProtectCapable,
+    'DNSSEC available' => $options->DNSSECAvailable,
+    'available contacts' => $options->availableContacts,
+]);
 
 $io->line();
 $io->info('Nothing above is specific to this account, so it is safe to paste anywhere.');

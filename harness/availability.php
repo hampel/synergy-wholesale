@@ -111,9 +111,13 @@ try {
 $io->line();
 $io->info('Envelope statuses seen this run, and how often:');
 
+$counts = [];
+
 foreach ($statuses as $status => $count) {
-    $io->value('  ' . $status, $count);
+    $counts['  ' . $status] = $count;
 }
+
+$io->values($counts);
 
 $io->line();
 $io->info('Any status here that is not AVAILABLE or UNAVAILABLE is the interesting result:');
