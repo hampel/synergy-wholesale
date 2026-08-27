@@ -24,6 +24,7 @@
     "license": "MIT",
     "require": {
         "php": ">=8.3",
+        "ext-json": "*",
         "ext-soap": "*",
         "psr/log": "^1.0|^2.0|^3.0"
     },
