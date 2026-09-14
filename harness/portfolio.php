@@ -20,6 +20,11 @@
  * nameserver on a domain returns a bare value where two return a list, and Wire::strings()
  * normalising that is a claim only a real account can check.
  *
+ * And autoRenew, which the WSDL types two ways: xsd:int on the listDomains entry, xsd:string
+ * on domainInfo. The published listDomains example shows 'off', which Wire::int() cannot
+ * read - if that is what the wire sends, autoRenew is null on every list and bulk call and
+ * nothing says so. The raw value is printed beside what each class made of it.
+ *
  * Needs SW_RESELLER_ID and SW_API_KEY.
  *
  * @var Hampel\Rig\Io $io
@@ -40,7 +45,8 @@ if (! $show) {
     $io->line();
 }
 
-$sw = harness_client($io);
+$recorder = null;
+$sw = harness_client($io, $recorder);
 
 try {
     $domains = $sw->domains()->listDomains(limit: 25);
@@ -92,12 +98,30 @@ $io->success('✓ domainInfo');
 $io->value('status', $info->domain_status);
 $io->value('expiry', $info->domain_expiry);
 $io->value('idProtect', $info->idProtect);
-$io->value('autoRenew', $info->autoRenew);
 
 // The single-element list case. One nameserver on the wire is a bare value, not a list,
 // and Wire::strings() is what makes both arrive here as an array. A count of 1 printed
 // below means that path really ran against real data.
 $io->value('nameServers', $show ? $info->nameServers : count($info->nameServers ?? []) . ' (hidden)');
+
+// The recorder holds each response as it came off the wire, before Wire typed it. A
+// listDomains page of one entry arrives as a bare object rather than a list - the same
+// SOAP-ENC case as nameServers - so both shapes are read. $io renders a string quoted and
+// an int bare, so the type needs no label of its own: 'off' and 1 read differently.
+$onWire = static fn (mixed $record): mixed => is_object($record) && property_exists($record, 'autoRenew')
+    ? $record->autoRenew
+    : '(absent from the response)';
+
+$rawList = $recorder->responses['listDomains']->domainList ?? null;
+
+$io->line();
+$io->info('autoRenew, as sent and as hydrated:');
+$io->values([
+    'listDomains wire' => $onWire(is_array($rawList) ? $rawList[0] ?? null : $rawList),
+    'listDomains typed' => $first->autoRenew,
+    'domainInfo wire' => $onWire($recorder->responses['domainInfo'] ?? null),
+    'domainInfo typed' => $info->autoRenew,
+]);
 
 $auFields = array_filter(
     get_object_vars($info),
