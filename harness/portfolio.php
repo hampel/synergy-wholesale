@@ -123,9 +123,11 @@ $io->values([
     'domainInfo typed' => $info->autoRenew,
 ]);
 
+// au then a capital or an underscore, which covers both spellings the API uses
+// (auValidEligibility, au_valid_eligibility). A bare 'au' prefix also counted autoRenew.
 $auFields = array_filter(
     get_object_vars($info),
-    static fn (mixed $value, string $name): bool => $value !== null && str_starts_with($name, 'au'),
+    static fn (mixed $value, string $name): bool => $value !== null && preg_match('/^au[A-Z_]/', $name) === 1,
     ARRAY_FILTER_USE_BOTH,
 );
 
