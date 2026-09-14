@@ -95,6 +95,12 @@ jobs:
           php-version: '8.3'
           extensions: soap, dom, json
           coverage: none
+          # Both are dev dependencies the install below deletes, so both have to come
+          # from outside the package. setup-php installs them outside every vendor
+          # tree, which for PHPStan is load-bearing: a PHPStan run from beside another
+          # vendor directory resolves that directory's classes too, and passes on
+          # exactly the undeclared dependency this job exists to catch.
+          tools: phpstan, composer-require-checker
 
       # Analyse src/ with the dev dependencies gone, so anything it calls that is
       # not in "require" comes back as not-found. Nothing else catches this: the
@@ -104,19 +110,12 @@ jobs:
       # nothing more.
       - run: composer install --no-dev --prefer-dist --no-progress
 
-      # PHPStan is itself a dev dependency, so --no-dev just deleted it. It has to
-      # come from outside the package. composer -d does not create the directory,
-      # so mkdir first or the step dies with "Invalid working directory specified".
-      - run: |
-          mkdir -p /tmp/phpstan
-          composer -d /tmp/phpstan require phpstan/phpstan --no-progress
-
       # -c is not optional. Without it PHPStan discovers the package's own
       # phpstan.neon, which analyses tests/ and tools/ and can no longer resolve
       # PHPUnit - turning the run into a configuration error while you are trying
       # to read it as a dependency result.
       - run: >
-          /tmp/phpstan/vendor/bin/phpstan analyse
+          phpstan analyse
           -c .github/phpstan-nodev.neon
           --autoload-file=vendor/autoload.php --no-progress
 
@@ -127,16 +126,11 @@ jobs:
       # still there and every symbol still resolves. composer-require-checker maps
       # each symbol back to the package that supplies it, fails on anything outside
       # "require", and names the extension where it can guess one.
-      - run: |
-          mkdir -p /tmp/crc
-          composer -d /tmp/crc require maglnet/composer-require-checker --no-progress
-
-      # The --no-dev tree is the right one to judge, so this reuses the install above
-      # rather than making its own: the checker wants the required packages present,
-      # not the dev ones. src/Generated is autoloaded and so is scanned like the rest
-      # of src - if the generator ever emits a symbol from outside "require", this is
-      # the job that says so, on a file nobody wrote by hand.
-      - run: /tmp/crc/vendor/bin/composer-require-checker check composer.json
+      #
+      # src/Generated is autoloaded and so is scanned like the rest of src - if the
+      # generator ever emits a symbol from outside "require", this is the job that
+      # says so, on a file nobody wrote by hand.
+      - run: composer-require-checker check composer.json
 
   generated:
     name: Generated code is current
