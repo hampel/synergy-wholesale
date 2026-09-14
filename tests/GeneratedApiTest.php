@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Hampel\SynergyWholesale\Tests;
 
+use Closure;
 use Hampel\SynergyWholesale\Generated\Api\DomainsApi;
 use Hampel\SynergyWholesale\SynergyWholesale;
 use Hampel\SynergyWholesale\Transport\FixtureTransport;
 use Hampel\SynergyWholesale\Value\Contact;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -191,6 +193,7 @@ final class GeneratedApiTest extends TestCase
     {
         $sw = $this->api(new FixtureTransport());
         $total = 0;
+        $forwards = 0;
 
         foreach ((new ReflectionClass(SynergyWholesale::class))->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
             if (in_array($method->getName(), ['__construct', 'make', 'with'], true)) {
@@ -199,12 +202,66 @@ final class GeneratedApiTest extends TestCase
 
             /** @var object $group */
             $group = $sw->{$method->getName()}();
-            $methods = (new ReflectionClass($group))->getMethods(ReflectionMethod::IS_PUBLIC);
-            $total += count($methods) - 1; // less the constructor
+            foreach ((new ReflectionClass($group))->getMethods(ReflectionMethod::IS_PUBLIC) as $operation) {
+                if ($operation->isConstructor()) {
+                    continue;
+                }
+
+                str_contains((string) $operation->getDocComment(), '@deprecated') ? $forwards++ : $total++;
+            }
         }
 
-        // 143 operations in the WSDL, less the five deprecated in API v3.4.
+        // 143 operations in the WSDL, less the five deprecated in API v3.4. Each is
+        // counted once: a moved operation's old location is a forwarding method.
         $this->assertSame(138, $total);
+        $this->assertSame(3, $forwards);
+    }
+
+    /**
+     * listHosting and bulkHostingInfo were generated under registryHosts(), and
+     * getSSLPricing under domains(), until the grouping rule was corrected. The old
+     * locations stay as deprecated methods that forward, so a caller still using them
+     * sends exactly the request the new location does.
+     *
+     * @param  Closure(SynergyWholesale): object  $old
+     * @param  Closure(SynergyWholesale): object  $new
+     */
+    #[Test]
+    #[DataProvider('movedOperations')]
+    public function a_moved_operation_still_answers_where_it_used_to(string $operation, Closure $old, Closure $new): void
+    {
+        $response = FixtureTransport::response(['status' => 'OK']);
+
+        $viaOld = (new FixtureTransport())->on($operation, $response);
+        $viaNew = (new FixtureTransport())->on($operation, $response);
+
+        $this->assertEquals($new($this->api($viaNew)), $old($this->api($viaOld)));
+        $this->assertSame($viaNew->lastRequest(), $viaOld->lastRequest());
+        $this->assertSame([$operation], array_column($viaOld->calls, 'operation'));
+    }
+
+    /**
+     * @return array<string, array{string, Closure(SynergyWholesale): object, Closure(SynergyWholesale): object}>
+     */
+    public static function movedOperations(): array
+    {
+        return [
+            'listHosting' => [
+                'listHosting',
+                static fn (SynergyWholesale $sw): object => $sw->registryHosts()->listHosting(status: 'active', page: 2),
+                static fn (SynergyWholesale $sw): object => $sw->hosting()->listHosting(status: 'active', page: 2),
+            ],
+            'bulkHostingInfo' => [
+                'bulkHostingInfo',
+                static fn (SynergyWholesale $sw): object => $sw->registryHosts()->bulkHostingInfo(hoidList: ['H1', 'H2']),
+                static fn (SynergyWholesale $sw): object => $sw->hosting()->bulkHostingInfo(hoidList: ['H1', 'H2']),
+            ],
+            'getSSLPricing' => [
+                'getSSLPricing',
+                static fn (SynergyWholesale $sw): object => $sw->domains()->getSSLPricing(),
+                static fn (SynergyWholesale $sw): object => $sw->ssl()->getSSLPricing(),
+            ],
+        ];
     }
 
     /**

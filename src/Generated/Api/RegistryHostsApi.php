@@ -130,29 +130,29 @@ final class RegistryHostsApi
      * @param list<string> $hoidList
      *
      * SOAP operation: bulkHostingInfo
+     *
+     * @deprecated use $sw->hosting()->bulkHostingInfo() instead. This group
+     *             keeps it until the next major version.
      */
     public function bulkHostingInfo(
         array $hoidList,
     ): BulkHostingInfoResponse {
-        return BulkHostingInfoResponse::fromWire($this->client->call('bulkHostingInfo', [
-            'hoidList' => $hoidList,
-        ]));
+        return (new HostingApi($this->client))->bulkHostingInfo(hoidList: $hoidList);
     }
 
     /**
      * Will return a paginated result set of hosting services in your account
      *
      * SOAP operation: listHosting
+     *
+     * @deprecated use $sw->hosting()->listHosting() instead. This group
+     *             keeps it until the next major version.
      */
     public function listHosting(
         ?string $status = null,
         ?int $page = null,
         ?int $limit = null,
     ): BulkHostingInfoResponse {
-        return BulkHostingInfoResponse::fromWire($this->client->call('listHosting', [
-            'status' => $status,
-            'page' => $page,
-            'limit' => $limit,
-        ]));
+        return (new HostingApi($this->client))->listHosting(status: $status, page: $page, limit: $limit);
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Hampel\SynergyWholesale\Generated\Api;
 
 use Hampel\SynergyWholesale\Client;
+use Hampel\SynergyWholesale\Generated\Response\GetSSLPricingResponse;
 use Hampel\SynergyWholesale\Generated\Response\SslcancelSSLCertificateResponse;
 use Hampel\SynergyWholesale\Generated\Response\SslcheckDomainBeaconResponse;
 use Hampel\SynergyWholesale\Generated\Response\SslcheckTxtCodesResponse;
@@ -30,6 +31,16 @@ final class SslApi
 {
     public function __construct(private readonly Client $client)
     {
+    }
+
+    /**
+     * Retrieve pricing for all of Synergy Wholesale SSL Certificates
+     *
+     * SOAP operation: getSSLPricing
+     */
+    public function getSSLPricing(): GetSSLPricingResponse
+    {
+        return GetSSLPricingResponse::fromWire($this->client->call('getSSLPricing', []));
     }
 
     /**

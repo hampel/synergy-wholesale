@@ -1,5 +1,17 @@
 # Changelog
 
+## Unreleased
+
+### Added
+
+- `listHosting()` and `bulkHostingInfo()` on `hosting()`, and `getSSLPricing()` on `ssl()`.
+
+### Deprecated
+
+- `registryHosts()->listHosting()`, `registryHosts()->bulkHostingInfo()` and
+  `domains()->getSSLPricing()`. Each forwards to its new location and will be removed in the next
+  major version.
+
 ## 2.1.0 (2026-09-14)
 
 ### Fixed

@@ -152,10 +152,13 @@ final class DomainsApi
      * Retrieve pricing for all of Synergy Wholesale SSL Certificates
      *
      * SOAP operation: getSSLPricing
+     *
+     * @deprecated use $sw->ssl()->getSSLPricing() instead. This group
+     *             keeps it until the next major version.
      */
     public function getSSLPricing(): GetSSLPricingResponse
     {
-        return GetSSLPricingResponse::fromWire($this->client->call('getSSLPricing', []));
+        return (new SslApi($this->client))->getSSLPricing();
     }
 
     /**

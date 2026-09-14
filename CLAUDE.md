@@ -88,6 +88,12 @@ Pint runs at the end of generation, so freshly generated output always passes `p
 Nothing to write by hand: refresh `resources/wsdl.xml` and run `composer generate`. If the new
 operation does not land in a sensible group, extend `group_of()`.
 
+**Correcting `group_of()` for an operation that has already shipped is a breaking change unless
+you add it to `MOVED`.** The operation is then generated in its new group, and the old group keeps
+a `@deprecated` method of the same name that forwards to it. `listHosting` and `bulkHostingInfo`
+(once under `registryHosts()`) and `getSSLPricing` (once under `domains()`) are there now. Remove
+the entries in the next major version, which removes the forwarding methods with them.
+
 ## The harness
 
 `harness/` holds `hampel/rig` exercises: `vendor/bin/rig` to list them, `vendor/bin/rig

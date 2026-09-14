@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Hampel\SynergyWholesale\Generated\Api;
 
 use Hampel\SynergyWholesale\Client;
+use Hampel\SynergyWholesale\Generated\Response\BulkHostingInfoResponse;
 use Hampel\SynergyWholesale\Generated\Response\HostingChangePackageResponse;
 use Hampel\SynergyWholesale\Generated\Response\HostingChangePasswordResponse;
 use Hampel\SynergyWholesale\Generated\Response\HostingCheckFirewallResponse;
@@ -196,6 +197,38 @@ final class HostingApi
         return HostingGetLoginResponse::fromWire($this->client->call('hostingGetLogin', [
             'identifier' => $identifier,
             'hoid' => $hoid,
+        ]));
+    }
+
+    /**
+     * Will return the hosting service information for the provided list of hosting identifiers
+     *
+     * @param list<string> $hoidList
+     *
+     * SOAP operation: bulkHostingInfo
+     */
+    public function bulkHostingInfo(
+        array $hoidList,
+    ): BulkHostingInfoResponse {
+        return BulkHostingInfoResponse::fromWire($this->client->call('bulkHostingInfo', [
+            'hoidList' => $hoidList,
+        ]));
+    }
+
+    /**
+     * Will return a paginated result set of hosting services in your account
+     *
+     * SOAP operation: listHosting
+     */
+    public function listHosting(
+        ?string $status = null,
+        ?int $page = null,
+        ?int $limit = null,
+    ): BulkHostingInfoResponse {
+        return BulkHostingInfoResponse::fromWire($this->client->call('listHosting', [
+            'status' => $status,
+            'page' => $page,
+            'limit' => $limit,
         ]));
     }
 

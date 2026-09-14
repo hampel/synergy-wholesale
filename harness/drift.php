@@ -77,7 +77,7 @@ $probes = [
     'balanceQuery' => ['balanceQuery', fn () => $sw->domains()->balanceQuery()],
     'listAvailableDomainExtensions' => ['listAvailableDomainExtensions', fn () => $sw->domains()->listAvailableDomainExtensions()],
     'getDomainPricing' => ['getDomainPricing', fn () => $sw->domains()->getDomainPricing()],
-    'getSSLPricing' => ['getSSLPricing', fn () => $sw->domains()->getSSLPricing()],
+    'getSSLPricing' => ['getSSLPricing', fn () => $sw->ssl()->getSSLPricing()],
 
     // The pair. example.com is permanently registered, so it answers UNAVAILABLE and the
     // documentation says the pricing block is withheld. The random name is almost

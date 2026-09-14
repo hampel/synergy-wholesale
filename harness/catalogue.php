@@ -34,7 +34,7 @@ $tld = $argv[1] ?? 'com.au';
 $lists = [
     'listAvailableDomainExtensions' => fn () => $sw->domains()->listAvailableDomainExtensions()->extensions,
     'getDomainPricing' => fn () => $sw->domains()->getDomainPricing()->pricing,
-    'getSSLPricing' => fn () => $sw->domains()->getSSLPricing()->pricing,
+    'getSSLPricing' => fn () => $sw->ssl()->getSSLPricing()->pricing,
 ];
 
 foreach ($lists as $operation => $read) {

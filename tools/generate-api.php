@@ -81,6 +81,20 @@ const DEPRECATED = [
     'resubmitFailedTransfer',
 ];
 
+/**
+ * Operations group_of() once filed in the wrong group, keyed to the group they
+ * were published under. They are generated in their correct group, and the old
+ * group keeps a method of the same name, marked @deprecated, that forwards to
+ * it -- so moving an operation never removes a method inside a major version.
+ *
+ * Delete an entry, and its forwarding method with it, in the next major.
+ */
+const MOVED = [
+    'bulkHostingInfo' => 'registryHosts',
+    'listHosting' => 'registryHosts',
+    'getSSLPricing' => 'domains',
+];
+
 /** Every request carries these; the transport injects them. */
 const AUTH_FIELDS = ['resellerID', 'apiKey'];
 
@@ -195,7 +209,11 @@ function group_of(string $op): array
         }
     }
 
+    // Checked before registryHosts, whose needle is a substring of these:
+    // listHosting and bulkHostingInfo are web hosting, not nameserver hosts.
     foreach ([
+        'hosting' => ['Hosting'],
+        'ssl' => ['SSL'],
         'dnssec' => ['DNSSEC', 'Dnssec', 'dnssec'],
         'dns' => ['DNS'],
         'forwarding' => ['MailForward', 'EmailToSMS', 'URLForward', 'SimpleURLForward'],
@@ -217,11 +235,27 @@ $groups = [];
 foreach ($operations as $name => $op) {
     [$group, $method] = group_of($name);
     $groups[$group][$name] = $op + ['method' => $method];
+
+    if (isset(MOVED[$name])) {
+        if (MOVED[$name] === $group) {
+            fwrite(STDERR, "MOVED says {$name} left {$group}, but group_of() still puts it there\n");
+            exit(1);
+        }
+        $groups[MOVED[$name]][$name] = $op + ['method' => $method, 'forwardTo' => $group];
+    }
+}
+
+foreach (array_keys(MOVED) as $name) {
+    if (! isset($operations[$name])) {
+        fwrite(STDERR, "MOVED names {$name}, which the WSDL no longer has\n");
+        exit(1);
+    }
 }
 ksort($groups);
 
 foreach ($groups as $g => $ops) {
-    printf("  %-14s %d operations\n", $g, count($ops));
+    $forwards = count(array_filter($ops, static fn (array $op): bool => isset($op['forwardTo'])));
+    printf("  %-14s %d operations%s\n", $g, count($ops) - $forwards, $forwards > 0 ? " (+{$forwards} deprecated forwarding)" : '');
 }
 
 // ---------------------------------------------------------------------------
@@ -691,6 +725,25 @@ function write_api_class(string $out, string $group, array $ops, array $types): 
         }
         if (str_contains($doc, '@param')) {
             $doc .= "     *\n";
+        }
+
+        if (isset($op['forwardTo'])) {
+            $target = ucfirst($op['forwardTo']) . 'Api';
+            $args = implode(', ', array_map(static fn (array $p): string => "{$p['prop']}: \${$p['prop']}", $params));
+            $methods[] = <<<PHP
+                /**
+            {$doc}     * SOAP operation: {$opName}
+                 *
+                 * @deprecated use \$sw->{$op['forwardTo']}()->{$op['method']}() instead. This group
+                 *             keeps it until the next major version.
+                 */
+                public function {$op['method']}({$sig}): {$responseClass}
+                {
+                    return (new {$target}(\$this->client))->{$op['method']}({$args});
+                }
+            PHP;
+
+            continue;
         }
 
         $methods[] = <<<PHP
