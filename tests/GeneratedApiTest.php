@@ -142,6 +142,50 @@ final class GeneratedApiTest extends TestCase
         );
     }
 
+    /**
+     * status and errorMessage are the envelope on an operation's response, and
+     * Client consumes them. On a nested type they are data -- here a per-entry
+     * result, so a name that is not in the account is distinguishable from a
+     * record whose fields are empty.
+     */
+    #[Test]
+    public function it_keeps_status_on_nested_entries_while_consuming_the_envelope(): void
+    {
+        $transport = (new FixtureTransport())->on('bulkDomainInfo', FixtureTransport::response([
+            'status' => 'OK',
+            'domainList' => [
+                ['status' => 'OK', 'domainName' => 'example.com', 'domain_status' => 'ok'],
+                ['status' => 'ERR_DOMAIN_NOT_FOUND', 'errorMessage' => 'Domain not found', 'domainName' => 'example.net'],
+            ],
+        ]));
+
+        $response = $this->api($transport)->domains()->bulkDomainInfo(domainList: ['example.com', 'example.net']);
+
+        $this->assertFalse((new ReflectionClass($response))->hasProperty('status'));
+        $this->assertNotNull($response->domainList);
+        [$found, $missing] = $response->domainList;
+        $this->assertSame('OK', $found->status);
+        $this->assertNull($found->errorMessage);
+        $this->assertSame('ERR_DOMAIN_NOT_FOUND', $missing->status);
+        $this->assertSame('Domain not found', $missing->errorMessage);
+    }
+
+    #[Test]
+    public function it_keeps_a_certificates_own_status(): void
+    {
+        $transport = (new FixtureTransport())->on('SSL_listAllCerts', FixtureTransport::response([
+            'status' => 'OK',
+            'certs' => [
+                ['certID' => '1', 'commonName' => 'example.com', 'status' => 'Issued'],
+            ],
+        ]));
+
+        $certs = $this->api($transport)->ssl()->listAllCerts()->certs;
+
+        $this->assertNotNull($certs);
+        $this->assertSame('Issued', $certs[0]->status);
+    }
+
     #[Test]
     public function every_group_exposes_only_generated_api_methods(): void
     {

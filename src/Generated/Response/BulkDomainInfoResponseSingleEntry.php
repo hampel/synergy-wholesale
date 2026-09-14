@@ -15,6 +15,8 @@ use Hampel\SynergyWholesale\Wire;
 final class BulkDomainInfoResponseSingleEntry implements HydratesFromWire
 {
     public function __construct(
+        public readonly ?string $status,
+        public readonly ?string $errorMessage,
         public readonly ?string $domainName,
         public readonly ?string $domainRoid,
         public readonly ?string $transfer_status,
@@ -65,6 +67,8 @@ final class BulkDomainInfoResponseSingleEntry implements HydratesFromWire
     public static function fromWire(object $raw): static
     {
         return new self(
+            status: Wire::string($raw, 'status'),
+            errorMessage: Wire::string($raw, 'errorMessage'),
             domainName: Wire::string($raw, 'domainName'),
             domainRoid: Wire::string($raw, 'domainRoid'),
             transfer_status: Wire::string($raw, 'transfer_status'),

@@ -22,6 +22,8 @@ final class RawDomainInfoResponseSingle implements HydratesFromWire
         public readonly ?array $nameservers,
         public readonly ?string $expiryDate,
         public readonly ?ContactArray $contact,
+        public readonly ?string $errorMessage,
+        public readonly ?string $status,
     ) {
     }
 
@@ -33,6 +35,8 @@ final class RawDomainInfoResponseSingle implements HydratesFromWire
             nameservers: Wire::strings($raw, 'nameservers'),
             expiryDate: Wire::string($raw, 'expiryDate'),
             contact: Wire::object($raw, 'contact', ContactArray::class),
+            errorMessage: Wire::string($raw, 'errorMessage'),
+            status: Wire::string($raw, 'status'),
         );
     }
 }

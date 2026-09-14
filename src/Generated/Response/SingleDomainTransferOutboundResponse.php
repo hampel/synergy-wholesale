@@ -20,6 +20,7 @@ final class SingleDomainTransferOutboundResponse implements HydratesFromWire
         public readonly ?string $registrar,
         public readonly ?string $reseller,
         public readonly ?string $timestamp,
+        public readonly ?string $status,
     ) {
     }
 
@@ -31,6 +32,7 @@ final class SingleDomainTransferOutboundResponse implements HydratesFromWire
             registrar: Wire::string($raw, 'registrar'),
             reseller: Wire::string($raw, 'reseller'),
             timestamp: Wire::string($raw, 'timestamp'),
+            status: Wire::string($raw, 'status'),
         );
     }
 }

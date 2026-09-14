@@ -17,6 +17,7 @@ final class GetAuEntitlementsContentionArraySingleEntry implements HydratesFromW
     public function __construct(
         public readonly ?string $domain,
         public readonly ?string $category,
+        public readonly ?string $status,
     ) {
     }
 
@@ -25,6 +26,7 @@ final class GetAuEntitlementsContentionArraySingleEntry implements HydratesFromW
         return new self(
             domain: Wire::string($raw, 'domain'),
             category: Wire::string($raw, 'category'),
+            status: Wire::string($raw, 'status'),
         );
     }
 }

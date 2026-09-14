@@ -18,6 +18,7 @@ final class ClientListArraySingleEntry implements HydratesFromWire
         public readonly ?string $clientId,
         public readonly ?string $name,
         public readonly ?string $company,
+        public readonly ?string $status,
         public readonly ?string $totalSubscriptions,
     ) {
     }
@@ -28,6 +29,7 @@ final class ClientListArraySingleEntry implements HydratesFromWire
             clientId: Wire::string($raw, 'clientId'),
             name: Wire::string($raw, 'name'),
             company: Wire::string($raw, 'company'),
+            status: Wire::string($raw, 'status'),
             totalSubscriptions: Wire::string($raw, 'totalSubscriptions'),
         );
     }

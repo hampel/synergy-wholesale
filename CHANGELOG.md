@@ -12,6 +12,12 @@ Unreleased
 * `auAssociationAuthInfo`, `auEligibilityAssociationAuthInfo`, `associationAuthInfo`,
   `newPassword`, `privKey` and `privateKey` are redacted from the debug log. 2.0.0 logged them in
   full.
+* `status` and `errorMessage` are hydrated on nested response types. 2.0.0 dropped them from every
+  generated class, including the eleven entry types where they are data: a per-entry result on
+  `bulkDomainInfo`, a certificate's status on `SSL_listAllCerts`, a client's on `listClients`.
+  The constructors of those eleven classes gain the matching parameters.
+* The README no longer shows `$check->status` on a `checkDomain` response. The property does not
+  exist.
 
 ### Support
 

@@ -20,6 +20,8 @@ final class RawDomainContactsResponseArray implements HydratesFromWire
         /** @var list<string>|null */
         public readonly ?array $street,
         public readonly ?string $city,
+        /** @var list<string>|null */
+        public readonly ?array $status,
         public readonly ?string $id,
         public readonly ?string $state,
         public readonly ?string $country,
@@ -43,6 +45,7 @@ final class RawDomainContactsResponseArray implements HydratesFromWire
             name: Wire::string($raw, 'name'),
             street: Wire::strings($raw, 'street'),
             city: Wire::string($raw, 'city'),
+            status: Wire::strings($raw, 'status'),
             id: Wire::string($raw, 'id'),
             state: Wire::string($raw, 'state'),
             country: Wire::string($raw, 'country'),

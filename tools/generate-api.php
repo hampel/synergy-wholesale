@@ -84,7 +84,14 @@ const DEPRECATED = [
 /** Every request carries these; the transport injects them. */
 const AUTH_FIELDS = ['resellerID', 'apiKey'];
 
-/** Every response carries these; the envelope consumes them. */
+/**
+ * Every operation's response carries these, and Client consumes them as the
+ * envelope before the response class is built.
+ *
+ * Top-level responses only. Eleven nested types declare a field of the same name,
+ * and there it is data: a per-entry result on bulkDomainInfo, the certificate's
+ * state on SSL_listAllCerts, the client's on listClients.
+ */
 const ENVELOPE_FIELDS = ['status', 'errorMessage'];
 
 // ---------------------------------------------------------------------------
@@ -231,9 +238,11 @@ foreach (['Api', 'Request', 'Response'] as $dir) {
 /** Response and nested types reachable from any operation, emitted once each. */
 $emitted = [];
 $queue = [];
+$envelopes = [];
 foreach ($operations as $op) {
     if ($op['response'] !== null) {
         $queue[] = $op['response'];
+        $envelopes[$op['response']] = true;
     }
 }
 
@@ -259,7 +268,10 @@ while ($queue !== []) {
         }
     }
 
-    write_response_class($out, $typeName, $type, $types);
+    // getSubscriptionForClientResponse is both an operation's response and the
+    // entry type of getSubscriptionsForClient's list. It is treated as an
+    // envelope in both places; its own state is in subscriptionStatus.
+    write_response_class($out, $typeName, $type, $types, isset($envelopes[$typeName]));
 }
 
 // A handful of request fields are arrays of structured entries rather than of
@@ -361,7 +373,7 @@ function php_type(string $xsdType, array $types): array
     };
 }
 
-function write_response_class(string $out, string $typeName, array $type, array $types): void
+function write_response_class(string $out, string $typeName, array $type, array $types, bool $envelope): void
 {
     $class = class_name($typeName);
     $ns = NS . '\\Generated\\Response';
@@ -370,7 +382,7 @@ function write_response_class(string $out, string $typeName, array $type, array 
     $hydrate = [];
 
     foreach ($type['fields'] as $name => $field) {
-        if (in_array($name, ENVELOPE_FIELDS, true)) {
+        if ($envelope && in_array($name, ENVELOPE_FIELDS, true)) {
             continue;
         }
 

@@ -55,7 +55,6 @@ reference — "Command: `checkDomain`" is `$sw->domains()->checkDomain()`, and
 ```php
 $check = $sw->domains()->checkDomain(domainName: 'example.com');
 
-$check->status;      // AVAILABLE or UNAVAILABLE
 $check->available;   // 1 or 0
 $check->costPrice;   // '12.95'
 $check->premium;     // bool

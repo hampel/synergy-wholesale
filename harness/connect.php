@@ -63,5 +63,5 @@ $io->value('reason', $balance->reason);
 
 $io->line();
 $io->info('The envelope status is not among those - Client consumes it and the generator');
-$io->info('strips it from every response class. statusCode and reason are separate fields');
+$io->info('strips it from every operation\'s response. statusCode and reason are separate fields');
 $io->info('this operation declares in the WSDL, which is why both spellings are here.');

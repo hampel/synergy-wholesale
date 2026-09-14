@@ -38,8 +38,8 @@
  * Two exclusions, both deliberate rather than oversights:
  *
  *   status, errorMessage   the envelope. Client consumes both and the generator strips
- *                          them from every response class, so they are always "on the
- *                          wire and not declared" and would swamp the real findings.
+ *                          them from every operation's response class, so they are always
+ *                          "on the wire and not declared" and would swamp the real findings.
  *   nested records         only the top level of each response is compared. A field
  *                          inside domainList[] that the WSDL missed would not show up
  *                          here. Worth doing, not done - say so rather than reading a
@@ -61,7 +61,7 @@ harness_mode($io);
 $recorder = null;
 $sw = harness_client($io, $recorder);
 
-/** The envelope, handled by Client and deliberately absent from every response class. */
+/** The envelope, handled by Client and deliberately absent from every operation's response class. */
 const ENVELOPE = ['status', 'errorMessage'];
 
 $nonce = bin2hex(random_bytes(4));

@@ -16,6 +16,7 @@ final class SslcheckTxtCodesResponseArray implements HydratesFromWire
 {
     public function __construct(
         public readonly ?string $domain,
+        public readonly ?string $status,
     ) {
     }
 
@@ -23,6 +24,7 @@ final class SslcheckTxtCodesResponseArray implements HydratesFromWire
     {
         return new self(
             domain: Wire::string($raw, 'domain'),
+            status: Wire::string($raw, 'status'),
         );
     }
 }

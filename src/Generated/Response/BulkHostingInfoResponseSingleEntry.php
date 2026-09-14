@@ -15,6 +15,7 @@ use Hampel\SynergyWholesale\Wire;
 final class BulkHostingInfoResponseSingleEntry implements HydratesFromWire
 {
     public function __construct(
+        public readonly ?string $status,
         public readonly ?string $domain,
         public readonly ?string $hoid,
         public readonly ?string $username,
@@ -45,6 +46,7 @@ final class BulkHostingInfoResponseSingleEntry implements HydratesFromWire
     public static function fromWire(object $raw): static
     {
         return new self(
+            status: Wire::string($raw, 'status'),
             domain: Wire::string($raw, 'domain'),
             hoid: Wire::string($raw, 'hoid'),
             username: Wire::string($raw, 'username'),

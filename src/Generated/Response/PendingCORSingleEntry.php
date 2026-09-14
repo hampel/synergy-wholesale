@@ -17,6 +17,7 @@ final class PendingCORSingleEntry implements HydratesFromWire
     public function __construct(
         public readonly ?string $domainName,
         public readonly ?int $step,
+        public readonly ?string $status,
         public readonly ?int $renewYear,
         public readonly ?string $createdDate,
     ) {
@@ -27,6 +28,7 @@ final class PendingCORSingleEntry implements HydratesFromWire
         return new self(
             domainName: Wire::string($raw, 'domainName'),
             step: Wire::int($raw, 'step'),
+            status: Wire::string($raw, 'status'),
             renewYear: Wire::int($raw, 'renewYear'),
             createdDate: Wire::string($raw, 'createdDate'),
         );

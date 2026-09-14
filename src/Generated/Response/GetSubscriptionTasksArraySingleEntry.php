@@ -16,6 +16,7 @@ final class GetSubscriptionTasksArraySingleEntry implements HydratesFromWire
 {
     public function __construct(
         public readonly ?string $action,
+        public readonly ?string $status,
         public readonly ?string $last_updated,
     ) {
     }
@@ -24,6 +25,7 @@ final class GetSubscriptionTasksArraySingleEntry implements HydratesFromWire
     {
         return new self(
             action: Wire::string($raw, 'action'),
+            status: Wire::string($raw, 'status'),
             last_updated: Wire::string($raw, 'last_updated'),
         );
     }
