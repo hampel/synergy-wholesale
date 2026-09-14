@@ -1,12 +1,13 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this
+repository.
 
 ## What this is
 
 `hampel/synergy-wholesale` — a typed PHP client for the Synergy Wholesale reseller SOAP API,
-covering 138 of the 143 published operations. It has no runtime dependencies beyond `psr/log`
-and `ext-soap`, and knows nothing about any framework;
+covering 138 of the 143 published operations. Its only runtime requirements are `psr/log`,
+`ext-json` and `ext-soap`, and it knows nothing about any framework;
 `hampel/synergy-wholesale-laravel` is a separate package that adds Laravel wiring.
 
 Most of `src/` is generated. Read the next section before editing anything under
@@ -33,7 +34,7 @@ vendor/bin/rig connect                      # run one -- real API call, read-onl
 
 Three layers, and the boundary between them is what matters:
 
-```
+```text
 SynergyWholesale  ->  Generated\Api\*Api  ->  Client  ->  Transport  ->  SoapClient
    (groups)            (138 methods)       (envelope)     (seam)
 ```
