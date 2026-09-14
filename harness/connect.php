@@ -15,9 +15,9 @@
  *
  * The second is the one worth naming. Synergy Wholesale authorises by IP address AS WELL
  * AS by key, so a correct key from an unlisted address fails - and it fails as
- * ERR_RESELLER_NOT_AUTHORISED, which reads like a bad key. This box is not a production
- * server, so unless its address has been added deliberately, that error here is expected
- * and means nothing is broken.
+ * ERR_RESELLER_NOT_AUTHORISED, which reads like a bad key. A correct key from a machine
+ * whose address is not on the account's API whitelist gets exactly that error, so check
+ * the whitelist before the key.
  *
  * Needs SW_RESELLER_ID and SW_API_KEY.
  *
