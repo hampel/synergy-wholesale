@@ -1,371 +1,340 @@
-CHANGELOG
-=========
+# Changelog
 
-2.1.0 (2026-09-14)
-------------------
+## 2.1.0 (2026-09-14)
 
 ### Fixed
 
-* Secrets are redacted from the debug log at any depth. `listDomains` and `bulkDomainInfo` logged
+- Secrets are redacted from the debug log at any depth. `listDomains` and `bulkDomainInfo` logged
   `domainPassword` for every entry in `domainList`, and `bulkRawDomainInfo` logged `authInfo` for
   every entry in its request.
-* `auAssociationAuthInfo`, `auEligibilityAssociationAuthInfo`, `associationAuthInfo`,
+- `auAssociationAuthInfo`, `auEligibilityAssociationAuthInfo`, `associationAuthInfo`,
   `newPassword`, `privKey` and `privateKey` are redacted from the debug log. 2.0.0 logged them in
   full.
-* `status` and `errorMessage` are hydrated on nested response types. 2.0.0 dropped them from every
+- `status` and `errorMessage` are hydrated on nested response types. 2.0.0 dropped them from every
   generated class, including the eleven entry types where they are data: a per-entry result on
   `bulkDomainInfo`, a certificate's status on `SSL_listAllCerts`, a client's on `listClients`.
   The constructors of those eleven classes gain the matching parameters.
-* The README no longer shows `$check->status` on a `checkDomain` response. The property does not
+- The README no longer shows `$check->status` on a `checkDomain` response. The property does not
   exist.
 
 ### Support
 
-* `ext-json` is now declared in `require`. `Client` and `FixtureTransport` call `json_encode()`
+- `ext-json` is now declared in `require`. `Client` and `FixtureTransport` call `json_encode()`
   and `json_decode()`. The extension is non-optional from PHP 8.0, and this package requires 8.3.
 
-2.0.0 (2026-08-27)
-------------------
+## 2.0.0 (2026-08-27)
 
 A complete rewrite. Version 2 shares no API with 1.x — see the upgrade table in the README.
 
 ### The API surface is now generated from the published WSDL
 
-* Coverage goes from 36 of 143 operations to 138: DNS zones and records, DNSSEC, email and URL
+- Coverage goes from 36 of 143 operations to 138: DNS zones and records, DNSSEC, email and URL
   forwarding, SSL, hosting, subscriptions, domain categories and registry hosts are all reachable
   for the first time.
-* Requests and responses are typed classes generated from `resources/wsdl.xml` by
+- Requests and responses are typed classes generated from `resources/wsdl.xml` by
   `composer generate`, and committed. CI regenerates on every push and fails if they have drifted.
-* Operations are grouped — `$sw->domains()->checkDomain(…)`, `$sw->ssl()->getCertStatus(…)` — with
+- Operations are grouped — `$sw->domains()->checkDomain(…)`, `$sw->ssl()->getCertStatus(…)` — with
   method names matching the published documentation.
-* Response properties use the API's own field names verbatim.
+- Response properties use the API's own field names verbatim.
 
 ### Behaviour that was wrong in 1.x
 
-* **Success is now any status not prefixed `ERR_`.** 1.x whitelisted the success values per
+- **Success is now any status not prefixed `ERR_`.** 1.x whitelisted the success values per
   response class and threw on everything else.
-* **Premium domain fields are reachable**: `premium`, `costPrice`, `requiresMembership`,
+- **Premium domain fields are reachable**: `premium`, `costPrice`, `requiresMembership`,
   `requiresApplication` and `preorderAvailable` on `checkDomain`, returned for an available
   domain. 1.x exposed only `isAvailable()`.
-* **Single-element lists are normalised.** A response carrying one entry and a response carrying
+- **Single-element lists are normalised.** A response carrying one entry and a response carrying
   several now hydrate to the same shape.
-* **The domain name pattern is anchored.** 1.x accepted `https://example.com/path` and
+- **The domain name pattern is anchored.** 1.x accepted `https://example.com/path` and
   `not a domain example.com`.
-* **Null parameters are omitted rather than sent.**
-* EPP auth codes (`authInfo`) are redacted from logs alongside credentials and domain passwords.
+- **Null parameters are omitted rather than sent.**
+- EPP auth codes (`authInfo`) are redacted from logs alongside credentials and domain passwords.
 
 ### Removed
 
-* The five operations Synergy Wholesale deprecated in API v3.4 (February 2020):
+- The five operations Synergy Wholesale deprecated in API v3.4 (February 2020):
   `domainRegisterAU`, `domainRegisterUK`, `domainRegisterUS`, `domainTransferUK` and
   `resubmitFailedTransfer`, along with the `.au`/`.uk`/`.us` value objects. Use `domainRegister`
   and `transferDomain` with `getDomainEligibilityFields`.
-* Response caching. Cache the wire response behind a `Transport` decorator instead.
-* The `Command`/`Response`/`ResponseGenerator` triple, and the `$fresh` parameter on every read
+- Response caching. Cache the wire response behind a `Transport` decorator instead.
+- The `Command`/`Response`/`ResponseGenerator` triple, and the `$fresh` parameter on every read
   method.
 
 ### Added
 
-* A `Transport` interface between the client and the network, with `SoapTransport` for production
+- A `Transport` interface between the client and the network, with `SoapTransport` for production
   and `FixtureTransport` for tests.
-* A `Contact` value object collapsing the four eleven-field contact blocks: `domainRegister` goes
+- A `Contact` value object collapsing the four eleven-field contact blocks: `domainRegister` goes
   from 57 parameters to 17, `transferDomain` from 24 to 14.
-* PHPStan at level 10 across `src` and `tests`, checked against PHP 8.3 to 8.5.
-* Laravel Pint, an `.editorconfig`, and a `.gitattributes` pinning LF.
-* A read-only `hampel/rig` harness for exercising the live API.
+- PHPStan at level 10 across `src` and `tests`, checked against PHP 8.3 to 8.5.
+- Laravel Pint, an `.editorconfig`, and a `.gitattributes` pinning LF.
+- A read-only `hampel/rig` harness for exercising the live API.
 
 ### Support
 
-* Requires PHP 8.3 (was 5.4) and `ext-soap`. Tested on 8.3, 8.4 and 8.5.
-* Namespace is now `Hampel\SynergyWholesale\` (was `SynergyWholesale\`).
+- Requires PHP 8.3 (was 5.4) and `ext-soap`. Tested on 8.3, 8.4 and 8.5.
+- Namespace is now `Hampel\SynergyWholesale\` (was `SynergyWholesale\`).
 
-1.5.1 (2026-02-18)
-------------------
+## 1.5.1 (2026-02-18)
 
-* psr/log can be v1, 2 or 3
-* tests now use PHPUnit v10
+- psr/log can be v1, 2 or 3
+- tests now use PHPUnit v10
 
-1.5.0 (2022-08-19)
-------------------
+## 1.5.0 (2022-08-19)
 
-* implemented listDomains command
-* tests now use PHPUnit v9
+- implemented listDomains command
+- tests now use PHPUnit v9
 
-1.4.1 (2019-10-14)
-------------------
+## 1.4.1 (2019-10-14)
 
-* tests now use PHPUnit v8
-* updated PhoneTooLong test to use longer phone numbers
+- tests now use PHPUnit v8
+- updated PhoneTooLong test to use longer phone numbers
 
-1.4.0 (2019-01-23)
-------------------
+## 1.4.0 (2019-01-23)
 
-* updated to use PHPUnit 7.0 and Mockery 1.0; adjusted unit tests to suit
-* slight adjustment to Phone type to allow for slightly longer phone numbers, as permitted by the registry
+- updated to use PHPUnit 7.0 and Mockery 1.0; adjusted unit tests to suit
+- slight adjustment to Phone type to allow for slightly longer phone numbers, as permitted by the
+  registry
 
-1.3.9 (2019-01-23)
-------------------
+## 1.3.9 (2019-01-23)
 
-* handle case of publicly registerable subdomain acting like a ccTLD
+- handle case of publicly registerable subdomain acting like a ccTLD
 
-1.3.8 (2016-12-09)
-------------------
+## 1.3.8 (2016-12-09)
 
-* renamed files to fix case sensitive issue with git on Windows - fixes issue 
-[#3](https://bitbucket.org/hampel/synergy-wholesale/issues/3)
+- renamed files to fix case sensitive issue with git on Windows - fixes issue
+  [#3](https://bitbucket.org/hampel/synergy-wholesale/issues/3)
 
-1.3.7 (2016-12-08)
-------------------
+## 1.3.7 (2016-12-08)
 
-* add checking for .id.au specific domain info response fields - fixes issue 
-[#1](https://bitbucket.org/hampel/synergy-wholesale/issues/1)
+- add checking for .id.au specific domain info response fields - fixes issue
+  [#1](https://bitbucket.org/hampel/synergy-wholesale/issues/1)
 
-1.3.6 (2016-08-24)
-------------------
+## 1.3.6 (2016-08-24)
 
-* fax can be null in a contact, so allow equality to pass if both values are null
+- fax can be null in a contact, so allow equality to pass if both values are null
 
-1.3.5 (2016-08-17)
-------------------
+## 1.3.5 (2016-08-17)
 
-* added AuContact::newFromArray function to generate an AU specific contact
+- added AuContact::newFromArray function to generate an AU specific contact
 
-1.3.4 (2016-08-17)
-------------------
+## 1.3.4 (2016-08-17)
 
-* can now specify null for name servers when registering domains to park them 
-* can now specify null when updating name servers to park the domain
+- can now specify null for name servers when registering domains to park them
+- can now specify null when updating name servers to park the domain
 
-1.3.3 (2016-08-15)
-------------------
+## 1.3.3 (2016-08-15)
 
-* .co.uk domains don't have tech contacts
+- .co.uk domains don't have tech contacts
 
-1.3.2 (2016-08-15)
-------------------
+## 1.3.2 (2016-08-15)
 
-* changed Country to have isocodes in the main file rather than via include so serialisation (caching) works correctly
+- changed Country to have isocodes in the main file rather than via include so serialisation
+  (caching) works correctly
 
-1.3.1 (2016-08-15)
-------------------
+## 1.3.1 (2016-08-15)
 
-* update minimum requirements to PHP 5.4
-* expand phone definition to allow 10 digit numbers in international format for 1300/1800 numbers (eg +61.1800111222)
+- update minimum requirements to PHP 5.4
+- expand phone definition to allow 10 digit numbers in international format for 1300/1800 numbers
+  (eg +61.1800111222)
 
-1.3.0 (2016-08-15)
-------------------
+## 1.3.0 (2016-08-15)
 
-* new fields for GetDomainExtensionsOptionsResponse
-* updated GetDomainExtensionOptionsResponse to be more consistent in function names
-* domainPassword is optional in domainInfo response for .uk domains
-* changed DomainInfoResponse::isIdProtected to getIdProtected because it's not actually boolean - NA is a possible 
-value, now returns string: Enabled, Disabled or NA
-* added equality test for Types/Contact
-* added static helper function Contact::newFromArray
-* handle null fax numbers with xor
-* added Contact::toArray function
-* new function getDomainPricing
-* added BulkCheckDomainCommand::getDomainList for use with caching
-* added new function BusinessCheckRegistrationCommand::getKey for caching purposes
-* check that registration state is not null
-* added getkey function to commands to help with caching
+- new fields for GetDomainExtensionsOptionsResponse
+- updated GetDomainExtensionOptionsResponse to be more consistent in function names
+- domainPassword is optional in domainInfo response for .uk domains
+- changed DomainInfoResponse::isIdProtected to getIdProtected because it's not actually boolean - NA
+  is a possible value, now returns string: Enabled, Disabled or NA
+- added equality test for Types/Contact
+- added static helper function Contact::newFromArray
+- handle null fax numbers with xor
+- added Contact::toArray function
+- new function getDomainPricing
+- added BulkCheckDomainCommand::getDomainList for use with caching
+- added new function BusinessCheckRegistrationCommand::getKey for caching purposes
+- check that registration state is not null
+- added getkey function to commands to help with caching
 
-1.2.5 (2016-08-08)
-------------------
+## 1.2.5 (2016-08-08)
 
-* added auRegistrantName field to domainInfo response
+- added auRegistrantName field to domainInfo response
 
-1.2.4 (2016-08-08)
-------------------
+## 1.2.4 (2016-08-08)
 
-* some extra new fields
-* updated tests
+- some extra new fields
+- updated tests
 
-1.2.3 (2016-08-08)
-------------------
+## 1.2.3 (2016-08-08)
 
-* some domains don't have auRegistrantID but have auEligibilityID instead
-* some domains don't have auRegistrantIDType but have auEligibilityIDType instead
+- some domains don't have auRegistrantID but have auEligibilityID instead
+- some domains don't have auRegistrantIDType but have auEligibilityIDType instead
 
-1.2.2 (2016-08-07)
-------------------
+## 1.2.2 (2016-08-07)
 
-* listContacts returns a field called "organisation", not "company" 
+- listContacts returns a field called "organisation", not "company"
 
-1.2.1 (2016-08-07)
-------------------
+## 1.2.1 (2016-08-07)
 
-* handle case where returned fax in contacts is set but empty
+- handle case where returned fax in contacts is set but empty
 
-1.2.0 (2016-08-05)
-------------------
+## 1.2.0 (2016-08-05)
 
-* Renamed Bool to Boolean for compatibility with PHP7 where Bool is now a reserved word
+- Renamed Bool to Boolean for compatibility with PHP7 where Bool is now a reserved word
 
-1.1.0 (2016-02-26)
-------------------
+## 1.1.0 (2016-02-26)
 
-* Renamed a heap of other classes and methods for consistence with the API in regards to capitalisation:
-  Au => AU, Us => US, Uk => UK, Cor => COR, Id => ID, etc.
-* Add missing response class DomainTransferUKResponse (Thanks to [Paul Ferrett](http://paulferrett.com/) for the PR)
-* Missing or invalid use statement fixes. (PR by [Paul Ferrett](http://paulferrett.com/))
-* Rename Country specific Domain Registration/Release command class names as Soap operations are case-sensitive.
-  (PR by [Paul Ferrett](http://paulferrett.com/))
+- Renamed a heap of other classes and methods for consistence with the API in regards to
+  capitalisation: Au => AU, Us => US, Uk => UK, Cor => COR, Id => ID, etc.
+- Add missing response class DomainTransferUKResponse (Thanks to
+  [Paul Ferrett](http://paulferrett.com/) for the PR)
+- Missing or invalid use statement fixes. (PR by [Paul Ferrett](http://paulferrett.com/))
+- Rename Country specific Domain Registration/Release command class names as Soap operations are
+  case-sensitive. (PR by [Paul Ferrett](http://paulferrett.com/))
 
-1.0.3 (2015-05-23)
-------------------
+## 1.0.3 (2015-05-23)
 
-* removed redundant closing php tags
+- removed redundant closing php tags
 
-1.0.2 (2015-02-13)
-------------------
+## 1.0.2 (2015-02-13)
 
-* fix naming of determineSMSCostResponse file for case-insensitive platforms
+- fix naming of determineSMSCostResponse file for case-insensitive platforms
 
-1.0.1 (2015-02-13)
-------------------
+## 1.0.1 (2015-02-13)
 
-* fix naming of determineSMSCostCommand file for case-insensitive platforms
-* rename determineSMSCost helper function for consistency
+- fix naming of determineSMSCostCommand file for case-insensitive platforms
+- rename determineSMSCost helper function for consistency
 
-1.0.0 (2015-02-13)
-------------------
+## 1.0.0 (2015-02-13)
 
-* even though not feature complete yet, it's time to release a stable version
+- even though not feature complete yet, it's time to release a stable version
 
-0.5.1 (2015-02-13)
-------------------
+## 0.5.1 (2015-02-13)
 
-* changed mockery requirement to use ^0.9, updated branch-alias
+- changed mockery requirement to use ^0.9, updated branch-alias
 
-0.5.0 (2014-10-15)
-------------------
+## 0.5.0 (2014-10-15)
 
-* rename DeterminSmsCostCommand -> DetermineSMSCostCommand
-* renamed helper function sendSms -> sendSMS to be consistent with class names and WSDL function name used by
-  SynergyWholesale
-* rename SendSms -> SendSMS (thanks to Alex <alex@serversaurus.com> for the PR)
+- rename DeterminSmsCostCommand -> DetermineSMSCostCommand
+- renamed helper function sendSms -> sendSMS to be consistent with class names and WSDL function
+  name used by SynergyWholesale
+- rename SendSms -> SendSMS (thanks to Alex <alex@serversaurus.com> for the PR)
 
-0.4.0 (2014-10-15)
-------------------
+## 0.4.0 (2014-10-15)
 
-* update composer dev-master alias
-* removed dependency on hampel/validate library and changed various types to do their own validation
-* change dev-master branch alias to 0.3.x-dev
+- update composer dev-master alias
+- removed dependency on hampel/validate library and changed various types to do their own validation
+- change dev-master branch alias to 0.3.x-dev
 
-0.3.2 (2014-09-09)
-------------------
+## 0.3.2 (2014-09-09)
 
-* additional test for retrieving raw response data in ResponseTest
-* slightly more meaningful error message for invalid phone numbers in class Phone
-* handle empty name server arrays correctly in class DomainInfoResponse
-* create the contacts at validation time and output meaningful errors for missing nested fields in class
-  ListContactsResponse
-* if no domains have been transferred away, then the domains field won't be set in class
+- additional test for retrieving raw response data in ResponseTest
+- slightly more meaningful error message for invalid phone numbers in class Phone
+- handle empty name server arrays correctly in class DomainInfoResponse
+- create the contacts at validation time and output meaningful errors for missing nested fields in
+  class ListContactsResponse
+- if no domains have been transferred away, then the domains field won't be set in class
   GetTransferredAwayDomainsResponse
-* canRenewDomain might respond with a null valud for yearsCanRenewFor
-* added Response::getErrorMessage function
+- canRenewDomain might respond with a null valud for yearsCanRenewFor
+- added Response::getErrorMessage function
 
-0.3.1 (2014-08-31)
-------------------
+## 0.3.1 (2014-08-31)
 
-* added optional parameter 'state' back into BusinesCheckRegistrationResponse::getAuBusinessRegistration() for those
-  cases where state is not returned in data
+- added optional parameter 'state' back into
+  BusinesCheckRegistrationResponse::getAuBusinessRegistration() for those cases where state is not
+  returned in data
 
-0.3.0 (2014-08-31)
-------------------
+## 0.3.0 (2014-08-31)
 
-* extra type hints in docblocks for DomainList
-* clean up DomainListTest tests a bit
-* rename class GetUsNexusData -> GetUsNexusDataCommand
-* typehinted docblocks
-* make $response and $command protected and add getters for them in Response class
-* updated DomainInfoResponse type handling
-* added wrapper functions for all command to SynergyWholesale class so we can typehint return values and get command
-  completion in the IDE when using response classes
+- extra type hints in docblocks for DomainList
+- clean up DomainListTest tests a bit
+- rename class GetUsNexusData -> GetUsNexusDataCommand
+- typehinted docblocks
+- make $response and $command protected and add getters for them in Response class
+- updated DomainInfoResponse type handling
+- added wrapper functions for all command to SynergyWholesale class so we can typehint return values
+  and get command completion in the IDE when using response classes
 
-0.2.2 (2014-08-29)
-------------------
+## 0.2.2 (2014-08-29)
 
-* bug fixes in Domain and DomainInfoResponse
+- bug fixes in Domain and DomainInfoResponse
 
-0.2.1 (2014-08-29)
-------------------
+## 0.2.1 (2014-08-29)
 
-* make the default api URL a const so can be accessed by external classes
-* getter for the raw response data
-* added branch-alias to composer.json
+- make the default api URL a const so can be accessed by external classes
+- getter for the raw response data
+- added branch-alias to composer.json
 
-0.2.0 (2014-08-27)
-------------------
+## 0.2.0 (2014-08-27)
 
 ### Fixes and Updates ###
 
-* response data for BulkCheckDomainResponse actually contains an array of stdClass objects with data for each domain
-* updates to CheckDomainCommand; added unit tests
-* updates for BulkCheckDomainCommand, added unit tests
-* added logging via psr/log
-* some command responses use "OK" others use "ok" - updated Response base class to accept either
-* updates to DomainInfoCommand and DomainInfoResponse
-* refactoring; rebase exceptions and use exception interface for more granular exception handling
-* refactor to remove Hampel\ from namespace, fixed broken unit tests
-* rearchitected
+- response data for BulkCheckDomainResponse actually contains an array of stdClass objects with data
+  for each domain
+- updates to CheckDomainCommand; added unit tests
+- updates for BulkCheckDomainCommand, added unit tests
+- added logging via psr/log
+- some command responses use "OK" others use "ok" - updated Response base class to accept either
+- updates to DomainInfoCommand and DomainInfoResponse
+- refactoring; rebase exceptions and use exception interface for more granular exception handling
+- refactor to remove Hampel\ from namespace, fixed broken unit tests
+- rearchitected
 
 ### New Features ###
 
-* implemented updateContact command
-* implemented unlockDomain command
-* implemented sendSMS command
-* implemented resendVerificationEmail command
-* implemented lockDomain command
-* implemented listContacts command
-* implemented initiateAUCOR command
-* implemented getUSNexusData command
-* implemented getTransferredAwayDomains command
-* implemented getDomainExtensionOptions command
-* implemented enableIDProtection command
-* implemented enableAutoRenewal command
-* implemented disableIDProtection command
-* implemented disableAutoRenewal command
-* implemented determineSMSCost command
-* implemented canRenewDomain command
-* implemented resubmitFailedTransfer command
-* implemented resendTransferEmail command
-* implemented renewDomain command
-* implemented updateNameServers command
-* implemented domainReleaseUK command
-* implemented TransferDomain command
-* implemented DomainTransferUk command
-* implemented DomainRegisterUs command
-* implemented DomainRegister command
-* implemented DomainRegisterUk command
-* implemented DomainRegisterAu command
-* implemented updateDomainPassword command
+- implemented updateContact command
+- implemented unlockDomain command
+- implemented sendSMS command
+- implemented resendVerificationEmail command
+- implemented lockDomain command
+- implemented listContacts command
+- implemented initiateAUCOR command
+- implemented getUSNexusData command
+- implemented getTransferredAwayDomains command
+- implemented getDomainExtensionOptions command
+- implemented enableIDProtection command
+- implemented enableAutoRenewal command
+- implemented disableIDProtection command
+- implemented disableAutoRenewal command
+- implemented determineSMSCost command
+- implemented canRenewDomain command
+- implemented resubmitFailedTransfer command
+- implemented resendTransferEmail command
+- implemented renewDomain command
+- implemented updateNameServers command
+- implemented domainReleaseUK command
+- implemented TransferDomain command
+- implemented DomainTransferUk command
+- implemented DomainRegisterUs command
+- implemented DomainRegister command
+- implemented DomainRegisterUk command
+- implemented DomainRegisterAu command
+- implemented updateDomainPassword command
 
-* added RegistrationYears type
-* added DomainList type
-* added UsNexusCategory type
-* added UsDomain type
-* added UsAppPurpose type
-* added UkDomain type
-* added Bool type
-* added AuBusinessRegistration type
-* added AuRegistrant type
-* added AuOrganisationType type
-* added AuIdType type
-* added Phone type
-* added Contact type
-* added Email type
-* added AuPostCode type
-* added Country type
-* added AuState type
-* added AuDomain type
-* added AuContact type
+- added RegistrationYears type
+- added DomainList type
+- added UsNexusCategory type
+- added UsDomain type
+- added UsAppPurpose type
+- added UkDomain type
+- added Bool type
+- added AuBusinessRegistration type
+- added AuRegistrant type
+- added AuOrganisationType type
+- added AuIdType type
+- added Phone type
+- added Contact type
+- added Email type
+- added AuPostCode type
+- added Country type
+- added AuState type
+- added AuDomain type
+- added AuContact type
 
-0.1.0 (2014-08-06)
-------------------
+## 0.1.0 (2014-08-06)
 
-* fixes for SynergyWholesale::parseResponse ... will always have a status returned, but only an errorMessage if there was an error
-* CheckDomainCommand, BulkCheckDomainCommand
-* DomainInfoCommand
-* initial release
+- fixes for SynergyWholesale::parseResponse ... will always have a status returned, but only an
+  errorMessage if there was an error
+- CheckDomainCommand, BulkCheckDomainCommand
+- DomainInfoCommand
+- initial release
