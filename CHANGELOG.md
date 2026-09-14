@@ -4,6 +4,17 @@ CHANGELOG
 Unreleased
 ----------
 
+### Fixed
+
+* Secrets are redacted from the debug log at any depth. `listDomains` and `bulkDomainInfo` logged
+  `domainPassword` for every entry in `domainList`, and `bulkRawDomainInfo` logged `authInfo` for
+  every entry in its request.
+* `auAssociationAuthInfo`, `auEligibilityAssociationAuthInfo`, `associationAuthInfo`,
+  `newPassword`, `privKey` and `privateKey` are redacted from the debug log. 2.0.0 logged them in
+  full.
+
+### Support
+
 * `ext-json` is now declared in `require`. `Client` and `FixtureTransport` call `json_encode()`
   and `json_decode()`. The extension is non-optional from PHP 8.0, and this package requires 8.3
 

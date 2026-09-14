@@ -20,13 +20,29 @@ use Psr\Log\LoggerInterface;
 final class Client
 {
     /**
-     * Request fields that must never reach a log.
+     * Fields that must never reach a log, in either direction and at any depth.
      *
-     * authInfo is the EPP/auth code -- possession of it is sufficient to
-     * transfer a domain away, so it belongs on this list as firmly as the API
-     * key does.
+     * The EPP code travels under four names and the .au association codes under
+     * three -- possession of any of them is sufficient to transfer a domain away,
+     * so they belong here as firmly as the API key does. privKey is the private
+     * key SSL_generateCSR hands back.
+     *
+     * Lowercase, and compared that way: the WSDL spells authInfo as authinfo in
+     * rawDomainContacts.
      */
-    private const REDACTED = ['resellerID', 'apiKey', 'authInfo', 'domainPassword', 'password'];
+    private const REDACTED = [
+        'resellerid',
+        'apikey',
+        'authinfo',
+        'domainpassword',
+        'associationauthinfo',
+        'auassociationauthinfo',
+        'aueligibilityassociationauthinfo',
+        'password',
+        'newpassword',
+        'privkey',
+        'privatekey',
+    ];
 
     public function __construct(
         private readonly Transport $transport,
@@ -101,14 +117,21 @@ final class Client
     }
 
     /**
-     * @param  array<string, mixed>  $data
-     * @return array<string, mixed>
+     * Recursive because the secrets are not all at the top: listDomains and
+     * bulkDomainInfo carry domainPassword on every entry of domainList, so a
+     * single call at debug would otherwise log the transfer code for every
+     * domain in the account.
+     *
+     * @param  array<mixed>  $data
+     * @return array<mixed>
      */
     private function redact(array $data): array
     {
-        foreach (array_keys($data) as $key) {
-            if (in_array($key, self::REDACTED, true)) {
+        foreach ($data as $key => $value) {
+            if (is_string($key) && in_array(strtolower($key), self::REDACTED, true)) {
                 $data[$key] = '*****';
+            } elseif (is_array($value)) {
+                $data[$key] = $this->redact($value);
             }
         }
 
@@ -125,7 +148,7 @@ final class Client
     }
 
     /**
-     * @param  array<string, mixed>  $context
+     * @param  array<mixed>  $context
      */
     private function log(string $level, string $message, array $context = []): void
     {

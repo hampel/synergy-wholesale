@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Hampel\SynergyWholesale\Tests;
 
+use Closure;
 use Hampel\SynergyWholesale\Client;
 use Hampel\SynergyWholesale\Exception\ApiError;
 use Hampel\SynergyWholesale\Transport\FixtureTransport;
@@ -149,24 +150,116 @@ final class ClientTest extends TestCase
     #[Test]
     public function it_keeps_credentials_and_auth_codes_out_of_the_log(): void
     {
-        /**
-         * A stub rather than an anonymous class implementing LoggerInterface, and the
-         * reason is version support: composer.json allows psr/log ^1.0|^2.0|^3.0, whose
-         * LoggerInterface::log() signatures are not mutually compatible. v1 declares no
-         * parameter or return types; v3 declares string|Stringable and : void. Any
-         * concrete signature written here is wrong at one end of that range -- typing
-         * $message narrows a parameter against v1 (a fatal), and omitting : void widens
-         * the return against v3 (also a fatal). A stub is generated against whichever
-         * version is installed, so it is correct at both ends by construction.
-         *
-         * A stub and not a mock because nothing here asserts on the calls -- it only
-         * captures what was logged. PHPUnit emits a notice if you get that backwards.
-         *
-         * Note this is not the thing FixtureTransport exists to avoid: standing in for a
-         * PSR interface is what the interface is for. Faking a concrete SoapClient is not.
-         *
-         * @var list<array{string, string, array<string, mixed>}> $lines
-         */
+        $transport = (new FixtureTransport())->on('transferDomain', FixtureTransport::response([
+            'status' => 'OK',
+        ]));
+
+        $logged = $this->logged(function (LoggerInterface $logger) use ($transport): void {
+            $this->client($transport, $logger)->call('transferDomain', [
+                'domainName' => 'example.com',
+                'authInfo' => 'the-epp-code',
+            ]);
+        });
+
+        $this->assertStringNotContainsString('secret-key', $logged);
+        $this->assertStringNotContainsString('reseller-1', $logged);
+        $this->assertStringNotContainsString('the-epp-code', $logged);
+        $this->assertStringContainsString('example.com', $logged);
+    }
+
+    /**
+     * @param  array<string, mixed>  $request
+     * @param  array<string, mixed>  $response
+     */
+    #[Test]
+    #[DataProvider('secrets')]
+    public function it_redacts_secrets_at_any_depth_in_either_direction(
+        string $operation,
+        array $request,
+        array $response,
+        string $secret,
+    ): void {
+        $transport = (new FixtureTransport())->on($operation, FixtureTransport::response(
+            ['status' => 'OK'] + $response,
+        ));
+
+        $logged = $this->logged(function (LoggerInterface $logger) use ($transport, $operation, $request): void {
+            $this->client($transport, $logger)->call($operation, $request);
+        });
+
+        $this->assertStringNotContainsString($secret, $logged);
+        $this->assertStringContainsString('example.com', $logged, 'redaction took the neighbouring fields with it');
+    }
+
+    /**
+     * @return array<string, array{string, array<string, mixed>, array<string, mixed>, string}>
+     */
+    public static function secrets(): array
+    {
+        return [
+            'domainPassword on every listDomains entry' => ['listDomains', [], [
+                'domainList' => [
+                    ['domainName' => 'example.com', 'domainPassword' => 'epp-in-a-list'],
+                ],
+            ], 'epp-in-a-list'],
+            '.au association code in a bulkDomainInfo entry' => ['bulkDomainInfo', [], [
+                'domainList' => [
+                    ['domainName' => 'example.com', 'auAssociationAuthInfo' => 'au-association-code'],
+                ],
+            ], 'au-association-code'],
+            '.au eligibility association code on domainInfo' => ['domainInfo', ['domainName' => 'example.com'], [
+                'auEligibilityAssociationAuthInfo' => 'au-eligibility-code',
+            ], 'au-eligibility-code'],
+            'authinfo spelt lowercase, nested' => ['rawDomainContacts', ['domainName' => 'example.com'], [
+                'contacts' => [['authinfo' => 'lowercase-epp']],
+            ], 'lowercase-epp'],
+            'authInfo on each bulkRawDomainInfo request entry' => ['bulkRawDomainInfo', [
+                'domainList' => [
+                    ['domainName' => 'example.com', 'authInfo' => 'epp-in-a-request-list'],
+                ],
+            ], [], 'epp-in-a-request-list'],
+            'newPassword on updateDomainPassword' => ['updateDomainPassword', [
+                'domainName' => 'example.com',
+                'newPassword' => 'the-new-epp-code',
+            ], [], 'the-new-epp-code'],
+            'association code on an .au registration' => ['domainRegisterAU', [
+                'domainName' => 'example.com',
+                'associationAuthInfo' => 'au-registration-code',
+            ], [], 'au-registration-code'],
+            'private key from SSL_generateCSR' => ['SSL_generateCSR', ['commonName' => 'example.com'], [
+                'privKey' => '-----BEGIN PRIVATE KEY-----',
+            ], 'BEGIN PRIVATE KEY'],
+            'private key on SSL_purchaseSSLCertificate' => ['SSL_purchaseSSLCertificate', [
+                'commonName' => 'example.com',
+                'privateKey' => '-----BEGIN PRIVATE KEY-----',
+            ], [], 'BEGIN PRIVATE KEY'],
+        ];
+    }
+
+    /**
+     * Runs $act against a logger and returns everything it was sent, JSON-encoded, so
+     * a test can assert a value appears nowhere in it -- message or context, any depth.
+     *
+     * A stub rather than an anonymous class implementing LoggerInterface, and the
+     * reason is version support: composer.json allows psr/log ^1.0|^2.0|^3.0, whose
+     * LoggerInterface::log() signatures are not mutually compatible. v1 declares no
+     * parameter or return types; v3 declares string|Stringable and : void. Any
+     * concrete signature written here is wrong at one end of that range -- typing
+     * $message narrows a parameter against v1 (a fatal), and omitting : void widens
+     * the return against v3 (also a fatal). A stub is generated against whichever
+     * version is installed, so it is correct at both ends by construction.
+     *
+     * A stub and not a mock because nothing here asserts on the calls -- it only
+     * captures what was logged. PHPUnit emits a notice if you get that backwards.
+     *
+     * Note this is not the thing FixtureTransport exists to avoid: standing in for a
+     * PSR interface is what the interface is for. Faking a concrete SoapClient is not.
+     *
+     * @param  Closure(LoggerInterface): void  $act
+     */
+    private function logged(Closure $act): string
+    {
+        /** @var list<array{string, string, array<mixed>}> $lines */
         $lines = [];
 
         $logger = $this->createStub(LoggerInterface::class);
@@ -180,20 +273,8 @@ final class ClientTest extends TestCase
             }
         );
 
-        $transport = (new FixtureTransport())->on('transferDomain', FixtureTransport::response([
-            'status' => 'OK',
-        ]));
+        $act($logger);
 
-        $this->client($transport, $logger)->call('transferDomain', [
-            'domainName' => 'example.com',
-            'authInfo' => 'the-epp-code',
-        ]);
-
-        $logged = json_encode($lines) ?: '';
-
-        $this->assertStringNotContainsString('secret-key', $logged);
-        $this->assertStringNotContainsString('reseller-1', $logged);
-        $this->assertStringNotContainsString('the-epp-code', $logged);
-        $this->assertStringContainsString('example.com', $logged);
+        return json_encode($lines) ?: '';
     }
 }

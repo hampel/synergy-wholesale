@@ -40,7 +40,8 @@ use Hampel\SynergyWholesale\SynergyWholesale;
 $sw = SynergyWholesale::make('reseller-id', 'api-key');
 
 // Optionally pass any PSR-3 logger to record calls and responses.
-// Credentials, EPP auth codes and domain passwords are redacted.
+// Credentials, EPP and .au association codes, passwords and private keys are redacted, at
+// any depth.
 $sw = SynergyWholesale::make('reseller-id', 'api-key', $logger);
 ```
 
