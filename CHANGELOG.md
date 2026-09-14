@@ -1,8 +1,8 @@
 CHANGELOG
 =========
 
-Unreleased
-----------
+2.1.0 (2026-09-14)
+------------------
 
 ### Fixed
 
@@ -22,7 +22,7 @@ Unreleased
 ### Support
 
 * `ext-json` is now declared in `require`. `Client` and `FixtureTransport` call `json_encode()`
-  and `json_decode()`. The extension is non-optional from PHP 8.0, and this package requires 8.3
+  and `json_decode()`. The extension is non-optional from PHP 8.0, and this package requires 8.3.
 
 2.0.0 (2026-08-27)
 ------------------
