@@ -1,4 +1,4 @@
-# Synergy Wholesale API Client
+# Synergy Wholesale API client for PHP
 
 [![Tests](https://github.com/hampel/synergy-wholesale/actions/workflows/tests.yml/badge.svg)](https://github.com/hampel/synergy-wholesale/actions/workflows/tests.yml)
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/hampel/synergy-wholesale.svg?style=flat-square)](https://packagist.org/packages/hampel/synergy-wholesale)
