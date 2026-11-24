@@ -38,7 +38,7 @@ $io->title('synergy-wholesale · portfolio');
 
 harness_mode($io);
 
-$show = in_array('--show', $argv, true);
+$show = in_array('--show', $argv ?? [], true);
 
 if (! $show) {
     $io->info('names are hidden - pass --show to print them');
