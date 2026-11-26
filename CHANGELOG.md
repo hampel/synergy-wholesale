@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+### Changed
+
+- Each call is logged once, at `debug`, as `Synergy Wholesale API call` with `operation`, `status`
+  and `duration_ms` in the context. The `info` line per call and the request and response
+  payloads are no longer logged.
+
 ## 2.2.0 (2026-09-14)
 
 ### Added

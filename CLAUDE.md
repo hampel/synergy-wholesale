@@ -46,7 +46,7 @@ SynergyWholesale  ->  Generated\Api\*Api  ->  Client  ->  Transport  ->  SoapCli
   parameter array, call `Client::call()`, hydrate the typed response. There is no logic here,
   by design — anything worth testing would otherwise be copied 138 times.
 - **`Client`** is where the behaviour lives: it injects credentials, drops null parameters,
-  redacts secrets from the log, and applies the envelope rule. **Success is any status not
+  logs one `debug` line per call, and applies the envelope rule. **Success is any status not
   prefixed `ERR_`.** That covers `OK`, `OK_NO_RENEWAL`, `AVAILABLE`, `UNAVAILABLE` and anything
   the registry invents next. v1 inverted this — whitelisting success values per response class —
   which is why it threw on statuses that meant success.

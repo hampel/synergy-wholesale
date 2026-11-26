@@ -39,10 +39,8 @@ use Hampel\SynergyWholesale\SynergyWholesale;
 
 $sw = SynergyWholesale::make('reseller-id', 'api-key');
 
-// Optionally pass any PSR-3 logger to record calls and responses.
-// Credentials, EPP and .au association codes, passwords and private keys are redacted, at
-// any depth. Everything else is logged in full at debug, including registrant and contact
-// names, email addresses, phone numbers and postal addresses.
+// Optionally pass any PSR-3 logger. Each call is logged at debug with its operation, status
+// and duration in milliseconds; nothing from the request or the response is logged.
 $sw = SynergyWholesale::make('reseller-id', 'api-key', $logger);
 ```
 

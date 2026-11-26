@@ -148,32 +148,88 @@ final class ClientTest extends TestCase
     }
 
     #[Test]
-    public function it_keeps_credentials_and_auth_codes_out_of_the_log(): void
+    public function it_logs_one_debug_line_per_call_with_the_operation_status_and_duration(): void
     {
-        $transport = (new FixtureTransport())->on('transferDomain', FixtureTransport::response([
+        $transport = (new FixtureTransport())->on('checkDomain', FixtureTransport::response([
+            'status' => 'AVAILABLE',
+        ]));
+
+        $lines = $this->logged(function (LoggerInterface $logger) use ($transport): void {
+            $this->client($transport, $logger)->call('checkDomain', ['domainName' => 'example.com']);
+        });
+
+        $this->assertCount(1, $lines);
+        [$level, $message, $context] = $lines[0];
+        $this->assertSame('debug', $level);
+        $this->assertSame(Client::LOG_MESSAGE, $message);
+        $this->assertSame(['operation', 'status', 'duration_ms'], array_keys($context));
+        $this->assertSame('checkDomain', $context['operation']);
+        $this->assertSame('AVAILABLE', $context['status']);
+        $this->assertIsInt($context['duration_ms']);
+    }
+
+    #[Test]
+    public function it_logs_an_error_status_before_throwing(): void
+    {
+        $transport = (new FixtureTransport())->on('domainInfo', FixtureTransport::response([
+            'status' => 'ERR_DOMAIN_NOT_FOUND',
+            'errorMessage' => 'Domain not found',
+        ]));
+
+        $lines = $this->logged(function (LoggerInterface $logger) use ($transport): void {
+            try {
+                $this->client($transport, $logger)->call('domainInfo', ['domainName' => 'example.com']);
+                $this->fail('expected ApiError');
+            } catch (ApiError) {
+            }
+        });
+
+        $this->assertCount(1, $lines);
+        $this->assertSame('ERR_DOMAIN_NOT_FOUND', $lines[0][2]['status']);
+        $this->assertStringNotContainsString('Domain not found', $this->encoded($lines));
+    }
+
+    #[Test]
+    public function it_logs_a_call_that_could_not_be_completed_with_no_status(): void
+    {
+        $lines = $this->logged(function (LoggerInterface $logger): void {
+            try {
+                $this->client(new FixtureTransport(), $logger)->call('domainInfo', []);
+                $this->fail('expected TransportException');
+            } catch (TransportException) {
+            }
+        });
+
+        $this->assertCount(1, $lines);
+        $this->assertSame('domainInfo', $lines[0][2]['operation']);
+        $this->assertNull($lines[0][2]['status']);
+    }
+
+    #[Test]
+    public function it_keeps_credentials_out_of_the_log(): void
+    {
+        $transport = (new FixtureTransport())->on('balanceQuery', FixtureTransport::response([
             'status' => 'OK',
         ]));
 
-        $logged = $this->logged(function (LoggerInterface $logger) use ($transport): void {
-            $this->client($transport, $logger)->call('transferDomain', [
-                'domainName' => 'example.com',
-                'authInfo' => 'the-epp-code',
-            ]);
-        });
+        $logged = $this->encoded($this->logged(function (LoggerInterface $logger) use ($transport): void {
+            $this->client($transport, $logger)->call('balanceQuery', []);
+        }));
 
         $this->assertStringNotContainsString('secret-key', $logged);
         $this->assertStringNotContainsString('reseller-1', $logged);
-        $this->assertStringNotContainsString('the-epp-code', $logged);
-        $this->assertStringContainsString('example.com', $logged);
     }
 
     /**
+     * Every case also carries example.com, an ordinary value beside the secret: the log
+     * holds neither, because it holds nothing from the request or the response at all.
+     *
      * @param  array<string, mixed>  $request
      * @param  array<string, mixed>  $response
      */
     #[Test]
     #[DataProvider('secrets')]
-    public function it_redacts_secrets_at_any_depth_in_either_direction(
+    public function it_logs_nothing_from_the_request_or_the_response(
         string $operation,
         array $request,
         array $response,
@@ -183,12 +239,12 @@ final class ClientTest extends TestCase
             ['status' => 'OK'] + $response,
         ));
 
-        $logged = $this->logged(function (LoggerInterface $logger) use ($transport, $operation, $request): void {
+        $logged = $this->encoded($this->logged(function (LoggerInterface $logger) use ($transport, $operation, $request): void {
             $this->client($transport, $logger)->call($operation, $request);
-        });
+        }));
 
         $this->assertStringNotContainsString($secret, $logged);
-        $this->assertStringContainsString('example.com', $logged, 'redaction took the neighbouring fields with it');
+        $this->assertStringNotContainsString('example.com', $logged);
     }
 
     /**
@@ -237,8 +293,9 @@ final class ClientTest extends TestCase
     }
 
     /**
-     * Runs $act against a logger and returns everything it was sent, JSON-encoded, so
-     * a test can assert a value appears nowhere in it -- message or context, any depth.
+     * Runs $act against a logger and returns every line it was sent, as level, message
+     * and context. encoded() flattens them, so a test can assert a value appears nowhere
+     * in the log -- message or context, any depth.
      *
      * A stub rather than an anonymous class implementing LoggerInterface, and the
      * reason is version support: composer.json allows psr/log ^1.0|^2.0|^3.0, whose
@@ -256,8 +313,9 @@ final class ClientTest extends TestCase
      * PSR interface is what the interface is for. Faking a concrete SoapClient is not.
      *
      * @param  Closure(LoggerInterface): void  $act
+     * @return list<array{string, string, array<mixed>}>
      */
-    private function logged(Closure $act): string
+    private function logged(Closure $act): array
     {
         /** @var list<array{string, string, array<mixed>}> $lines */
         $lines = [];
@@ -275,6 +333,14 @@ final class ClientTest extends TestCase
 
         $act($logger);
 
+        return $lines;
+    }
+
+    /**
+     * @param  list<array{string, string, array<mixed>}>  $lines
+     */
+    private function encoded(array $lines): string
+    {
         return json_encode($lines) ?: '';
     }
 }
