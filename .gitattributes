@@ -1,10 +1,5 @@
-# Line endings.
-#
-# This repository is developed in WSL but committed from SourceTree on Windows,
-# reaching the working copy over \\wsl$\. Without this, Git for Windows rewrites
-# every file to CRLF and the result is a diff touching every file in the tree
-# with no content change in any of them. Forcing LF in the working tree as well
-# as the index stops that recurring.
+# Line endings: LF in the index and the working tree on every platform, so a
+# checkout on Windows matches what Pint and the generator write.
 * text=auto eol=lf
 
 # Binary and generated reference material, so git never tries to normalise it.
