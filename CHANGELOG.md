@@ -1,6 +1,10 @@
 # Changelog
 
-## Unreleased
+## 2.3.0 (2026-11-27)
+
+### Added
+
+- `Client::LOG_MESSAGE`, the message every call is logged with.
 
 ### Changed
 
